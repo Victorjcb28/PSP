@@ -1,8 +1,8 @@
 #Probado en Ubuntu 16.04
 
 #Instalar wxglade
-#sudo apt-get update
-#sudo apt-get install wxglade
+sudo apt-get update\n
+sudo apt-get install wxglade
 
 #Wine
 #sudo dpkg --add-architecture i386
