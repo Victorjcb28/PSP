@@ -1,4 +1,4 @@
-<!-------Probado en Ubuntu 16.04--------->
+#-------------Probado en Ubuntu 16.04------------
 
 #Instalar wxglade
 sudo apt-get update
