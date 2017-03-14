@@ -4,7 +4,7 @@
 
 import sqlite3 as sq3
 import wx
-import Entrada as E
+import entrada as E
 import PrincipalAdmin as PA
 
 #Conexion base de datos
