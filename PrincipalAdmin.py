@@ -5,6 +5,17 @@
 #
 
 import wx
+#Registro Usuarios
+import GuardarUsuario as GU
+import BuscarUsuario as BU
+import ModificarUsuario as MU
+import EliminarUsuario as EU
+
+#Operaciones Usuarios
+import BloquearUsuario as BU
+import DesbloquearUsuario as DU
+
+#Registro Postulantes
 
 # begin wxGlade: dependencies
 import gettext
@@ -22,8 +33,8 @@ class Principal(wx.Frame):
         self.vntPpal_BarraEstado = self.CreateStatusBar(1)
         self.tree = wx.TreeCtrl(self, wx.ID_ANY, style=wx.BORDER_SUNKEN | wx.TR_DEFAULT_STYLE | wx.TR_HAS_BUTTONS | wx.TR_LINES_AT_ROOT)
         self.label_1 = wx.StaticText(self, wx.ID_ANY, _("Seleccion de Personal"))
-        self.bitmap_1 = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/personal.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_2 = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/salir1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_1 = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("iconos/personal.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_2 = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("iconos/salir1.png", wx.BITMAP_TYPE_ANY))
 
         self.__set_properties()
         self.__do_layout()
@@ -108,8 +119,37 @@ class Principal(wx.Frame):
         # end wxGlade
 
     def OnSelChanged(self, event):  # wxGlade: Principal.<event_handler>
-        print "Event handler 'OnSelChanged' not implemented!"
-        event.Skip()
+        item =  event.GetItem()
+        #new=self.display.SetLabel(self.tree.GetItemText(item))
+        if self.tree.GetItemText(item)== "Guardar Usuario":
+            Ventana=GU.Principal(self)
+            Ventana.Show()
+            self.Hide()
+
+        if self.tree.GetItemText(item)== "Buscar Usuario":
+            Ventana=BU.Principal(self)
+            Ventana.Show()
+            self.Hide()
+
+        if self.tree.GetItemText(item)== "Modificar Usuario":
+            Ventana=MU.Principal(self)
+            Ventana.Show()
+            self.Hide()
+
+        if self.tree.GetItemText(item)== "Eliminar Usuario":
+            Ventana=EU.Principal(self)
+            Ventana.Show()
+            self.Hide()
+
+        if self.tree.GetItemText(item)== "Bloquear Usuarios":
+            Ventana=BU.Principal(self)
+            Ventana.Show()
+            self.Hide()
+
+        if self.tree.GetItemText(item)== "Desbloquear Usuarios":
+            Ventana=DU.Principal(self)
+            Ventana.Show()
+            self.Hide()
 
     def EnSalir(self, event):  # wxGlade: Principal.<event_handler>
         print "Event handler 'EnSalir' not implemented!"
