@@ -275,6 +275,110 @@ def EliminarUsuario(frm):
     con.close()
     return
         
+#<-----Postulante------->
+
+def GuardarPostulante(frm):
+    self=frm
+    No = frm.txtNombre.GetValue()
+    Nom=No.upper()
+    Ap= frm.txtApellido.GetValue()
+    Ape= Ap.upper()
+    Ce= frm.txtCedula.GetValue()
+    Se=frm.cobSexo.GetValue()
+    Es=frm.txtEstado.GetValue()
+    Est= Es.upper()
+    Mu=frm.txtMunicipio.GetValue()
+    Mun=Mu.upper()
+    Pa=frm.txtParroquia.GetValue()
+    Par=Pa.upper()
+    Di=frm.txtDireccion.GetValue()
+    Dir=Di.upper()
     
+    Ed=frm.txtNEducacion.GetValue()
+    Es=frm.txtEspecialidad.GetValue()
+    Id=frm.cobIdioma.GetValue()
+
+    Sa=frm.txtPSalarial.GetValue()
+    Vi=frm.cobVigente.GetValue()
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Guardar Postulante"
+    
+    datos1=(Nom,Ape,Ce,Se)
+    con, cur = conexion()
+    dato=frm.txtCedula.GetValue()
+    #datos=(Car,Sec)
+    cur.execute("select Cedula from Postulante where Cedula=:dato",{"dato": dato})
+    rs=cur.fetchone()
+    if rs:
+       wx.MessageBox('Cedula Repetida', 'Caja de mensaje') 
+    else:
+        
+                
+        cur.execute('INSERT INTO Postulante (Nombre,Apellido,Cedula,Sexo,Direccion,Neducacion,Especialidad,Idioma,PSalarial,Vigente) VALUES (?,?,?,?,?,?,?,?,?,?)',(Nom,Ape,Ce,Se,Dir,Ed,Es,Id,Sa,Vi))
+        cur.execute('INSERT INTO Estado (Nombre,Id) VALUES (?,?)',(Est,Ce))
+        cur.execute('INSERT INTO Munic (Nombre,Id) VALUES (?,?)',(Mun,Ce))
+        cur.execute('INSERT INTO Parroquia (Nombre,Id) VALUES (?,?)',(Par,Ce))
+        wx.MessageBox('Guardado Satisfactoriamente', 'Caja de mensaje')       
+        con.commit()
+
+        
+        cur.execute("Select min(Usuario) from Bitacora")
+        rs2=cur.fetchone()
+        if rs2:
+        
+            N=(str(rs2[0]))
+            cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Ce,Hora,Op))
+            con.commit()
+
+    self.txtNombre.Clear()
+    self.txtApellido.Clear()
+    #self.txtCedula.Clear()
+   
+    self.txtNombre.SetFocus()        
+    cur.close()
+    con.close()
+    return
+
+def BuscarPostulantes(frm):
+    con, cur = conexion()
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    Op="Buscar Estudiante"
+    dato= frm.txtCedula.GetValue()
+    cur.execute("Select Postulante.Nombre,Postulante.Apellido, Postulante.Sexo,Postulante.Direccion,Postulante.Neducacion, Postulante.Especialidad, Postulante.Idioma, Postulante.Psalarial, Postulante.Vigente,Munic.Nombre,Parroquia.Nombre, Estado.Nombre  from Postulante, Munic, Parroquia, Estado where Postulante.Cedula=Munic.Id and Munic.Id=Parroquia.Id and Parroquia.Id=Estado.Id and Postulante.Cedula=:dato",{"dato": dato})
+    rs = cur.fetchone()
+    self=frm
+    if rs:
+        
+        self.txtNombre.SetValue(str(rs[0]))
+        self.txtApellido.SetValue(str(rs[1]))
+        #self.txtCedula.SetValue(int(rs[2]))
+        self.cobSexo.SetValue(str(rs[2]))
+        self.txtDireccion.SetValue(str(rs[3]))
+        self.txtNEducacion.SetValue(str(rs[4]))
+        self.txtEspecialidad.SetValue(str(rs[5]))
+        self.cobIdioma.SetValue(str(rs[6]))
+        self.txtPSalarial.SetValue(str(rs[7]))
+        self.cobVigente.SetValue(str(rs[8]))
+        self.txtMunicipio.SetValue(str(rs[9]))
+        self.txtParroquia.SetValue(str(rs[10]))
+        self.txtEstado.SetValue(str(rs[11]))
+        self.txtNombre.SetFocus()
+        
+    else:
+        dlg=wx.MessageDialog(self,'No se encontro el registro', 'Atencion', wx.OK)
+        dlg.ShowModal()
+        dlg.Destroy()
+
+
+
+
+
+
+
+
 
 

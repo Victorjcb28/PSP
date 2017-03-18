@@ -16,6 +16,8 @@ import BloquearUsuario as BU
 import DesbloquearUsuario as DU
 
 #Registro Postulantes
+import GuardarPostulante as GP
+import BuscarPostulante as BP
 
 # begin wxGlade: dependencies
 import gettext
@@ -45,7 +47,7 @@ class Principal(wx.Frame):
         root = self.tree.AddRoot('Inicio')
         Re = self.tree.AppendItem(root, 'Registros')
         Op=self.tree.AppendItem(root,'Operaciones')
-        Si = self.tree.AppendItem(root, 'Simulacion')
+      
         Repor=self.tree.AppendItem(root,'Reportes')
         
 
@@ -57,21 +59,16 @@ class Principal(wx.Frame):
         
         
         self.tree.AppendItem(Po, 'Buscar Postulante')
-        self.tree.AppendItem(Po, 'Eliminar Alumno')
-        self.tree.AppendItem(Po, 'Guardar Alumno')
-        self.tree.AppendItem(Po, 'Modificar Alumno')
+        
+        self.tree.AppendItem(Po, 'Guardar Postulante')
+        
 
         self.tree.AppendItem(Us, 'Buscar Usuario')
         self.tree.AppendItem(Us, 'Eliminar Usuario')
         self.tree.AppendItem(Us, 'Guardar Usuario')
         self.tree.AppendItem(Us, 'Modificar Usuario')
         
-        self.tree.AppendItem(Si, 'Caida Libre')
-        self.tree.AppendItem(Si, 'Caida Libre Energia')
-        self.tree.AppendItem(Si, 'Tiro Parabolico')
-        self.tree.AppendItem(Si, 'Tiro Vertical Hacia Arriba')
-        self.tree.AppendItem(Si, 'Tiro Horizontal')
-        self.tree.AppendItem(Si, 'Friccion')
+        
 
         self.tree.AppendItem(Bi, 'Bitacora')
         self.tree.AppendItem(Bi, 'Bitacora por Ano')
@@ -148,6 +145,16 @@ class Principal(wx.Frame):
 
         if self.tree.GetItemText(item)== "Desbloquear Usuarios":
             Ventana=DU.Principal(self)
+            Ventana.Show()
+            self.Hide()
+
+        if self.tree.GetItemText(item)== "Guardar Postulante":
+            Ventana=GP.Principal(self)
+            Ventana.Show()
+            self.Hide()
+
+        if self.tree.GetItemText(item)== "Buscar Postulante":
+            Ventana=BP.Principal(self)
             Ventana.Show()
             self.Hide()
 
