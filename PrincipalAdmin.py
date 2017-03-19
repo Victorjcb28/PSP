@@ -5,6 +5,7 @@
 #
 
 import wx
+import entrada as E
 #Registro Usuarios
 import GuardarUsuario as GU
 import BuscarUsuario as BU
@@ -36,12 +37,14 @@ class Principal(wx.Frame):
         self.tree = wx.TreeCtrl(self, wx.ID_ANY, style=wx.BORDER_SUNKEN | wx.TR_DEFAULT_STYLE | wx.TR_HAS_BUTTONS | wx.TR_LINES_AT_ROOT)
         self.label_1 = wx.StaticText(self, wx.ID_ANY, _("Seleccion de Personal"))
         self.bitmap_1 = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("iconos/personal.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_2 = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("iconos/salir1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/salir1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_2 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/soporte_tecnico_icono1.png", wx.BITMAP_TYPE_ANY))
 
         self.__set_properties()
         self.__do_layout()
 
         self.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnSelChanged, self.tree)
+        self.Bind(wx.EVT_BUTTON, self.OnSalir, self.bitmap_button_1)
         # end wxGlade
         #LLenar el TreeCtrl
         root = self.tree.AddRoot('Inicio')
@@ -89,6 +92,8 @@ class Principal(wx.Frame):
             self.vntPpal_BarraEstado.SetStatusText(vntPpal_BarraEstado_fields[i], i)
         self.tree.SetMinSize((180,100))
         self.label_1.SetFont(wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.NORMAL, 0, "Cantarell"))
+        self.bitmap_button_1.SetSize(self.bitmap_button_1.GetBestSize())
+        self.bitmap_button_2.SetSize(self.bitmap_button_2.GetBestSize())
         # end wxGlade
 
     def __do_layout(self):
@@ -100,7 +105,8 @@ class Principal(wx.Frame):
         grid_sizer_1.Add(self.tree, 1, wx.EXPAND, 0)
         grid_sizer_2.Add(self.label_1, 0, wx.ALIGN_CENTER, 0)
         grid_sizer_3.Add(self.bitmap_1, 0, 0, 0)
-        grid_sizer_4.Add(self.bitmap_2, 0, 0, 0)
+        grid_sizer_4.Add(self.bitmap_button_1, 0, 0, 0)
+        grid_sizer_4.Add(self.bitmap_button_2, 0, 0, 0)
         grid_sizer_3.Add(grid_sizer_4, 1, wx.EXPAND, 0)
         grid_sizer_3.AddGrowableRow(0)
         grid_sizer_3.AddGrowableCol(0)
@@ -159,8 +165,17 @@ class Principal(wx.Frame):
             self.Hide()
 
     def EnSalir(self, event):  # wxGlade: Principal.<event_handler>
-        print "Event handler 'EnSalir' not implemented!"
-        event.Skip()
+        dlg = wx.MessageDialog(None, '¿Desea Salir?',
+                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
+                            wx.ICON_QUESTION)
+        #dlg.ShowModal()
+        
+
+        if dlg.ShowModal()==wx.ID_OK:
+            Ventana=E.Principal(self)
+            Ventana.Show()
+            self.Hide()
+        dlg.Destroy()
 
     def OnInfoSys(self, event):  # wxGlade: Principal.<event_handler>
         print "Event handler 'OnInfoSys' not implemented!"
@@ -174,6 +189,18 @@ class Principal(wx.Frame):
         print "Event handler 'OnManual' not implemented!"
         event.Skip()
 
+    def OnSalir(self, event):  # wxGlade: Principal.<event_handler>
+        dlg = wx.MessageDialog(None, '¿Desea Salir?',
+                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
+                            wx.ICON_QUESTION)
+        #dlg.ShowModal()
+        
+
+        if dlg.ShowModal()==wx.ID_OK:
+            Ventana=E.Principal(self)
+            Ventana.Show()
+            self.Hide()
+        dlg.Destroy()
 # end of class Principal
 
 if __name__ == "__main__":

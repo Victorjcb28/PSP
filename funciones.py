@@ -182,10 +182,10 @@ def GuardarUsuario(frm):
                         pass
                     else:
                     
-                     Ventana=PA.Principal(self)
-                     Ventana.Show()
-                     self.Hide()
-                    dlg.Destroy()
+                        Ventana=PA.Principal(self)
+                        Ventana.Show()
+                        self.Hide()
+                        dlg.Destroy()
                 
                 self.txtNombre.Clear()
                 self.txtClave.Clear()

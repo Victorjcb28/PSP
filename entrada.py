@@ -113,7 +113,7 @@ class Principal(wx.Frame):
             frm=self
             Campo=frm.txtUsuario.GetValue()
             if Campo.isalnum():
-                
+                f.Bitacora(self)
                 f.Entrada(self)
             else:
                 dlg=wx.MessageDialog(self,'No puede tener caracteres especiales', 'Atencion', wx.OK)
