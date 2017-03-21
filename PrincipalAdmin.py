@@ -31,7 +31,7 @@ import gettext
 class Principal(wx.Frame):
     def __init__(self, *args, **kwds):
         # begin wxGlade: Principal.__init__
-        kwds["style"] = wx.DEFAULT_FRAME_STYLE
+        kwds["style"] = wx.DEFAULT_FRAME_STYLE | wx.MAXIMIZE
         wx.Frame.__init__(self, *args, **kwds)
         self.vntPpal_BarraEstado = self.CreateStatusBar(1)
         self.tree = wx.TreeCtrl(self, wx.ID_ANY, style=wx.BORDER_SUNKEN | wx.TR_DEFAULT_STYLE | wx.TR_HAS_BUTTONS | wx.TR_LINES_AT_ROOT)
@@ -104,7 +104,7 @@ class Principal(wx.Frame):
         grid_sizer_4 = wx.FlexGridSizer(6, 1, 0, 0)
         grid_sizer_1.Add(self.tree, 1, wx.EXPAND, 0)
         grid_sizer_2.Add(self.label_1, 0, wx.ALIGN_CENTER, 0)
-        grid_sizer_3.Add(self.bitmap_1, 0, 0, 0)
+        grid_sizer_3.Add(self.bitmap_1, 0, wx.ALIGN_CENTER, 0)
         grid_sizer_4.Add(self.bitmap_button_1, 0, 0, 0)
         grid_sizer_4.Add(self.bitmap_button_2, 0, 0, 0)
         grid_sizer_3.Add(grid_sizer_4, 1, wx.EXPAND, 0)
@@ -127,42 +127,41 @@ class Principal(wx.Frame):
         if self.tree.GetItemText(item)== "Guardar Usuario":
             Ventana=GU.Principal(self)
             Ventana.Show()
-            self.Hide()
+            
 
         if self.tree.GetItemText(item)== "Buscar Usuario":
             Ventana=BU.Principal(self)
             Ventana.Show()
-            self.Hide()
+            
 
         if self.tree.GetItemText(item)== "Modificar Usuario":
             Ventana=MU.Principal(self)
             Ventana.Show()
-            self.Hide()
-
+            
         if self.tree.GetItemText(item)== "Eliminar Usuario":
             Ventana=EU.Principal(self)
             Ventana.Show()
-            self.Hide()
+            
 
         if self.tree.GetItemText(item)== "Bloquear Usuarios":
             Ventana=BU.Principal(self)
             Ventana.Show()
-            self.Hide()
+            
 
         if self.tree.GetItemText(item)== "Desbloquear Usuarios":
             Ventana=DU.Principal(self)
             Ventana.Show()
-            self.Hide()
+           
 
         if self.tree.GetItemText(item)== "Guardar Postulante":
             Ventana=GP.Principal(self)
             Ventana.Show()
-            self.Hide()
+            
 
         if self.tree.GetItemText(item)== "Buscar Postulante":
             Ventana=BP.Principal(self)
             Ventana.Show()
-            self.Hide()
+            
 
     def EnSalir(self, event):  # wxGlade: Principal.<event_handler>
         dlg = wx.MessageDialog(None, '¿Desea Salir?',

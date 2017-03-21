@@ -102,8 +102,7 @@ class Principal(wx.Frame):
         
 
         if dlg.ShowModal()==wx.ID_OK:
-            Ventana=PA.Principal(self)
-            Ventana.Show()
+            
             self.Hide()
         dlg.Destroy() 
 

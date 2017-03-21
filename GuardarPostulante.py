@@ -7,6 +7,7 @@
 import wx
 import funciones as f
 import PrincipalAdmin as PA
+import EChofer as EC
 
 # begin wxGlade: dependencies
 import gettext
@@ -61,7 +62,7 @@ class Principal(wx.Frame):
         self.label_8 = wx.StaticText(self, wx.ID_ANY, _(u"Direcci\u00f3n:"))
         self.txtDireccion = wx.TextCtrl(self, wx.ID_ANY, "")
         self.label_13 = wx.StaticText(self, wx.ID_ANY, _("Cargo:"))
-        self.cobCargo = wx.ComboBox(self, wx.ID_ANY, choices=[_("SECRETARIA"), _("VIGILANTE")], style=wx.CB_DROPDOWN)
+        self.cobCargo = wx.ComboBox(self, wx.ID_ANY, choices=[_("ADMINISTRACION"), _("ASISTENTE"), _("CAJERO"), _("CHOFER"), _("VIGILANTE"), _("GERENTE VENTAS"), _("ASISTENTE VENTAS"), _("SERVICIO AL CLIENTE"), _("RECURSOS HUMANOS")], style=wx.CB_DROPDOWN)
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Guardar"))
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Limpiar"))
 
@@ -212,9 +213,15 @@ class Principal(wx.Frame):
         event.Skip()
 
     def OnGuardar(self, event):  # wxGlade: Principal.<event_handler>
+        frm=self
+        Cargo=frm.cobCargo.GetValue()
         if self.Validate():
             f.conexion()
             f.GuardarPostulante(self)
+            if Cargo=="CHOFER":
+                Ventana=EC.Principal(self)
+                Ventana.Show()
+                self.Hide()
 
     def OnLimpiar(self, event):  # wxGlade: Principal.<event_handler>
         print "Event handler 'OnLimpiar' not implemented!"

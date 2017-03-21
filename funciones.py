@@ -300,6 +300,7 @@ def GuardarPostulante(frm):
 
     Sa=frm.txtPSalarial.GetValue()
     Vi=frm.cobVigente.GetValue()
+    Ca=frm.cobCargo.GetValue()
 
     Hora=datetime.datetime.now()
     Fecha = datetime.date.today()
@@ -317,10 +318,11 @@ def GuardarPostulante(frm):
     else:
         
                 
-        cur.execute('INSERT INTO Postulante (Nombre,Apellido,Cedula,Sexo,Direccion,Neducacion,Especialidad,Idioma,PSalarial,Vigente) VALUES (?,?,?,?,?,?,?,?,?,?)',(Nom,Ape,Ce,Se,Dir,Ed,Es,Id,Sa,Vi))
+        cur.execute('INSERT INTO Postulante (Nombre,Apellido,Cedula,Sexo,Direccion,Neducacion,Especialidad,Idioma,PSalarial,Vigente,Fecha) VALUES (?,?,?,?,?,?,?,?,?,?,?)',(Nom,Ape,Ce,Se,Dir,Ed,Es,Id,Sa,Vi,Hora))
         cur.execute('INSERT INTO Estado (Nombre,Id) VALUES (?,?)',(Est,Ce))
         cur.execute('INSERT INTO Munic (Nombre,Id) VALUES (?,?)',(Mun,Ce))
         cur.execute('INSERT INTO Parroquia (Nombre,Id) VALUES (?,?)',(Par,Ce))
+        cur.execute('INSERT INTO Examen (Cargo,Cedula) VALUES (?,?)',(Ca,Ce))
         wx.MessageBox('Guardado Satisfactoriamente', 'Caja de mensaje')       
         con.commit()
 
@@ -372,6 +374,69 @@ def BuscarPostulantes(frm):
         dlg=wx.MessageDialog(self,'No se encontro el registro', 'Atencion', wx.OK)
         dlg.ShowModal()
         dlg.Destroy()
+
+
+
+
+# Examenes
+
+#Chofer
+
+def GuardarChofer(frm):
+    self=frm
+    #Años de Experiencia=P1
+    AE=frm.cobExperiencia.GetValue()
+    #Se integra facilmente a grupos de trabajo=P2
+    GT=frm.cobGTrabajo.GetValue()
+    #Tendria incoveniente en trabajar fuera de la ciudad=P3
+    TF=frm.cobTFuera.GetValue()
+    #Que tipo de licencia posee=P4
+    LI=frm.cobLicencia.GetValue()
+    #Que tipo de Transporte ha manejado=P5
+    TA=frm.cobTransporte.GetValue()
+    #Posee conocimientos en mecanica basica=P6
+    ME=frm.cobMecanica.GetValue()
+    #Esta dispuesto a trabajas horas extras=P7
+    HE=frm.cobHoras.GetValue()
+    #Acepta las normas de la empresa=P8
+    NE=frm.cobNormas.GetValue()
+    #Acepta las normas de sus superores=P9
+    NS=frm.cobNormasS.GetValue()
+    #Ha tenido accidentes de transito=P10
+    AC=frm.cobAccidente.GetValue()
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Postulante Chofer"
+    
+    
+    con, cur = conexion()
+    
+    cur.execute("Select max(id) from Examen")
+    rs2=cur.fetchone()
+    if rs2:
+        Id=(str(rs2[0]))
+   
+        
+                
+        cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,Id))
+        wx.MessageBox('Modificado Satisfactoriamente', 'Caja de mensaje')
+            
+        con.commit()
+
+        
+        cur.execute("Select min(Usuario) from Bitacora")
+        rs2=cur.fetchone()
+        if rs2:
+        
+            N=(str(rs2[0]))
+            cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Id,Hora,Op))
+            con.commit()
+
+          
+    cur.close()
+    con.close()
 
 
 
