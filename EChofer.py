@@ -45,7 +45,7 @@ class Principal(wx.Frame):
         self.label_11_copy_1 = wx.StaticText(self, wx.ID_ANY, _("Que tipo de \nlicencia posee:"))
         self.cobLicencia = wx.ComboBox(self, wx.ID_ANY, choices=[_("1"), _("2"), _("3"), _("4"), _("5")], style=wx.CB_DROPDOWN)
         self.label_13_copy = wx.StaticText(self, wx.ID_ANY, _("Esta dispuesto a aceptar\nlas normas de sus superiores:"))
-        self.cobNormasS = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO"), _("CAJERO"), _("CHOFER"), _("VIGILANTE"), _("GERENTE VENTAS"), _("ASISTENTE VENTAS"), _("SERVICIO AL CLIENTE"), _("RECURSOS HUMANOS")], style=wx.CB_DROPDOWN)
+        self.cobNormasS = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
         self.label_3 = wx.StaticText(self, wx.ID_ANY, _("Que tipo de transporte\nha manejado:"))
         self.cobTransporte = wx.ComboBox(self, wx.ID_ANY, choices=[_("LIVIANO"), _("PESADO")], style=wx.CB_DROPDOWN)
         self.label_7 = wx.StaticText(self, wx.ID_ANY, _("Ha tenido accidentes\nde transito:"))

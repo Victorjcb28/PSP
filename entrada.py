@@ -28,6 +28,8 @@ class Principal(wx.Frame):
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Cancelar"))
 
         self.__set_properties()
+        self.txtUsuario.SetValidator(ContieneDatos())#activa la validacion
+        self.txtClave.SetValidator(ContieneDatos())#activa la validacion
         self.__do_layout()
 
         self.Bind(wx.EVT_TEXT, self.OnTexto, self.txtUsuario)

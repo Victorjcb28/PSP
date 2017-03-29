@@ -350,7 +350,7 @@ def BuscarPostulantes(frm):
     Fecha = datetime.date.today()
     Op="Buscar Estudiante"
     dato= frm.txtCedula.GetValue()
-    cur.execute("Select Postulante.Nombre,Postulante.Apellido, Postulante.Sexo,Postulante.Direccion,Postulante.Neducacion, Postulante.Especialidad, Postulante.Idioma, Postulante.Psalarial, Postulante.Vigente,Munic.Nombre,Parroquia.Nombre, Estado.Nombre  from Postulante, Munic, Parroquia, Estado where Postulante.Cedula=Munic.Id and Munic.Id=Parroquia.Id and Parroquia.Id=Estado.Id and Postulante.Cedula=:dato",{"dato": dato})
+    cur.execute("Select Postulante.Nombre,Postulante.Apellido, Postulante.Sexo,Postulante.Direccion,Postulante.Neducacion, Postulante.Especialidad, Postulante.Idioma, Postulante.Psalarial, Postulante.Vigente,Munic.Nombre,Parroquia.Nombre, Estado.Nombre, Examen.Cargo  from Postulante, Munic, Parroquia, Estado, Examen where Postulante.Cedula=Munic.Id and Munic.Id=Parroquia.Id and Parroquia.Id=Estado.Id and Postulante.Cedula=Examen.Cedula and Postulante.Cedula=:dato",{"dato": dato})
     rs = cur.fetchone()
     self=frm
     if rs:
@@ -368,6 +368,7 @@ def BuscarPostulantes(frm):
         self.txtMunicipio.SetValue(str(rs[9]))
         self.txtParroquia.SetValue(str(rs[10]))
         self.txtEstado.SetValue(str(rs[11]))
+        self.cobCargo.SetValue(str(rs[12]))
         self.txtNombre.SetFocus()
         
     else:

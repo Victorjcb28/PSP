@@ -158,11 +158,9 @@ class Principal(wx.Frame):
         
 
         if dlg.ShowModal()==wx.ID_OK:
-            Ventana=PA.Principal(self)
-            Ventana.Show()
+            
             self.Hide()
-        dlg.Destroy()   
-
+        dlg.Destroy()  
     def OnApe(self, event):  # wxGlade: Principal.<event_handler>
         print "Event handler 'OnApe' not implemented!"
         event.Skip()

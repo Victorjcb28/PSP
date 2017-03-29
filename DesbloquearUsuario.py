@@ -108,10 +108,9 @@ class Principal(wx.Frame):
         
 
         if dlg.ShowModal()==wx.ID_OK:
-            Ventana=PA.Principal(self)
-            Ventana.Show()
+            
             self.Hide()
-        dlg.Destroy()  
+        dlg.Destroy()   
 
     def OnBuscar(self, event):  # wxGlade: Principal.<event_handler>
         if self.Validate():

@@ -104,16 +104,15 @@ class Principal(wx.Frame):
 
     def OnSalir(self, event):  # wxGlade: Principal.<event_handler>
         dlg = wx.MessageDialog(None, '¿Desea Salir?',
-                           'Diálogo de Mensage', wx.OK|wx.CANCEL|
+                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
                             wx.ICON_QUESTION)
         #dlg.ShowModal()
         
 
         if dlg.ShowModal()==wx.ID_OK:
-            Ventana=P.Principal(self)
-            Ventana.Show()
+            
             self.Hide()
-        dlg.Destroy()  
+        dlg.Destroy()   
 
     def OnBuscar(self, event):  # wxGlade: Principal.<event_handler>
         if self.Validate():
