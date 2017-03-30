@@ -348,7 +348,7 @@ def BuscarPostulantes(frm):
     con, cur = conexion()
     Hora=datetime.datetime.now()
     Fecha = datetime.date.today()
-    Op="Buscar Estudiante"
+    Op="Buscar Postulante"
     dato= frm.txtCedula.GetValue()
     cur.execute("Select Postulante.Nombre,Postulante.Apellido, Postulante.Sexo,Postulante.Direccion,Postulante.Neducacion, Postulante.Especialidad, Postulante.Idioma, Postulante.Psalarial, Postulante.Vigente,Munic.Nombre,Parroquia.Nombre, Estado.Nombre, Examen.Cargo  from Postulante, Munic, Parroquia, Estado, Examen where Postulante.Cedula=Munic.Id and Munic.Id=Parroquia.Id and Parroquia.Id=Estado.Id and Postulante.Cedula=Examen.Cedula and Postulante.Cedula=:dato",{"dato": dato})
     rs = cur.fetchone()
@@ -375,6 +375,63 @@ def BuscarPostulantes(frm):
         dlg=wx.MessageDialog(self,'No se encontro el registro', 'Atencion', wx.OK)
         dlg.ShowModal()
         dlg.Destroy()
+
+def ModificarPostulante(frm):
+    
+    No = frm.txtNombre.GetValue()
+    Nom=No.upper()
+    Ap= frm.txtApellido.GetValue()
+    Ape= Ap.upper()
+    Ce= frm.txtCedula.GetValue()
+    Se=frm.cobSexo.GetValue()
+    Es=frm.txtEstado.GetValue()
+    Est= Es.upper()
+    Mu=frm.txtMunicipio.GetValue()
+    Mun=Mu.upper()
+    Pa=frm.txtParroquia.GetValue()
+    Par=Pa.upper()
+    Di=frm.txtDireccion.GetValue()
+    Dir=Di.upper()
+    
+    Ed=frm.txtNEducacion.GetValue()
+    Es=frm.txtEspecialidad.GetValue()
+    Id=frm.cobIdioma.GetValue()
+
+    Sa=frm.txtPSalarial.GetValue()
+    Vi=frm.cobVigente.GetValue()
+    Ca=frm.cobCargo.GetValue()
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Modificar Postulante"
+    
+    self=frm
+    
+    con, cur = conexion()
+    
+
+    cur.execute('UPDATE Postulante Set Nombre=?, Apellido=?, Sexo=?, Direccion=?, Neducacion=?, Especialidad=?,Idioma=?, Psalaria=?,Vigente=?,Fecha=? WHERE Cedula=?',(Nom,Ape,Se,Dir,Ed,Es,Id,Sa,Vi,Hora,Ce))
+    cur.execute('UPDATE Estado Set Nombre=? WHERE Id=?',(Est,Ce))
+    cur.execute('UPDATE Munic Set Nombre=? WHERE Id=?',(Mun,Ce))
+    cur.execute('UPDATE Parroquia Set Nombre=? WHERE Id=?',(Par,Ce))
+    cur.execute('UPDATE Examen Set Cargo=? WHERE Id=?',(Ca,Ce))
+    
+
+    wx.MessageBox('Modificado Satisfactoriamente', 'Caja de mensaje')
+    con.commit()
+
+    cur.execute("Select min(Usuario) from Bitacora")
+    rs2=cur.fetchone()
+    if rs2:
+        
+        N=(str(rs2[0]))
+        cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Ce,Hora,Op))
+        con.commit()
+    
+    cur.close()
+    con.close()
+    return
 
 
 

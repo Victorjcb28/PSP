@@ -68,6 +68,7 @@ class Principal(wx.Frame):
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Eliminar"))
 
         self.__set_properties()
+        self.txtCedula.SetValidator(ContieneDatos())#activa la validacion
         self.__do_layout()
 
         self.Bind(wx.EVT_MENU, self.OnPrincipal, self.principal)
@@ -229,8 +230,17 @@ class Principal(wx.Frame):
         pass
 
     def OnModificar(self, event):  # wxGlade: Principal.<event_handler>
-        print "Event handler 'OnModificar' not implemented!"
-        event.Skip()
+        dlg = wx.MessageDialog(None, '¿Desea Modificar?',
+                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
+                            wx.ICON_QUESTION)
+        #dlg.ShowModal()
+        
+
+        if dlg.ShowModal()==wx.ID_OK:
+            if self.Validate():
+                f.ModificarPostulante(self)
+            
+        dlg.Destroy()  
 
     def OnEliminar(self, event):  # wxGlade: Principal.<event_handler>
         print "Event handler 'OnEliminar' not implemented!"
