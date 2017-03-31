@@ -31,7 +31,7 @@ class Principal(wx.Frame):
         # Menu Bar end
         self.label_1 = wx.StaticText(self, wx.ID_ANY, _("Postulante Chofer"))
         self.label_4 = wx.StaticText(self, wx.ID_ANY, _(u"A\u00f1os de \nExperiencia:"))
-        self.cobExperiencia = wx.ComboBox(self, wx.ID_ANY, choices=[_("0 > 3"), _("4 >7"), _("7 > 10"), _(u"Mas de 11 a\u00f1os")], style=wx.CB_DROPDOWN)
+        self.cobExperiencia = wx.ComboBox(self, wx.ID_ANY, choices=[_("0 > 3"), _("4 > 7"), _("7 > 10"), _(u"Mas de 11 a\u00f1os")], style=wx.CB_DROPDOWN)
         self.label_9 = wx.StaticText(self, wx.ID_ANY, _("Posee conocimientos\nde mecanica basica:"))
         self.cobMecanica = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
         self.label_6 = wx.StaticText(self, wx.ID_ANY, _("Se integra\nfacilmente a\ngrupos de trabajo:"))

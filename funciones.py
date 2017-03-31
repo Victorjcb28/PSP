@@ -348,7 +348,7 @@ def BuscarPostulantes(frm):
     con, cur = conexion()
     Hora=datetime.datetime.now()
     Fecha = datetime.date.today()
-    Op="Buscar Estudiante"
+    Op="Buscar Postulante"
     dato= frm.txtCedula.GetValue()
     cur.execute("Select Postulante.Nombre,Postulante.Apellido, Postulante.Sexo,Postulante.Direccion,Postulante.Neducacion, Postulante.Especialidad, Postulante.Idioma, Postulante.Psalarial, Postulante.Vigente,Munic.Nombre,Parroquia.Nombre, Estado.Nombre, Examen.Cargo  from Postulante, Munic, Parroquia, Estado, Examen where Postulante.Cedula=Munic.Id and Munic.Id=Parroquia.Id and Parroquia.Id=Estado.Id and Postulante.Cedula=Examen.Cedula and Postulante.Cedula=:dato",{"dato": dato})
     rs = cur.fetchone()
@@ -376,6 +376,63 @@ def BuscarPostulantes(frm):
         dlg.ShowModal()
         dlg.Destroy()
 
+def ModificarPostulante(frm):
+    
+    No = frm.txtNombre.GetValue()
+    Nom=No.upper()
+    Ap= frm.txtApellido.GetValue()
+    Ape= Ap.upper()
+    Ce= frm.txtCedula.GetValue()
+    Se=frm.cobSexo.GetValue()
+    Es=frm.txtEstado.GetValue()
+    Est= Es.upper()
+    Mu=frm.txtMunicipio.GetValue()
+    Mun=Mu.upper()
+    Pa=frm.txtParroquia.GetValue()
+    Par=Pa.upper()
+    Di=frm.txtDireccion.GetValue()
+    Dir=Di.upper()
+    
+    Ed=frm.txtNEducacion.GetValue()
+    Es=frm.txtEspecialidad.GetValue()
+    Id=frm.cobIdioma.GetValue()
+
+    Sa=frm.txtPSalarial.GetValue()
+    Vi=frm.cobVigente.GetValue()
+    Ca=frm.cobCargo.GetValue()
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Modificar Postulante"
+    
+    self=frm
+    
+    con, cur = conexion()
+    
+
+    cur.execute('UPDATE Postulante Set Nombre=?, Apellido=?, Sexo=?, Direccion=?, Neducacion=?, Especialidad=?,Idioma=?, Psalaria=?,Vigente=?,Fecha=? WHERE Cedula=?',(Nom,Ape,Se,Dir,Ed,Es,Id,Sa,Vi,Hora,Ce))
+    cur.execute('UPDATE Estado Set Nombre=? WHERE Id=?',(Est,Ce))
+    cur.execute('UPDATE Munic Set Nombre=? WHERE Id=?',(Mun,Ce))
+    cur.execute('UPDATE Parroquia Set Nombre=? WHERE Id=?',(Par,Ce))
+    cur.execute('UPDATE Examen Set Cargo=? WHERE Id=?',(Ca,Ce))
+    
+
+    wx.MessageBox('Modificado Satisfactoriamente', 'Caja de mensaje')
+    con.commit()
+
+    cur.execute("Select min(Usuario) from Bitacora")
+    rs2=cur.fetchone()
+    if rs2:
+        
+        N=(str(rs2[0]))
+        cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Ce,Hora,Op))
+        con.commit()
+    
+    cur.close()
+    con.close()
+    return
+
 
 
 
@@ -385,6 +442,7 @@ def BuscarPostulantes(frm):
 
 def GuardarChofer(frm):
     self=frm
+    puntaje=0
     #Años de Experiencia=P1
     AE=frm.cobExperiencia.GetValue()
     #Se integra facilmente a grupos de trabajo=P2
@@ -411,20 +469,42 @@ def GuardarChofer(frm):
     
     Op="Postulante Chofer"
     
-    
+    dato="CHOFER"
     con, cur = conexion()
     
     cur.execute("Select max(id) from Examen")
     rs2=cur.fetchone()
     if rs2:
-        Id=(str(rs2[0]))
-   
-        
+        Id=(str(rs2[0])) 
                 
-        cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,Id))
-        wx.MessageBox('Modificado Satisfactoriamente', 'Caja de mensaje')
+        
+
+        cur.execute("select * from Respuestas where Cargo=:dato",{"dato": dato})
+        rs3=cur.fetchone()
+        if rs3:
+            lista1=[AE,GT,TF,LI,TA,ME,HE,NE,NS,AC]
+            lista2=[str(rs3[1]),str(rs3[2]),str(rs3[3]),str(rs3[4]),str(rs3[5]),str(rs3[6]),str(rs3[7]),str(rs3[8]),str(rs3[9]),str(rs3[10]),]
+            puntaje=0
+            pu=str(0)
+
+            for i in lista1:
+                if i in lista2:
+                    puntaje=puntaje+10
+        
+
+            pp=str(puntaje)
+            cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=?,Puntuacion=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,pp,Id))
             
-        con.commit()
+            
+            dlg=wx.MessageDialog(self,'Datos Guardados\n'+
+            'Su puntuacion fue de '+pp+'%\n'+
+            'Su puesto es'+Id
+            , 'Atencion', wx.OK)
+            dlg.ShowModal()
+            dlg.Destroy()
+                    
+                 
+        
 
         
         cur.execute("Select min(Usuario) from Bitacora")
