@@ -7,6 +7,10 @@ import wx
 import entrada as E
 import PrincipalAdmin as PA
 
+import EChofer as EC
+import EAdministracion as EA
+import EAsistenteA as EAA
+
 from time import time
 import datetime
 
@@ -324,7 +328,8 @@ def GuardarPostulante(frm):
         cur.execute('INSERT INTO Parroquia (Nombre,Id) VALUES (?,?)',(Par,Ce))
         cur.execute('INSERT INTO Examen (Cargo,Cedula) VALUES (?,?)',(Ca,Ce))
         wx.MessageBox('Guardado Satisfactoriamente', 'Caja de mensaje')       
-        con.commit()
+        con.commit()        
+
 
         
         cur.execute("Select min(Usuario) from Bitacora")
@@ -334,6 +339,19 @@ def GuardarPostulante(frm):
             N=(str(rs2[0]))
             cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Ce,Hora,Op))
             con.commit()
+
+        if Ca=="CHOFER":
+                Ventana=EC.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="ADMINISTRACION":
+                Ventana=EA.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="ASISTENTE":
+                Ventana=EAA.Principal(self)
+                Ventana.Show()
+                self.Hide()
 
     self.txtNombre.Clear()
     self.txtApellido.Clear()
@@ -519,6 +537,168 @@ def GuardarChofer(frm):
     cur.close()
     con.close()
 
+
+#Administacion
+
+def GuardarAdministrador(frm):
+    self=frm
+    puntaje=0
+    #Años de Experiencia=P1
+    AE=frm.cobExperiencia.GetValue()
+    #Se integra facilmente a grupos de trabajo=P2
+    GT=frm.cobGTrabajo.GetValue()
+    #Tendria incoveniente en trabajar fuera de la ciudad=P3
+    TF=frm.cobTFuera.GetValue()
+    #Que tipo de licencia posee=P4
+    LI=frm.cobLicencia.GetValue()
+    #Que tipo de Transporte ha manejado=P5
+    TA=frm.cobTransporte.GetValue()
+    #Posee conocimientos en mecanica basica=P6
+    ME=frm.cobMecanica.GetValue()
+    #Esta dispuesto a trabajas horas extras=P7
+    HE=frm.cobHoras.GetValue()
+    #Acepta las normas de la empresa=P8
+    NE=frm.cobNormas.GetValue()
+    #Acepta las normas de sus superores=P9
+    NS=frm.cobNormasS.GetValue()
+    #Ha tenido accidentes de transito=P10
+    AC=frm.cobAccidente.GetValue()
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Postulante Administracion"
+    
+    dato="ADMINISTRACION"
+    con, cur = conexion()
+    
+    cur.execute("Select max(id) from Examen")
+    rs2=cur.fetchone()
+    if rs2:
+        Id=(str(rs2[0])) 
+                
+        
+
+        cur.execute("select * from Respuestas where Cargo=:dato",{"dato": dato})
+        rs3=cur.fetchone()
+        if rs3:
+            lista1=[AE,GT,TF,LI,TA,ME,HE,NE,NS,AC]
+            lista2=[str(rs3[1]),str(rs3[2]),str(rs3[3]),str(rs3[4]),str(rs3[5]),str(rs3[6]),str(rs3[7]),str(rs3[8]),str(rs3[9]),str(rs3[10]),]
+            puntaje=0
+            pu=str(0)
+
+            for i in lista1:
+                if i in lista2:
+                    puntaje=puntaje+10
+        
+
+            pp=str(puntaje)
+            cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=?,Puntuacion=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,pp,Id))
+            
+            
+            dlg=wx.MessageDialog(self,'Datos Guardados\n'+
+            'Su puntuacion fue de '+pp+'%\n'+
+            'Su puesto es'+Id
+            , 'Atencion', wx.OK)
+            dlg.ShowModal()
+            dlg.Destroy()
+                    
+                 
+        
+
+        
+        cur.execute("Select min(Usuario) from Bitacora")
+        rs2=cur.fetchone()
+        if rs2:
+        
+            N=(str(rs2[0]))
+            cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Id,Hora,Op))
+            con.commit()
+
+          
+    cur.close()
+    con.close()
+
+#Asistente Administrativo
+
+def GuardarAsistenteA(frm):
+    self=frm
+    puntaje=0
+    #Años de Experiencia=P1
+    AE=frm.cobExperiencia.GetValue()
+    #Se integra facilmente a grupos de trabajo=P2
+    GT=frm.cobGTrabajo.GetValue()
+    #Tendria incoveniente en trabajar fuera de la ciudad=P3
+    TF=frm.cobTFuera.GetValue()
+    #Que tipo de licencia posee=P4
+    LI=frm.cobLicencia.GetValue()
+    #Que tipo de Transporte ha manejado=P5
+    TA=frm.cobTransporte.GetValue()
+    #Posee conocimientos en mecanica basica=P6
+    ME=frm.cobMecanica.GetValue()
+    #Esta dispuesto a trabajas horas extras=P7
+    HE=frm.cobHoras.GetValue()
+    #Acepta las normas de la empresa=P8
+    NE=frm.cobNormas.GetValue()
+    #Acepta las normas de sus superores=P9
+    NS=frm.cobNormasS.GetValue()
+    #Ha tenido accidentes de transito=P10
+    AC=frm.cobAccidente.GetValue()
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Postulante Asistente Administrativo"
+    
+    dato="ASISTENTE"
+    con, cur = conexion()
+    
+    cur.execute("Select max(id) from Examen")
+    rs2=cur.fetchone()
+    if rs2:
+        Id=(str(rs2[0])) 
+                
+        
+
+        cur.execute("select * from Respuestas where Cargo=:dato",{"dato": dato})
+        rs3=cur.fetchone()
+        if rs3:
+            lista1=[AE,GT,TF,LI,TA,ME,HE,NE,NS,AC]
+            lista2=[str(rs3[1]),str(rs3[2]),str(rs3[3]),str(rs3[4]),str(rs3[5]),str(rs3[6]),str(rs3[7]),str(rs3[8]),str(rs3[9]),str(rs3[10]),]
+            puntaje=0
+            pu=str(0)
+
+            for i in lista1:
+                if i in lista2:
+                    puntaje=puntaje+10
+        
+
+            pp=str(puntaje)
+            cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=?,Puntuacion=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,pp,Id))
+            
+            
+            dlg=wx.MessageDialog(self,'Datos Guardados\n'+
+            'Su puntuacion fue de '+pp+'%\n'+
+            'Su puesto es'+Id
+            , 'Atencion', wx.OK)
+            dlg.ShowModal()
+            dlg.Destroy()
+                    
+                 
+        
+
+        
+        cur.execute("Select min(Usuario) from Bitacora")
+        rs2=cur.fetchone()
+        if rs2:
+        
+            N=(str(rs2[0]))
+            cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Id,Hora,Op))
+            con.commit()
+
+          
+    cur.close()
+    con.close()
 
 
 
