@@ -7,8 +7,10 @@
 import wx
 import funciones as f
 import PrincipalAdmin as PA
-import EChofer as EC
 
+import EChofer as EC
+import EAdministracion as EA
+import ECajero as EC
 # begin wxGlade: dependencies
 import gettext
 # end wxGlade
@@ -162,8 +164,7 @@ class Principal(wx.Frame):
             self.Hide()
         dlg.Destroy()  
     def OnApe(self, event):  # wxGlade: Principal.<event_handler>
-        print "Event handler 'OnApe' not implemented!"
-        event.Skip()
+        pass
 
     def OnLetras(self, event):  # wxGlade: Principal.<event_handler>
         frm=self
@@ -185,8 +186,7 @@ class Principal(wx.Frame):
                 pass
 
     def OnCed(self, event):  # wxGlade: Principal.<event_handler>
-        print "Event handler 'OnCed' not implemented!"
-        event.Skip()
+        pass
 
     def OnCedula(self, event):  # wxGlade: Principal.<event_handler>
         frm=self
@@ -207,8 +207,7 @@ class Principal(wx.Frame):
                     dlg.Destroy() 
 
     def OnEst(self, event):  # wxGlade: Principal.<event_handler>
-        print "Event handler 'OnEst' not implemented!"
-        event.Skip()
+        pass
 
     def OnGuardar(self, event):  # wxGlade: Principal.<event_handler>
         frm=self
@@ -216,10 +215,7 @@ class Principal(wx.Frame):
         if self.Validate():
             f.conexion()
             f.GuardarPostulante(self)
-            if Cargo=="CHOFER":
-                Ventana=EC.Principal(self)
-                Ventana.Show()
-                self.Hide()
+            
 
     def OnLimpiar(self, event):  # wxGlade: Principal.<event_handler>
         print "Event handler 'OnLimpiar' not implemented!"

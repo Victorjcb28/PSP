@@ -5,11 +5,14 @@
 #
 
 import wx
+import os
 #POstulante
 import GuardarPostulante as GP
 import BuscarPostulante as BP
 
 import entrada as E
+
+import FuncionesReportes as FR
 # begin wxGlade: dependencies
 import gettext
 # end wxGlade
@@ -49,6 +52,7 @@ class Principal(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnRPostulante, self.bitmap_button_3)
         self.Bind(wx.EVT_BUTTON, self.OnBPostulante, self.bitmap_button_4)
         self.Bind(wx.EVT_BUTTON, self.OnSalir, self.bitmap_button_2)
+        self.Bind(wx.EVT_BUTTON, self.OnUsuarios, self.bitmap_button_1)
         # end wxGlade
 
     def __set_properties(self):
@@ -146,6 +150,10 @@ class Principal(wx.Frame):
 
 
       
+    def OnUsuarios(self, event):  # wxGlade: Principal.<event_handler>
+        FR.ReporUsuario(self)
+        os.system('xdg-open "ReporteUsuarios.pdf"') #works for urls too
+        
 # end of class Principal
 if __name__ == "__main__":
     gettext.install("app") # replace with the appropriate catalog name
