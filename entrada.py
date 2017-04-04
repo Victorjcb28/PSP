@@ -25,7 +25,7 @@ class Principal(wx.Frame):
         self.label_1_copy = wx.StaticText(self, wx.ID_ANY, _("Clave:"))
         self.txtClave = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.TE_PASSWORD)
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Aceptar"))
-        self.button_2 = wx.Button(self, wx.ID_ANY, _("Cancelar"))
+        self.button_2 = wx.Button(self, wx.ID_ANY, _("Salir"))
 
         self.__set_properties()
         self.txtUsuario.SetValidator(ContieneDatos())#activa la validacion

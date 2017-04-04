@@ -137,7 +137,7 @@ def ReporUsuario(self):
 
     doc.build(story)
 
-def Postulantes(self):
+def PostulantesAdministratativo(self):
     con, cur = conexion()
 
 
@@ -167,7 +167,7 @@ def Postulantes(self):
 
 #Incluimos un Flowable, que en este caso es un p�rrafo.
 
-    parrafo = Paragraph("Reporte Postulantes",cabecera)
+    parrafo = Paragraph("Reporte Postulantes Administrativo",cabecera)
 
 #Lo incluimos en el Platypus story.
 
@@ -175,7 +175,7 @@ def Postulantes(self):
 
 #Ahora incluimos una imagen.
 
-    fichero_imagen = ""
+    fichero_imagen = "primero.png" #CAmbiar Loogo
     imagen_logo = Image(os.path.realpath(fichero_imagen),width=300,height=100)
     story.append(imagen_logo)
 
@@ -185,8 +185,8 @@ def Postulantes(self):
 
 
 #Damos un estilo BodyText al segundo p�rrafo, que ser� el texto a escribir.
-    fila1=["Caudal","Fluido","Densidad","Viscosidad","Diametro Nom"]
-    tabla1=Table([fila1],colWidths=120)
+    fila1=["Nombre","Apellido","Cedula","Sexo","Puntuacion %"]
+    tabla1=Table([fila1],colWidths=100)
     tabla1.setStyle([('BACKGROUND',(0,0),(-1,-1),colors.gray)])
     tabla1.setStyle([('INNERGRID',(0,0),(-1,-1),0.25,colors.black)])
     tabla1.setStyle([('BOX',(0,0),(-1,-1),0.25,colors.black)])
@@ -194,79 +194,50 @@ def Postulantes(self):
 
 #story.append(Spacer(0,20))
 #Y lo incluimos en el story.
-#Fila1
-    cur.execute("Select * from variable order by oid DESC LIMIT 1 ")
-    rs=cur.fetchone()
 
-    fila4=[str(rs[1]),str(rs[2]),str(rs[3]),str(rs[4]),str(rs[5])]
+    cur.execute('Select count(*) from Examen where Cargo="ADMINISTRACION"')
+    rs1=cur.fetchall()
+    i=0
+    l=0
+    j=0
+    for ol in rs1 :
 
+        hola=ol[l]
 
-    tabla = Table([fila4],colWidths=120)
+        while i < hola:
+            cur.execute('Select Postulante.Nombre from Postulante,Examen where Postulante.Cedula=Examen.Cedula order by Examen.Puntuacion Desc')
+            rs=cur.fetchall()
+            cur.execute('Select Postulante.Apellido from Postulante,Examen where Postulante.Cedula=Examen.Cedula order by Examen.Puntuacion Desc')
+            rs1=cur.fetchall()
+            cur.execute('Select Postulante.Cedula from Postulante,Examen where Postulante.Cedula=Examen.Cedula order by Examen.Puntuacion Desc')
+            rs2=cur.fetchall()
+            cur.execute('Select Postulante.Sexo from Postulante,Examen where Postulante.Cedula=Examen.Cedula order by Examen.Puntuacion Desc')
+            rs3=cur.fetchall()
+            cur.execute('Select Examen.Puntuacion from Postulante,Examen where Postulante.Cedula=Examen.Cedula order by Examen.Puntuacion Desc')
+            rs4=cur.fetchall()
+            
+            
 
-    tabla.setStyle([('INNERGRID',(0,0),(-1,-1),0.25,colors.black)])
-    tabla.setStyle([('BOX',(0,0),(-1,-1),0.25,colors.black)])
+     
+
+            fila4=[str(rs[i]),str(rs1[i]),str(rs2[i]),str(rs3[i]),str(rs4[i])]
+
+            i=i+1
+            tabla = Table([fila4],colWidths=100)
+
+            tabla.setStyle([('INNERGRID',(0,0),(-1,-1),0.25,colors.black)])
+            tabla.setStyle([('BOX',(0,0),(-1,-1),0.25,colors.black)])
             #tabla.setStyle([("TEXTCOLOR",(1,-4),(7,-4),colors.red),("TEXTCOLOR",(0,0),(0,3),colors.blue)])
 
-    story.append(tabla)
-
-    fila1=["Diametro In","Area Flu","Velocidad","Codo","Factor Friccion"]
-    tabla1=Table([fila1],colWidths=120)
-    tabla1.setStyle([('BACKGROUND',(0,0),(-1,-1),colors.gray)])
-    tabla1.setStyle([('INNERGRID',(0,0),(-1,-1),0.25,colors.black)])
-    tabla1.setStyle([('BOX',(0,0),(-1,-1),0.25,colors.black)])
-    story.append(tabla1)
-
-#Fila2
-    cur.execute("Select * from variable order by oid DESC LIMIT 1 ")
-    rs=cur.fetchone()
-
-    fila4=[str(rs[6]),str(rs[7]),str(rs[8]),str(rs[14]),str(rs[0])]
-
-
-    tabla1 = Table([fila4],colWidths=120)
-
-    tabla1.setStyle([('INNERGRID',(0,0),(-1,-1),0.25,colors.black)])
-    tabla1.setStyle([('BOX',(0,0),(-1,-1),0.25,colors.black)])
-            #tabla.setStyle([("TEXTCOLOR",(1,-4),(7,-4),colors.red),("TEXTCOLOR",(0,0),(0,3),colors.blue)])
-
-    story.append(tabla1)
-
-
-#Fila3
-    fila1=["Perdida","","","",""]
-    tabla1=Table([fila1],colWidths=120)
-    tabla1.setStyle([('BACKGROUND',(0,0),(-1,-1),colors.gray)])
-    tabla1.setStyle([('INNERGRID',(0,0),(-1,-1),0.25,colors.black)])
-    tabla1.setStyle([('BOX',(0,0),(-1,-1),0.25,colors.black)])
-    story.append(tabla1)
-    cur.execute("Select * from variable order by oid DESC LIMIT 1 ")
-    rs=cur.fetchone()
-
-    fila4=[str(rs[15]),str(),str(),str(),str()]
-
-
-    tabla3 = Table([fila4],colWidths=120)
-
-    tabla3.setStyle([('INNERGRID',(0,0),(-1,-1),0.25,colors.black)])
-    tabla3.setStyle([('BOX',(0,0),(-1,-1),0.25,colors.black)])
-            #tabla.setStyle([("TEXTCOLOR",(1,-4),(7,-4),colors.red),("TEXTCOLOR",(0,0),(0,3),colors.blue)])
-
-    story.append(tabla3)
+            story.append(tabla)
 
 #Dejamos espacio.
-    story.append(Spacer(0,80))
-#Ahora incluimos una imagen.
 
-    fichero_imagen = "codo.jpg"
-    imagen_logo = Image(os.path.realpath(fichero_imagen),width=300,height=100)
-    story.append(imagen_logo)
-
-    story.append(Spacer(0,20))
 
 
 #Creamos un DocTemplate en una hoja DIN A4, en la que se muestra el texto enmarcado (showBoundary=1) por un recuadro.
 
-    doc=SimpleDocTemplate("ReporteCodo.pdf",pagesize=landscape(letter),showBoundary=1)
+    doc=SimpleDocTemplate("ReportePostulantesAdministrativo.pdf",pagesize=landscape(letter),showBoundary=1)
 
 #Construimos el Platypus story.
 

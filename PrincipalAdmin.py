@@ -6,11 +6,26 @@
 
 import wx
 import os
-#POstulante
+
+#Postulante
 import GuardarPostulante as GP
 import BuscarPostulante as BP
 
+#Usuarios
+import GuardarUsuario as GU
+import BuscarUsuario as BU
+import ModificarUsuario as MU
+import EliminarUsuario as EU
+
+
+#Bloquear y desbloquear
+import BloquearUsuario as BU
+import DesbloquearUsuario as DU
+
 import entrada as E
+
+
+import MedioUsuarios as MU
 
 import FuncionesReportes as FR
 # begin wxGlade: dependencies
@@ -28,21 +43,21 @@ class Principal(wx.Frame):
         wx.Frame.__init__(self, *args, **kwds)
         self.notebook_5 = wx.Notebook(self, wx.ID_ANY)
         self.notebook_5_pane_1 = wx.Panel(self.notebook_5, wx.ID_ANY)
-        self.bitmap_button_3 = wx.BitmapButton(self.notebook_5_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/RegistrarP1.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_button_4 = wx.BitmapButton(self.notebook_5_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/BuscarP1.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_button_2 = wx.BitmapButton(self.notebook_5_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/exit1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_3 = wx.BitmapButton(self.notebook_5_pane_1, wx.ID_ANY, wx.Bitmap("iconos/RegistrarP1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_4 = wx.BitmapButton(self.notebook_5_pane_1, wx.ID_ANY, wx.Bitmap("iconos/BuscarP1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_2 = wx.BitmapButton(self.notebook_5_pane_1, wx.ID_ANY, wx.Bitmap("iconos/exit1.png", wx.BITMAP_TYPE_ANY))
         self.notebook_6 = wx.Notebook(self, wx.ID_ANY)
         self.notebook_6_pane_1 = wx.Panel(self.notebook_6, wx.ID_ANY)
-        self.bitmap_button_5 = wx.BitmapButton(self.notebook_6_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/RegistrarU1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_5 = wx.BitmapButton(self.notebook_6_pane_1, wx.ID_ANY, wx.Bitmap("iconos/RegistrarU1.png", wx.BITMAP_TYPE_ANY))
         self.bitmap_button_4_copy = wx.BitmapButton(self.notebook_6_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/BuscarP1.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_button_6 = wx.BitmapButton(self.notebook_6_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/ModificarU1.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_button_7 = wx.BitmapButton(self.notebook_6_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/EliminarU1.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_button_8 = wx.BitmapButton(self.notebook_6_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/Userlock1.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_button_9 = wx.BitmapButton(self.notebook_6_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/Userunlock1.jpg", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_6 = wx.BitmapButton(self.notebook_6_pane_1, wx.ID_ANY, wx.Bitmap("iconos/ModificarU1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_7 = wx.BitmapButton(self.notebook_6_pane_1, wx.ID_ANY, wx.Bitmap("iconos/EliminarU1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_8 = wx.BitmapButton(self.notebook_6_pane_1, wx.ID_ANY, wx.Bitmap("iconos/Userlock1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_9 = wx.BitmapButton(self.notebook_6_pane_1, wx.ID_ANY, wx.Bitmap("iconos/Userunlock1.jpg", wx.BITMAP_TYPE_ANY))
         self.notebook_7 = wx.Notebook(self, wx.ID_ANY)
         self.notebook_7_pane_1 = wx.Panel(self.notebook_7, wx.ID_ANY)
-        self.bitmap_button_1 = wx.BitmapButton(self.notebook_7_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/ReporU1.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_button_10 = wx.BitmapButton(self.notebook_7_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/Reportes1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_1 = wx.BitmapButton(self.notebook_7_pane_1, wx.ID_ANY, wx.Bitmap("iconos/ReporU1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_10 = wx.BitmapButton(self.notebook_7_pane_1, wx.ID_ANY, wx.Bitmap("iconos/Reportes1.png", wx.BITMAP_TYPE_ANY))
         self.notebook_8 = wx.Notebook(self, wx.ID_ANY)
         self.notebook_8_pane_1 = wx.Panel(self.notebook_8, wx.ID_ANY)
 
@@ -52,6 +67,12 @@ class Principal(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnRPostulante, self.bitmap_button_3)
         self.Bind(wx.EVT_BUTTON, self.OnBPostulante, self.bitmap_button_4)
         self.Bind(wx.EVT_BUTTON, self.OnSalir, self.bitmap_button_2)
+        self.Bind(wx.EVT_BUTTON, self.OnRegistrarUsurio, self.bitmap_button_5)
+        self.Bind(wx.EVT_BUTTON, self.OnBuscarUsuario, self.bitmap_button_4_copy)
+        self.Bind(wx.EVT_BUTTON, self.OnEditarUsuario, self.bitmap_button_6)
+        self.Bind(wx.EVT_BUTTON, self.OnEliminarUsuario, self.bitmap_button_7)
+        self.Bind(wx.EVT_BUTTON, self.OnBloquear, self.bitmap_button_8)
+        self.Bind(wx.EVT_BUTTON, self.OnDesbloquear, self.bitmap_button_9)
         self.Bind(wx.EVT_BUTTON, self.OnUsuarios, self.bitmap_button_1)
         # end wxGlade
 
@@ -150,10 +171,27 @@ class Principal(wx.Frame):
 
 
       
-    def OnUsuarios(self, event):  # wxGlade: Principal.<event_handler>
-        FR.ReporUsuario(self)
-        os.system('xdg-open "ReporteUsuarios.pdf"') #works for urls too
-        
+    def OnUsuarios(self, event):  # wxGlade: Principal.<event_handler>     
+        Ventana=MU.Principal(self)
+        Ventana.Show()
+    def OnRegistrarUsurio(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=GU.Principal(self)
+        Ventana.Show()
+    def OnBuscarUsuario(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=BU.Principal(self)
+        Ventana.Show()
+    def OnEditarUsuario(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=MU.Principal(self)
+        Ventana.Show()
+    def OnEliminarUsuario(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=EU.Principal(self)
+        Ventana.Show()
+    def OnBloquear(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=BU.Principal(self)
+        Ventana.Show()
+    def OnDesbloquear(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=DU.Principal(self)
+        Ventana.Show()
 # end of class Principal
 if __name__ == "__main__":
     gettext.install("app") # replace with the appropriate catalog name
