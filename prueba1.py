@@ -1,13 +1,19 @@
-the_count = [1, 2, 3, 4, 5]
-the_count2 = [1, 2, 3, 4, 5]
+import sqlite3 as sq3
+def conexion():
+    con=sq3.connect('Sisep.s3db')
+    con.text_factory=str #pa quitar la U
+    cur = con.cursor()
+    return con, cur
+
+hola=30
 i=0
-j=0
-puntaje=0
-# this first kind of for-loop goes through a list
-for i in the_count:
-    if i in the_count2:
-    	puntaje=puntaje+10
-    	
-    else:
-    	print "malo"
-print puntaje
+while i < hola:
+	con,cur=conexion()
+	cur.execute('Select Nombre from Usuarios order by Nombre')
+	rs=[r[0] for r in cur.fetchall()]
+	print(rs)
+    
+
+    
+            
+
