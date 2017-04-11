@@ -255,6 +255,7 @@ def ModificarUsuario(frm):
     con.close()
     return
 
+#No eliminar Usuario a peticion del profesor.
 def EliminarUsuario(frm):
     self=frm
     dato=frm.txtNombre.GetValue()
@@ -286,10 +287,10 @@ def GuardarPostulante(frm):
     self=frm
     No = frm.txtNombre.GetValue()
     Nom=No.upper()
-    Ap= frm.txtApellido.GetValue()
+    Ap= frm.txtApellidos.GetValue()
     Ape= Ap.upper()
     Ce= frm.txtCedula.GetValue()
-    Se=frm.cobSexo.GetValue()
+    Se=frm.CobSexo.GetValue()
     Es=frm.txtEstado.GetValue()
     Est= Es.upper()
     Mu=frm.txtMunicipio.GetValue()
@@ -299,11 +300,11 @@ def GuardarPostulante(frm):
     Di=frm.txtDireccion.GetValue()
     Dir=Di.upper()
     
-    Ed=frm.txtNEducacion.GetValue()
-    Es=frm.txtEspecialidad.GetValue()
+    Ed=frm.cobEducacion.GetValue()
+    Es=frm.txtTitulo.GetValue()
     Id=frm.cobIdioma.GetValue()
 
-    Sa=frm.txtPSalarial.GetValue()
+    Sa=frm.cobSalario.GetValue()
     Vi=frm.cobVigente.GetValue()
     Ca=frm.cobCargo.GetValue()
 
@@ -359,8 +360,15 @@ def GuardarPostulante(frm):
                 self.Hide()
 
     self.txtNombre.Clear()
-    self.txtApellido.Clear()
-    #self.txtCedula.Clear()
+    self.txtApellidos.Clear()
+    self.txtCedula.Clear()
+        
+    self.txtEstado.Clear()
+    self.txtMunicipio.Clear()
+    self.txtParroquia.Clear()
+    self.txtDireccion.Clear()
+
+    self.txtTitulo.Clear()
    
     self.txtNombre.SetFocus()        
     cur.close()
@@ -379,20 +387,35 @@ def BuscarPostulantes(frm):
     if rs:
         
         self.txtNombre.SetValue(str(rs[0]))
-        self.txtApellido.SetValue(str(rs[1]))
+        self.txtApellidos.SetValue(str(rs[1]))
         #self.txtCedula.SetValue(int(rs[2]))
-        self.cobSexo.SetValue(str(rs[2]))
+        self.CobSexo.SetValue(str(rs[2]))
         self.txtDireccion.SetValue(str(rs[3]))
-        self.txtNEducacion.SetValue(str(rs[4]))
-        self.txtEspecialidad.SetValue(str(rs[5]))
+        self.cobEducacion.SetValue(str(rs[4]))
+        self.txtTitulo.SetValue(str(rs[5]))
         self.cobIdioma.SetValue(str(rs[6]))
-        self.txtPSalarial.SetValue(str(rs[7]))
+        self.cobSalario.SetValue(str(rs[7]))
         self.cobVigente.SetValue(str(rs[8]))
         self.txtMunicipio.SetValue(str(rs[9]))
         self.txtParroquia.SetValue(str(rs[10]))
         self.txtEstado.SetValue(str(rs[11]))
         self.cobCargo.SetValue(str(rs[12]))
         self.txtNombre.SetFocus()
+
+        self.txtNombre.Enable(True)
+        self.txtApellidos.Enable(True)
+        self.CobSexo.Enable(True)
+        self.txtDireccion.Enable(True)
+        self.cobEducacion.Enable(True)
+        self.txtTitulo.Enable(True)
+        self.cobIdioma.Enable(True)
+        self.cobSalario.Enable(True)
+        self.cobVigente.Enable(True)
+        self.txtMunicipio.Enable(True)
+        self.txtParroquia.Enable(True)
+        self.txtEstado.Enable(True)
+        self.cobCargo.Enable(True)
+
         
     else:
         dlg=wx.MessageDialog(self,'No se encontro el registro', 'Atencion', wx.OK)
@@ -401,12 +424,13 @@ def BuscarPostulantes(frm):
 
 def ModificarPostulante(frm):
     
+    self=frm
     No = frm.txtNombre.GetValue()
     Nom=No.upper()
-    Ap= frm.txtApellido.GetValue()
+    Ap= frm.txtApellidos.GetValue()
     Ape= Ap.upper()
     Ce= frm.txtCedula.GetValue()
-    Se=frm.cobSexo.GetValue()
+    Se=frm.CobSexo.GetValue()
     Es=frm.txtEstado.GetValue()
     Est= Es.upper()
     Mu=frm.txtMunicipio.GetValue()
@@ -416,11 +440,11 @@ def ModificarPostulante(frm):
     Di=frm.txtDireccion.GetValue()
     Dir=Di.upper()
     
-    Ed=frm.txtNEducacion.GetValue()
-    Es=frm.txtEspecialidad.GetValue()
+    Ed=frm.cobEducacion.GetValue()
+    Es=frm.txtTitulo.GetValue()
     Id=frm.cobIdioma.GetValue()
 
-    Sa=frm.txtPSalarial.GetValue()
+    Sa=frm.cobSalario.GetValue()
     Vi=frm.cobVigente.GetValue()
     Ca=frm.cobCargo.GetValue()
 
@@ -429,12 +453,12 @@ def ModificarPostulante(frm):
     
     Op="Modificar Postulante"
     
-    self=frm
+   
     
     con, cur = conexion()
     
 
-    cur.execute('UPDATE Postulante Set Nombre=?, Apellido=?, Sexo=?, Direccion=?, Neducacion=?, Especialidad=?,Idioma=?, Psalaria=?,Vigente=?,Fecha=? WHERE Cedula=?',(Nom,Ape,Se,Dir,Ed,Es,Id,Sa,Vi,Hora,Ce))
+    cur.execute('UPDATE Postulante Set Nombre=?, Apellido=?, Sexo=?, Direccion=?, Neducacion=?, Especialidad=?,Idioma=?, Psalarial=?,Vigente=?,Fecha=? WHERE Cedula=?',(Nom,Ape,Se,Dir,Ed,Es,Id,Sa,Vi,Hora,Ce))
     cur.execute('UPDATE Estado Set Nombre=? WHERE Id=?',(Est,Ce))
     cur.execute('UPDATE Munic Set Nombre=? WHERE Id=?',(Mun,Ce))
     cur.execute('UPDATE Parroquia Set Nombre=? WHERE Id=?',(Par,Ce))
