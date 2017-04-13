@@ -19,6 +19,11 @@ import ECajero as ECA
 
 import EServicioC as ESC
 
+import ERecursosH as ERH
+
+import ECompraVenta as ECV
+
+import ECompraVenta1 as ECV1
 import EVigilante as EV
 from time import time
 import datetime
@@ -350,10 +355,6 @@ def GuardarPostulante(frm):
             cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Ce,Hora,Op))
             con.commit()
 
-        if Ca=="CHOFER":
-                Ventana=EC.Principal(self)
-                Ventana.Show()
-                self.Hide()
         if Ca=="ADMINISTRACION":
                 Ventana=EA.Principal(self)
                 Ventana.Show()
@@ -366,14 +367,31 @@ def GuardarPostulante(frm):
                 Ventana=ECA.Principal(self)
                 Ventana.Show()
                 self.Hide()
-        if Ca=="SERVICIO AL CLIENTE":
-                Ventana=ESC.Principal(self)
+        if Ca=="CHOFER":
+                Ventana=EC.Principal(self)
                 Ventana.Show()
                 self.Hide()
         if Ca=="VIGILANTE":
                 Ventana=EV.Principal(self)
                 Ventana.Show()
                 self.Hide()
+        if Ca=="GERENTE VENTAS":
+                Ventana=ECV.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="ASISTENTE VENTAS":
+                Ventana=ECV1.Principal(self)
+                Ventana.Show()
+                self.Hide()               
+        if Ca=="SERVICIO AL CLIENTE":
+                Ventana=ESC.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="RECURSOS HUMANOS":
+                Ventana=ERH.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        
 
     self.txtNombre.Clear()
     self.txtApellidos.Clear()
@@ -502,10 +520,7 @@ def ModificarPostulante(frm):
 # Examenes
 #Cargar datos
 def CargarDatos(frm):
-    con, cur = conexion()
-    
-
-   
+    con, cur = conexion()   
 
     cur.execute("select max(variable),fecha,hora from registro where Operacion='Buscar Examen' order by fecha asc" )
     rs = cur.fetchone()
@@ -558,52 +573,36 @@ def BuscarExamen(frm):
 
         if Campo=="ADMINISTRACION": 
             Ventana=EAM.Principal(self)
-            Ventana.Show()
-            
+            Ventana.Show()            
             self.Hide()
-
         if Campo=="ASISTENTE": 
             Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
+            Ventana.Show()            
             self.Hide()
-
         if Campo=="CAJERO": 
             Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
-            self.Hide()    
-
+            Ventana.Show()            
+            self.Hide()
         if Campo=="CHOFER": 
             Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
-            self.Hide()   
-
+            Ventana.Show()            
+            self.Hide()
         if Campo=="VIGILANTE": 
             Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
-            self.Hide() 
-
+            Ventana.Show()            
+            self.Hide()
         if Campo=="GERENTE VENTAS": 
             Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
-            self.Hide() 
-
+            Ventana.Show()            
+            self.Hide()
         if Campo=="ASISTENTE VENTAS": 
             Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
-            self.Hide() 
-
+            Ventana.Show()            
+            self.Hide()
         if Campo=="SERVICIO AL CLIENTE": 
             Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
-            self.Hide() 
-
+            Ventana.Show()            
+            self.Hide()
         if Campo=="RECURSOS HUMANOS": 
             Ventana=EAAM.Principal(self)
             Ventana.Show()
@@ -1106,6 +1105,253 @@ def GuardarVigilante(frm):
           
     cur.close()
     con.close()
+
+#Recursos Humanos
+
+def GuardarRecursosH(frm):
+    self=frm
+    puntaje=0
+    #¿Por qué quiere trabajar con nosotros?
+    AE=frm.cobExperiencia.GetValue()
+    #¿tiene experiencia en esta área de trabajo?
+    GT=frm.cobGTrabajo.GetValue()
+    #¿Ha vivido algún conflicto en su último trabajo?
+    TF=frm.cobTFuera.GetValue()
+    #¿Por qué dejo su último trabajo?
+    LI=frm.cobLicencia.GetValue()
+    #Que tipo de Transporte ha manejado=P5
+    TA=frm.cobTransporte.GetValue()
+    #Posee conocimientos en mecanica basica=P6
+    ME=frm.cobMecanica.GetValue()
+    #Esta dispuesto a trabajas horas extras=P7
+    HE=frm.cobHoras.GetValue()
+    #Acepta las normas de la empresa=P8
+    NE=frm.cobNormas.GetValue()
+    #Acepta las normas de sus superores=P9
+    NS=frm.cobNormasS.GetValue()
+    #Ha tenido accidentes de transito=P10
+    AC=frm.cobAccidente.GetValue()
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Postulante Recursos Humanos"
+    
+    dato="RECURSOS HUMANOS"
+    con, cur = conexion()
+    
+    cur.execute("Select max(id) from Examen")
+    rs2=cur.fetchone()
+    if rs2:
+        Id=(str(rs2[0])) 
+                
+        
+
+        cur.execute("select * from Respuestas where Cargo=:dato",{"dato": dato})
+        rs3=cur.fetchone()
+        if rs3:
+            lista1=[AE,GT,TF,LI,TA,ME,HE,NE,NS,AC]
+            lista2=[str(rs3[1]),str(rs3[2]),str(rs3[3]),str(rs3[4]),str(rs3[5]),str(rs3[6]),str(rs3[7]),str(rs3[8]),str(rs3[9]),str(rs3[10]),]
+            puntaje=0
+            pu=str(0)
+
+            for i in lista1:
+                if i in lista2:
+                    puntaje=puntaje+10
+        
+
+            pp=str(puntaje)
+            cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=?,Puntuacion=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,pp,Id))
+            
+            dlg=wx.MessageDialog(self,'Datos Guardados\n'+
+            'Su puntuacion fue de: '+pp+'%\n'+
+            'Su Numero de Registro es:'+Id
+            , 'Atencion', wx.OK)
+            dlg.ShowModal()
+            dlg.Destroy()
+                    
+                    
+                 
+        
+
+        
+        cur.execute("Select min(Usuario) from Bitacora")
+        rs2=cur.fetchone()
+        if rs2:
+        
+            N=(str(rs2[0]))
+            cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Id,Hora,Op))
+            con.commit()
+
+          
+    cur.close()
+    con.close()
+
+#Gerente Ventas
+
+def GuardarGVentas(frm):
+    self=frm
+    puntaje=0
+    #Años de Experiencia=P1
+    AE=frm.cobExperiencia.GetValue()
+    #Se integra facilmente a grupos de trabajo=P2
+    GT=frm.cobGTrabajo.GetValue()
+    #Tendria incoveniente en trabajar fuera de la ciudad=P3
+    TF=frm.cobTFuera.GetValue()
+    #Que tipo de licencia posee=P4
+    LI=frm.cobLicencia.GetValue()
+    #Que tipo de Transporte ha manejado=P5
+    TA=frm.cobTransporte.GetValue()
+    #Posee conocimientos en mecanica basica=P6
+    ME=frm.cobMecanica.GetValue()
+    #Esta dispuesto a trabajas horas extras=P7
+    HE=frm.cobHoras.GetValue()
+    #Acepta las normas de la empresa=P8
+    NE=frm.cobNormas.GetValue()
+    #Acepta las normas de sus superores=P9
+    NS=frm.cobNormasS.GetValue()
+    #Ha tenido accidentes de transito=P10
+    AC=frm.cobAccidente.GetValue()
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Postulante Compra y Venta"
+    
+    dato="GERENTE VENTAS"
+    con, cur = conexion()
+    
+    cur.execute("Select max(id) from Examen")
+    rs2=cur.fetchone()
+    if rs2:
+        Id=(str(rs2[0])) 
+                
+        
+
+        cur.execute("select * from Respuestas where Cargo=:dato",{"dato": dato})
+        rs3=cur.fetchone()
+        if rs3:
+            lista1=[AE,GT,TF,LI,TA,ME,HE,NE,NS,AC]
+            lista2=[str(rs3[1]),str(rs3[2]),str(rs3[3]),str(rs3[4]),str(rs3[5]),str(rs3[6]),str(rs3[7]),str(rs3[8]),str(rs3[9]),str(rs3[10]),]
+            puntaje=0
+            pu=str(0)
+
+            for i in lista1:
+                if i in lista2:
+                    puntaje=puntaje+10
+        
+
+            pp=str(puntaje)
+            cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=?,Puntuacion=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,pp,Id))
+            
+            
+            dlg=wx.MessageDialog(self,'Datos Guardados\n'+
+            'Su puntuacion fue de: '+pp+'%\n'+
+            'Su Numero de Registro es:'+Id
+            , 'Atencion', wx.OK)
+            dlg.ShowModal()
+            dlg.Destroy()
+                    
+                    
+                 
+        
+
+        
+        cur.execute("Select min(Usuario) from Bitacora")
+        rs2=cur.fetchone()
+        if rs2:
+        
+            N=(str(rs2[0]))
+            cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Id,Hora,Op))
+            con.commit()
+
+          
+    cur.close()
+    con.close()
+
+#Asistente Ventas
+
+def GuardarAVentas(frm):
+    self=frm
+    puntaje=0
+    #Años de Experiencia=P1
+    AE=frm.cobExperiencia.GetValue()
+    #Se integra facilmente a grupos de trabajo=P2
+    GT=frm.cobGTrabajo.GetValue()
+    #Tendria incoveniente en trabajar fuera de la ciudad=P3
+    TF=frm.cobTFuera.GetValue()
+    #Que tipo de licencia posee=P4
+    LI=frm.cobLicencia.GetValue()
+    #Que tipo de Transporte ha manejado=P5
+    TA=frm.cobTransporte.GetValue()
+    #Posee conocimientos en mecanica basica=P6
+    ME=frm.cobMecanica.GetValue()
+    #Esta dispuesto a trabajas horas extras=P7
+    HE=frm.cobHoras.GetValue()
+    #Acepta las normas de la empresa=P8
+    NE=frm.cobNormas.GetValue()
+    #Acepta las normas de sus superores=P9
+    NS=frm.cobNormasS.GetValue()
+    #Ha tenido accidentes de transito=P10
+    AC=frm.cobAccidente.GetValue()
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Postulante Compra y Venta"
+    
+    dato="ASISTENTE VENTAS"
+    con, cur = conexion()
+    
+    cur.execute("Select max(id) from Examen")
+    rs2=cur.fetchone()
+    if rs2:
+        Id=(str(rs2[0])) 
+                
+        
+
+        cur.execute("select * from Respuestas where Cargo=:dato",{"dato": dato})
+        rs3=cur.fetchone()
+        if rs3:
+            lista1=[AE,GT,TF,LI,TA,ME,HE,NE,NS,AC]
+            lista2=[str(rs3[1]),str(rs3[2]),str(rs3[3]),str(rs3[4]),str(rs3[5]),str(rs3[6]),str(rs3[7]),str(rs3[8]),str(rs3[9]),str(rs3[10]),]
+            puntaje=0
+            pu=str(0)
+
+            for i in lista1:
+                if i in lista2:
+                    puntaje=puntaje+10
+        
+
+            pp=str(puntaje)
+            cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=?,Puntuacion=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,pp,Id))
+            
+            
+            dlg=wx.MessageDialog(self,'Datos Guardados\n'+
+            'Su puntuacion fue de: '+pp+'%\n'+
+            'Su Numero de Registro es:'+Id
+            , 'Atencion', wx.OK)
+            dlg.ShowModal()
+            dlg.Destroy()
+                    
+                    
+                 
+        
+
+        
+        cur.execute("Select min(Usuario) from Bitacora")
+        rs2=cur.fetchone()
+        if rs2:
+        
+            N=(str(rs2[0]))
+            cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Id,Hora,Op))
+            con.commit()
+
+          
+    cur.close()
+    con.close()
+
+
 
 
 

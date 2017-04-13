@@ -55,6 +55,7 @@ class Principal(wx.Frame):
         self.bitmap_button_10 = wx.BitmapButton(self.notebook_3_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/ReporU1.png", wx.BITMAP_TYPE_ANY))
         self.notebook_4 = wx.Notebook(self, wx.ID_ANY)
         self.notebook_4_pane_1 = wx.Panel(self.notebook_4, wx.ID_ANY)
+        self.bitmap_button_11 = wx.BitmapButton(self.notebook_4_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/Informacion1.png", wx.BITMAP_TYPE_ANY))
 
         self.__set_properties()
         self.__do_layout()
@@ -69,6 +70,7 @@ class Principal(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnBuscarP, self.bitmap_button_8)
         self.Bind(wx.EVT_BUTTON, self.OnExamen, self.bitmap_button_7)
         self.Bind(wx.EVT_BUTTON, self.OnReportes, self.bitmap_button_10)
+        self.Bind(wx.EVT_BUTTON, self.OnInformacion, self.bitmap_button_11)
         # end wxGlade
 
     def __set_properties(self):
@@ -93,11 +95,13 @@ class Principal(wx.Frame):
         self.bitmap_button_7.SetSize(self.bitmap_button_7.GetBestSize())
         self.bitmap_button_10.SetToolTip(wx.ToolTip(_("Reportes")))
         self.bitmap_button_10.SetSize(self.bitmap_button_10.GetBestSize())
+        self.bitmap_button_11.SetSize(self.bitmap_button_11.GetBestSize())
         # end wxGlade
 
     def __do_layout(self):
         # begin wxGlade: Principal.__do_layout
         sizer_1 = wx.BoxSizer(wx.VERTICAL)
+        grid_sizer_4 = wx.FlexGridSizer(1, 3, 0, 0)
         grid_sizer_3 = wx.FlexGridSizer(1, 3, 0, 0)
         grid_sizer_2 = wx.FlexGridSizer(1, 5, 0, 0)
         grid_sizer_1 = wx.FlexGridSizer(1, 10, 0, 0)
@@ -129,6 +133,8 @@ class Principal(wx.Frame):
         self.notebook_3_pane_1.SetSizer(grid_sizer_3)
         self.notebook_3.AddPage(self.notebook_3_pane_1, _("Reportes"))
         sizer_1.Add(self.notebook_3, 1, wx.EXPAND, 0)
+        grid_sizer_4.Add(self.bitmap_button_11, 0, 0, 0)
+        self.notebook_4_pane_1.SetSizer(grid_sizer_4)
         self.notebook_4.AddPage(self.notebook_4_pane_1, _("Informacion"))
         sizer_1.Add(self.notebook_4, 1, wx.EXPAND, 0)
         self.SetSizer(sizer_1)
@@ -182,6 +188,9 @@ class Principal(wx.Frame):
     def OnExamen(self, event):  # wxGlade: Principal.<event_handler>
         Ventana=BE.Principal(self)
         Ventana.Show()
+    def OnInformacion(self, event):  # wxGlade: Principal.<event_handler>
+        print "Event handler 'OnInformacion' not implemented!"
+        event.Skip()
 # end of class Principal
 if __name__ == "__main__":
     gettext.install("app") # replace with the appropriate catalog name

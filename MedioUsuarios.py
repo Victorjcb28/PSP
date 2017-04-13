@@ -55,7 +55,7 @@ class Principal(wx.Frame):
     def OnUsuarios(self, event):  # wxGlade: Principal.<event_handler>
         FR.ReporUsuario(self)
         os.system('xdg-open "ReporteUsuarios.pdf"') #works for urls too
-
+        self.Hide()
     def OnPostulantes(self, event):  # wxGlade: Principal.<event_handler>
         Ventana=SP.Principal(self)
         Ventana.Show()
