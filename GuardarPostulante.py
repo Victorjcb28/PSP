@@ -7,6 +7,7 @@
 import wx
 import funciones as f
 import PrincipalAdmin as PA
+#Examenes
 import EChofer as EC
 import EAdministracion as EA
 # begin wxGlade: dependencies

@@ -53,8 +53,19 @@ class Principal(wx.Frame):
         self.cobAccidente = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO"), _("SEGUN SEA LA EMERGENCIA LABORAL")], style=wx.CB_DROPDOWN)
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Guardar"))
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Limpiar"))
-
+        
         self.__set_properties()
+        self.cobExperiencia.SetValidator(ContieneDatos())#activa la validacion
+        self.cobGTrabajo.SetValidator(ContieneDatos())#activa la validacion
+        self.cobTFuera.SetValidator(ContieneDatos())#activa la validacion
+        self.cobLicencia.SetValidator(ContieneDatos())#activa la validacion
+        self.cobTransporte.SetValidator(ContieneDatos())#activa la validacion
+        self.cobMecanica.SetValidator(ContieneDatos())#activa la validacion
+        self.cobHoras.SetValidator(ContieneDatos())#activa la validacion
+        self.cobNormas.SetValidator(ContieneDatos())#activa la validacion
+        self.cobNormasS.SetValidator(ContieneDatos())#activa la validacion
+        self.cobAccidente.SetValidator(ContieneDatos())#activa la validacion
+        
         self.__do_layout()
 
         self.Bind(wx.EVT_MENU, self.OnPrincipal, self.principal)
@@ -160,14 +171,56 @@ class Principal(wx.Frame):
         # end wxGlade
 
     def OnPrincipal(self, event):  # wxGlade: Principal.<event_handler>
-        print "Event handler 'OnPrincipal' not implemented!"
-        event.Skip()
+        pass
 
     def OnGuardar(self, event):  # wxGlade: Principal.<event_handler>
-        f.GuardarAsistenteA(self)
+        if self.Validate():
+            dlg = wx.MessageDialog(None, '¿Desea Guardar?',
+                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
+                            wx.ICON_QUESTION)
+        #dlg.ShowModal()
+        
 
+        if dlg.ShowModal()==wx.ID_OK:
+            f.GuardarAsistenteA(self)
+
+            self.Hide()
+        dlg.Destroy()  
+        
     def OnLimpiar(self, event):  # wxGlade: Principal.<event_handler>
-        print "Event handler 'OnLimpiar' not implemented!"
-        event.Skip()
+        pass
 
 # end of class Principal
+class ContieneDatos(wx.PyValidator):
+    def __init__(self):
+        wx.PyValidator.__init__(self)
+
+    def Clone(self):
+        """
+        Note que todo validador debe implementar
+        # el método Clone().
+        """
+        return ContieneDatos()
+
+    def Validate(self, win):
+        textCtrl = self.GetWindow()
+        text = textCtrl.GetValue()
+        if len(text) == 0:
+            wx.MessageBox("Este campo debe contener algún texto!",
+                          "Error")
+            textCtrl.SetBackgroundColour("red")
+            textCtrl.SetFocus()
+            textCtrl.Refresh()
+            return False
+        else:
+            textCtrl.SetBackgroundColour(
+                               wx.SystemSettings_GetColour(
+                               wx.SYS_COLOUR_WINDOW))
+            textCtrl.Refresh()
+            return True
+
+    def TransferToWindow(self):
+        return True
+
+    def TransferFromWindow(self):
+        return True

@@ -7,6 +7,7 @@
 import wx
 import funciones as f
 import entrada as E
+import BuscarExamen as BE
 
 #Usuarios
 import GuardarUsuario as GU
@@ -48,6 +49,7 @@ class Principal(wx.Frame):
         self.notebook_2_pane_1 = wx.Panel(self.notebook_2, wx.ID_ANY)
         self.bitmap_button_9 = wx.BitmapButton(self.notebook_2_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/RegistrarP1.png", wx.BITMAP_TYPE_ANY))
         self.bitmap_button_8 = wx.BitmapButton(self.notebook_2_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/BuscarP1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_7 = wx.BitmapButton(self.notebook_2_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/Examen1.png", wx.BITMAP_TYPE_ANY))
         self.notebook_3 = wx.Notebook(self, wx.ID_ANY)
         self.notebook_3_pane_1 = wx.Panel(self.notebook_3, wx.ID_ANY)
         self.bitmap_button_10 = wx.BitmapButton(self.notebook_3_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/ReporU1.png", wx.BITMAP_TYPE_ANY))
@@ -65,6 +67,7 @@ class Principal(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnSalir, self.bitmap_button_1)
         self.Bind(wx.EVT_BUTTON, self.OnRegistrarP, self.bitmap_button_9)
         self.Bind(wx.EVT_BUTTON, self.OnBuscarP, self.bitmap_button_8)
+        self.Bind(wx.EVT_BUTTON, self.OnExamen, self.bitmap_button_7)
         self.Bind(wx.EVT_BUTTON, self.OnReportes, self.bitmap_button_10)
         # end wxGlade
 
@@ -86,6 +89,8 @@ class Principal(wx.Frame):
         self.bitmap_button_9.SetSize(self.bitmap_button_9.GetBestSize())
         self.bitmap_button_8.SetToolTip(wx.ToolTip(_("Buscar Postulante")))
         self.bitmap_button_8.SetSize(self.bitmap_button_8.GetBestSize())
+        self.bitmap_button_7.SetToolTip(wx.ToolTip(_("Modificar Examen")))
+        self.bitmap_button_7.SetSize(self.bitmap_button_7.GetBestSize())
         self.bitmap_button_10.SetToolTip(wx.ToolTip(_("Reportes")))
         self.bitmap_button_10.SetSize(self.bitmap_button_10.GetBestSize())
         # end wxGlade
@@ -94,7 +99,7 @@ class Principal(wx.Frame):
         # begin wxGlade: Principal.__do_layout
         sizer_1 = wx.BoxSizer(wx.VERTICAL)
         grid_sizer_3 = wx.FlexGridSizer(1, 3, 0, 0)
-        grid_sizer_2 = wx.FlexGridSizer(1, 3, 0, 0)
+        grid_sizer_2 = wx.FlexGridSizer(1, 5, 0, 0)
         grid_sizer_1 = wx.FlexGridSizer(1, 10, 0, 0)
         grid_sizer_1.Add(self.bitmap_button_2, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
@@ -114,6 +119,8 @@ class Principal(wx.Frame):
         grid_sizer_2.Add(self.bitmap_button_9, 0, 0, 0)
         grid_sizer_2.Add((20, 20), 0, 0, 0)
         grid_sizer_2.Add(self.bitmap_button_8, 0, 0, 0)
+        grid_sizer_2.Add((20, 20), 0, 0, 0)
+        grid_sizer_2.Add(self.bitmap_button_7, 0, 0, 0)
         self.notebook_2_pane_1.SetSizer(grid_sizer_2)
         grid_sizer_2.AddGrowableRow(0)
         self.notebook_2.AddPage(self.notebook_2_pane_1, _("Postulantes"))
@@ -172,6 +179,9 @@ class Principal(wx.Frame):
         Ventana=MEU.Principal(self)
         Ventana.Show()
 
+    def OnExamen(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=BE.Principal(self)
+        Ventana.Show()
 # end of class Principal
 if __name__ == "__main__":
     gettext.install("app") # replace with the appropriate catalog name

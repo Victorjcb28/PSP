@@ -53,7 +53,7 @@ class Principal(wx.Frame):
         self.cobAccidente = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Guardar"))
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Limpiar"))
-        
+        f.CargarDatos(self)
         self.__set_properties()
         
         self.cobExperiencia.SetValidator(ContieneDatos())#activa la validacion
