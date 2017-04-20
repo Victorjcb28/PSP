@@ -16,10 +16,24 @@ import EAsistenteA as EAA
 import EAsistenteAM as EAAM
 
 import ECajero as ECA
+import ECajeroM as ECAM
 
 import EServicioC as ESC
+import EServicioCM as ESCM
+
+
+import ERecursosH as ERH
+import ERecursosHM as ERHM
+
+import ECompraVenta as ECV
+import ECompraVentaM as ECVM
+
+import ECompraVenta1 as ECV1
+import ECompraVenta1M as ECV1M
 
 import EVigilante as EV
+import EVigilanteM as EVM
+
 from time import time
 import datetime
 
@@ -299,11 +313,11 @@ def GuardarPostulante(frm):
     Ape= Ap.upper()
     Ce= frm.txtCedula.GetValue()
     Se=frm.CobSexo.GetValue()
-    Es=frm.txtEstado.GetValue()
+    Es=frm.cobEstado.GetValue()
     Est= Es.upper()
-    Mu=frm.txtMunicipio.GetValue()
+    Mu=frm.cobMunicipio.GetValue()
     Mun=Mu.upper()
-    Pa=frm.txtParroquia.GetValue()
+    Pa=frm.cobParroquia.GetValue()
     Par=Pa.upper()
     Di=frm.txtDireccion.GetValue()
     Dir=Di.upper()
@@ -350,10 +364,6 @@ def GuardarPostulante(frm):
             cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Ce,Hora,Op))
             con.commit()
 
-        if Ca=="CHOFER":
-                Ventana=EC.Principal(self)
-                Ventana.Show()
-                self.Hide()
         if Ca=="ADMINISTRACION":
                 Ventana=EA.Principal(self)
                 Ventana.Show()
@@ -366,22 +376,39 @@ def GuardarPostulante(frm):
                 Ventana=ECA.Principal(self)
                 Ventana.Show()
                 self.Hide()
-        if Ca=="SERVICIO AL CLIENTE":
-                Ventana=ESC.Principal(self)
+        if Ca=="CHOFER":
+                Ventana=EC.Principal(self)
                 Ventana.Show()
                 self.Hide()
         if Ca=="VIGILANTE":
                 Ventana=EV.Principal(self)
                 Ventana.Show()
                 self.Hide()
+        if Ca=="GERENTE VENTAS":
+                Ventana=ECV.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="ASISTENTE VENTAS":
+                Ventana=ECV1.Principal(self)
+                Ventana.Show()
+                self.Hide()               
+        if Ca=="SERVICIO AL CLIENTE":
+                Ventana=ESC.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="RECURSOS HUMANOS":
+                Ventana=ERH.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        
 
     self.txtNombre.Clear()
     self.txtApellidos.Clear()
     self.txtCedula.Clear()
         
-    self.txtEstado.Clear()
-    self.txtMunicipio.Clear()
-    self.txtParroquia.Clear()
+    
+    self.cobMunicipio.Clear()
+    self.cobParroquia.Clear()
     self.txtDireccion.Clear()
 
     self.txtTitulo.Clear()
@@ -412,9 +439,9 @@ def BuscarPostulantes(frm):
         self.cobIdioma.SetValue(str(rs[6]))
         self.cobSalario.SetValue(str(rs[7]))
         self.cobVigente.SetValue(str(rs[8]))
-        self.txtMunicipio.SetValue(str(rs[9]))
-        self.txtParroquia.SetValue(str(rs[10]))
-        self.txtEstado.SetValue(str(rs[11]))
+        self.cobMunicipio.SetValue(str(rs[9]))
+        self.cobParroquia.SetValue(str(rs[10]))
+        self.cobEstado.SetValue(str(rs[11]))
         self.cobCargo.SetValue(str(rs[12]))
         self.txtNombre.SetFocus()
 
@@ -427,9 +454,9 @@ def BuscarPostulantes(frm):
         self.cobIdioma.Enable(True)
         self.cobSalario.Enable(True)
         self.cobVigente.Enable(True)
-        self.txtMunicipio.Enable(True)
-        self.txtParroquia.Enable(True)
-        self.txtEstado.Enable(True)
+        self.cobMunicipio.Enable(True)
+        self.cobParroquia.Enable(True)
+        self.cobEstado.Enable(True)
         self.cobCargo.Enable(True)
 
         
@@ -447,11 +474,11 @@ def ModificarPostulante(frm):
     Ape= Ap.upper()
     Ce= frm.txtCedula.GetValue()
     Se=frm.CobSexo.GetValue()
-    Es=frm.txtEstado.GetValue()
+    Es=frm.cobEstado.GetValue()
     Est= Es.upper()
-    Mu=frm.txtMunicipio.GetValue()
+    Mu=frm.cobMunicipio.GetValue()
     Mun=Mu.upper()
-    Pa=frm.txtParroquia.GetValue()
+    Pa=frm.cobParroquia.GetValue()
     Par=Pa.upper()
     Di=frm.txtDireccion.GetValue()
     Dir=Di.upper()
@@ -502,10 +529,7 @@ def ModificarPostulante(frm):
 # Examenes
 #Cargar datos
 def CargarDatos(frm):
-    con, cur = conexion()
-    
-
-   
+    con, cur = conexion()   
 
     cur.execute("select max(variable),fecha,hora from registro where Operacion='Buscar Examen' order by fecha asc" )
     rs = cur.fetchone()
@@ -558,55 +582,42 @@ def BuscarExamen(frm):
 
         if Campo=="ADMINISTRACION": 
             Ventana=EAM.Principal(self)
-            Ventana.Show()
-            
+            Ventana.Show()            
             self.Hide()
-
         if Campo=="ASISTENTE": 
             Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
+            Ventana.Show()            
             self.Hide()
-
         if Campo=="CAJERO": 
-            Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
-            self.Hide()    
-
+            Ventana=ECAM.Principal(self)
+            Ventana.Show()            
+            self.Hide()
         if Campo=="CHOFER": 
-            Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
-            self.Hide()   
-
+            Ventana=ECM.Principal(self)
+            Ventana.Show()            
+            self.Hide()
         if Campo=="VIGILANTE": 
-            Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
-            self.Hide() 
-
+            Ventana=EVM.Principal(self)
+            Ventana.Show()            
+            self.Hide()
         if Campo=="GERENTE VENTAS": 
-            Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
-            self.Hide() 
-
+            Ventana=ECVM.Principal(self)
+            Ventana.Show()            
+            self.Hide()
         if Campo=="ASISTENTE VENTAS": 
-            Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
-            self.Hide() 
-
+            Ventana=ECV1M.Principal(self)
+            Ventana.Show()            
+            self.Hide()
         if Campo=="SERVICIO AL CLIENTE": 
-            Ventana=EAAM.Principal(self)
-            Ventana.Show()
-            
-            self.Hide() 
-
+            Ventana=ESCM.Principal(self)
+            Ventana.Show()            
+            self.Hide()
         if Campo=="RECURSOS HUMANOS": 
-            Ventana=EAAM.Principal(self)
+            Ventana=ERHM.Principal(self)
             Ventana.Show()
+
+                
+       
             
             self.Hide() 
 
@@ -1107,11 +1118,379 @@ def GuardarVigilante(frm):
     cur.close()
     con.close()
 
+#Recursos Humanos
+
+def GuardarRecursosH(frm):
+    self=frm
+    puntaje=0
+    #¿Por qué quiere trabajar con nosotros?
+    AE=frm.cobExperiencia.GetValue()
+    #¿tiene experiencia en esta área de trabajo?
+    GT=frm.cobGTrabajo.GetValue()
+    #¿Ha vivido algún conflicto en su último trabajo?
+    TF=frm.cobTFuera.GetValue()
+    #¿Por qué dejo su último trabajo?
+    LI=frm.cobLicencia.GetValue()
+    #Que tipo de Transporte ha manejado=P5
+    TA=frm.cobTransporte.GetValue()
+    #Posee conocimientos en mecanica basica=P6
+    ME=frm.cobMecanica.GetValue()
+    #Esta dispuesto a trabajas horas extras=P7
+    HE=frm.cobHoras.GetValue()
+    #Acepta las normas de la empresa=P8
+    NE=frm.cobNormas.GetValue()
+    #Acepta las normas de sus superores=P9
+    NS=frm.cobNormasS.GetValue()
+    #Ha tenido accidentes de transito=P10
+    AC=frm.cobAccidente.GetValue()
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Postulante Recursos Humanos"
+    
+    dato="RECURSOS HUMANOS"
+    con, cur = conexion()
+    
+    cur.execute("Select max(id) from Examen")
+    rs2=cur.fetchone()
+    if rs2:
+        Id=(str(rs2[0])) 
+                
+        
+
+        cur.execute("select * from Respuestas where Cargo=:dato",{"dato": dato})
+        rs3=cur.fetchone()
+        if rs3:
+            lista1=[AE,GT,TF,LI,TA,ME,HE,NE,NS,AC]
+            lista2=[str(rs3[1]),str(rs3[2]),str(rs3[3]),str(rs3[4]),str(rs3[5]),str(rs3[6]),str(rs3[7]),str(rs3[8]),str(rs3[9]),str(rs3[10]),]
+            puntaje=0
+            pu=str(0)
+
+            for i in lista1:
+                if i in lista2:
+                    puntaje=puntaje+10
+        
+
+            pp=str(puntaje)
+            cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=?,Puntuacion=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,pp,Id))
+            
+            dlg=wx.MessageDialog(self,'Datos Guardados\n'+
+            'Su puntuacion fue de: '+pp+'%\n'+
+            'Su Numero de Registro es:'+Id
+            , 'Atencion', wx.OK)
+            dlg.ShowModal()
+            dlg.Destroy()
+                    
+                    
+                 
+        
+
+        
+        cur.execute("Select min(Usuario) from Bitacora")
+        rs2=cur.fetchone()
+        if rs2:
+        
+            N=(str(rs2[0]))
+            cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Id,Hora,Op))
+            con.commit()
+
+          
+    cur.close()
+    con.close()
+
+#Gerente Ventas
+
+def GuardarGVentas(frm):
+    self=frm
+    puntaje=0
+    #Años de Experiencia=P1
+    AE=frm.cobExperiencia.GetValue()
+    #Se integra facilmente a grupos de trabajo=P2
+    GT=frm.cobGTrabajo.GetValue()
+    #Tendria incoveniente en trabajar fuera de la ciudad=P3
+    TF=frm.cobTFuera.GetValue()
+    #Que tipo de licencia posee=P4
+    LI=frm.cobLicencia.GetValue()
+    #Que tipo de Transporte ha manejado=P5
+    TA=frm.cobTransporte.GetValue()
+    #Posee conocimientos en mecanica basica=P6
+    ME=frm.cobMecanica.GetValue()
+    #Esta dispuesto a trabajas horas extras=P7
+    HE=frm.cobHoras.GetValue()
+    #Acepta las normas de la empresa=P8
+    NE=frm.cobNormas.GetValue()
+    #Acepta las normas de sus superores=P9
+    NS=frm.cobNormasS.GetValue()
+    #Ha tenido accidentes de transito=P10
+    AC=frm.cobAccidente.GetValue()
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Postulante Compra y Venta"
+    
+    dato="GERENTE VENTAS"
+    con, cur = conexion()
+    
+    cur.execute("Select max(id) from Examen")
+    rs2=cur.fetchone()
+    if rs2:
+        Id=(str(rs2[0])) 
+                
+        
+
+        cur.execute("select * from Respuestas where Cargo=:dato",{"dato": dato})
+        rs3=cur.fetchone()
+        if rs3:
+            lista1=[AE,GT,TF,LI,TA,ME,HE,NE,NS,AC]
+            lista2=[str(rs3[1]),str(rs3[2]),str(rs3[3]),str(rs3[4]),str(rs3[5]),str(rs3[6]),str(rs3[7]),str(rs3[8]),str(rs3[9]),str(rs3[10]),]
+            puntaje=0
+            pu=str(0)
+
+            for i in lista1:
+                if i in lista2:
+                    puntaje=puntaje+10
+        
+
+            pp=str(puntaje)
+            cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=?,Puntuacion=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,pp,Id))
+            
+            
+            dlg=wx.MessageDialog(self,'Datos Guardados\n'+
+            'Su puntuacion fue de: '+pp+'%\n'+
+            'Su Numero de Registro es:'+Id
+            , 'Atencion', wx.OK)
+            dlg.ShowModal()
+            dlg.Destroy()
+                    
+                    
+                 
+        
+
+        
+        cur.execute("Select min(Usuario) from Bitacora")
+        rs2=cur.fetchone()
+        if rs2:
+        
+            N=(str(rs2[0]))
+            cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Id,Hora,Op))
+            con.commit()
+
+          
+    cur.close()
+    con.close()
+
+#Asistente Ventas
+
+def GuardarAVentas(frm):
+    self=frm
+    puntaje=0
+    #Años de Experiencia=P1
+    AE=frm.cobExperiencia.GetValue()
+    #Se integra facilmente a grupos de trabajo=P2
+    GT=frm.cobGTrabajo.GetValue()
+    #Tendria incoveniente en trabajar fuera de la ciudad=P3
+    TF=frm.cobTFuera.GetValue()
+    #Que tipo de licencia posee=P4
+    LI=frm.cobLicencia.GetValue()
+    #Que tipo de Transporte ha manejado=P5
+    TA=frm.cobTransporte.GetValue()
+    #Posee conocimientos en mecanica basica=P6
+    ME=frm.cobMecanica.GetValue()
+    #Esta dispuesto a trabajas horas extras=P7
+    HE=frm.cobHoras.GetValue()
+    #Acepta las normas de la empresa=P8
+    NE=frm.cobNormas.GetValue()
+    #Acepta las normas de sus superores=P9
+    NS=frm.cobNormasS.GetValue()
+    #Ha tenido accidentes de transito=P10
+    AC=frm.cobAccidente.GetValue()
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Postulante Compra y Venta"
+    
+    dato="ASISTENTE VENTAS"
+    con, cur = conexion()
+    
+    cur.execute("Select max(id) from Examen")
+    rs2=cur.fetchone()
+    if rs2:
+        Id=(str(rs2[0])) 
+                
+        
+
+        cur.execute("select * from Respuestas where Cargo=:dato",{"dato": dato})
+        rs3=cur.fetchone()
+        if rs3:
+            lista1=[AE,GT,TF,LI,TA,ME,HE,NE,NS,AC]
+            lista2=[str(rs3[1]),str(rs3[2]),str(rs3[3]),str(rs3[4]),str(rs3[5]),str(rs3[6]),str(rs3[7]),str(rs3[8]),str(rs3[9]),str(rs3[10]),]
+            puntaje=0
+            pu=str(0)
+
+            for i in lista1:
+                if i in lista2:
+                    puntaje=puntaje+10
+        
+
+            pp=str(puntaje)
+            cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=?,Puntuacion=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,pp,Id))
+            
+            
+            dlg=wx.MessageDialog(self,'Datos Guardados\n'+
+            'Su puntuacion fue de: '+pp+'%\n'+
+            'Su Numero de Registro es:'+Id
+            , 'Atencion', wx.OK)
+            dlg.ShowModal()
+            dlg.Destroy()
+                    
+                    
+                 
+        
+
+        
+        cur.execute("Select min(Usuario) from Bitacora")
+        rs2=cur.fetchone()
+        if rs2:
+        
+            N=(str(rs2[0]))
+            cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Id,Hora,Op))
+            con.commit()
+
+          
+    cur.close()
+    con.close()
 
 
 
 
 
+
+#Direcciones
+def BuscarM(frm):
+    
+    dato=frm.cobEstado.GetValue()
+    
+   
+    
+    self=frm
+
+    
+    i=0
+    
+    Merida=["Alberto Adriani","Andres Bello","Antonio Pinto Salinas","Aricagua","Arzobispo Chacon","Campo Elias","Caracciolo Parra Olmedo","Cardenal Quintero","Guaraque","Julio Cesar","Justo Briceno","Libertador","Miranda","Obispo Ramos de Lora","Padre Noguera","Pueblo Llano","Rangel","Rivas Davila","Santos Marquina","Sucre","Tovar","Tulio Febres Cordero","Zea"]
+    Sucre=["Bermudez","Sucre","Benitez","Cruz Salmeron Acosta","Bolivar","Arismendi","Ribero","Valdez","Montes","Mejia","Marino","Libertador","Andres Mata","Andres Eloy Blanco","Cajigal"]
+    if dato=="Merida":
+        self.cobMunicipio.Clear()
+        while i <len(Merida):
+            self.cobMunicipio.Append(Merida[i])
+            i=i+1
+    elif dato=="Sucre":
+        self.cobMunicipio.Clear()
+        while i <len(Sucre):
+            self.cobMunicipio.Append(Sucre[i])
+            i=i+1
+
+def BuscarP(frm):
+    
+    dato=frm.cobMunicipio.GetValue()
+
+    self=frm
+    i=0
+    #Listas de las Parroquias (problemas con el unicode)
+    Bermudez=["Santa Catalina","Santa Rosa","Santa Teresa", "Bolivar", "Macarapana"]
+    Sucre=["San Juan","Altagracia","Ayacucho","Gran Mariscal","Raul Leoni","Valentin Valiente"]
+    Benitez=["El Pilar","El Rincon","General Francisco Antonio Vazquez","Guaraunos","Tunapuicito","Union"]
+    Cruz_Salmeron_Acosta=["Cruz Salmeron Acosta", "Chacopata","Manicuare"]
+    Bolivar=["Mariguitar"]
+    Arismendi=["Antonio Jose de Sucre","El Morro de Puerto Santo","Puerto Santo","Rio Caribe","San Juan de las Galdonas"]
+    Ribero=["Catuaro","Rendon","Santa Cruz","Santa Maria","Villa Frontado"]
+    Valdez=["Bideau","Cristobal Colon","Guiria","Punta de Piedras"]
+    Montes=["Arenas","Aricagua","Cocollar","Cumanacoa","San Fernando","San Lorenzo"]
+    Mejia=["Mejia"]
+    Marino=["Irapa","Campo Claro","Maraval","San Antonio de Irapa","Soro"]
+    Libertador=["Tunapuy","Campo Elias"]
+    Andres_Mata=["San Jose de Aerocuar","Tavera Acosta"]
+    Andres_Eloy_Blanco=["Marino","Romulo Gallegos"]
+    Cajigal=["Libertad","ElPaujil","Yaguaraparo"]
+    
+    if dato=="Bermudez":
+        self.cobParroquia.Clear()
+        while i<len(Bermudez):
+            self.cobParroquia.Append(Bermudez[i])
+            i=i+1
+    if dato=="Sucre":
+        self.cobParroquia.Clear()
+        while i<len(Sucre):
+            self.cobParroquia.Append(Sucre[i])
+            i=i+1
+    if dato=="Benitez":
+        self.cobParroquia.Clear()
+        while i<len(Benitez):
+            self.cobParroquia.Append(Benitez[i])
+            i=i+1
+    if dato=="Cruz Salmeron Acosta":
+        self.cobParroquia.Clear()
+        while i<len(Cruz_Salmeron_Acosta):
+            self.cobParroquia.Append(Cruz_Salmeron_Acosta[i])
+            i=i+1
+    if dato=="Bolivar":
+        self.cobParroquia.Clear()
+        while i<len(Bolivar):
+            self.cobParroquia.Append(Bolivar[i])
+            i=i+1
+    if dato=="Arismendi":
+        self.cobParroquia.Clear()
+        while i<len(Arismendi):
+            self.cobParroquia.Append(Arismendi[i])
+            i=i+1
+    if dato=="Ribero":
+        self.cobParroquia.Clear()
+        while i<len(Ribero):
+            self.cobParroquia.Append(Ribero[i])
+            i=i+1
+    if dato=="Valdez":
+        self.cobParroquia.Clear()
+        while i<len(Valdez):
+            self.cobParroquia.Append(Valdez[i])
+            i=i+1
+    if dato=="Montes":
+        self.cobParroquia.Clear()
+        while i<len(Montes):
+            self.cobParroquia.Append(Montes[i])
+            i=i+1
+    if dato=="Mejia":
+        self.cobParroquia.Clear()
+        while i<len(Mejia):
+            self.cobParroquia.Append(Mejia[i])
+            i=i+1
+    if dato=="Marino":
+        self.cobParroquia.Clear()
+        while i<len(Marino):
+            self.cobParroquia.Append(Marino[i])
+            i=i+1
+    if dato=="Libertador":
+        self.cobParroquia.Clear()
+        while i<len(Libertador):
+            self.cobParroquia.Append(Libertador[i])
+            i=i+1
+    if dato=="Andres Mata":
+        self.cobParroquia.Clear()
+        while i<len(Andres_Mata):
+            self.cobParroquia.Append(Andres_Mata[i])
+            i=i+1
+    if dato=="Andres Eloy Blanco":
+        self.cobParroquia.Clear()
+        while i<len(Andres_Eloy_Blanco):
+            self.cobParroquia.Append(Andres_Eloy_Blanco[i])
+            i=i+1
+    if dato=="Andres Mata":
+        self.cobParroquia.Clear()
+        while i<len(Andres_Mata):
+            self.cobParroquia.Append(Andres_Mata[i])
+            i=i+1
 
 
 

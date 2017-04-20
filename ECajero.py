@@ -54,6 +54,17 @@ class Principal(wx.Frame):
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Limpiar"))
 
         self.__set_properties()
+        
+        self.cobExperiencia.SetValidator(ContieneDatos())#activa la validacion
+        self.cobGTrabajo.SetValidator(ContieneDatos())#activa la validacion
+        self.cobTFuera.SetValidator(ContieneDatos())#activa la validacion
+        self.cobLicencia.SetValidator(ContieneDatos())#activa la validacion
+        self.cobTransporte.SetValidator(ContieneDatos())#activa la validacion
+        self.cobMecanica.SetValidator(ContieneDatos())#activa la validacion
+        self.cobHoras.SetValidator(ContieneDatos())#activa la validacion
+        self.cobNormas.SetValidator(ContieneDatos())#activa la validacion
+        self.cobNormasS.SetValidator(ContieneDatos())#activa la validacion
+        self.cobAccidente.SetValidator(ContieneDatos())#activa la validacion
         self.__do_layout()
 
         self.Bind(wx.EVT_MENU, self.OnPrincipal, self.principal)
@@ -63,7 +74,7 @@ class Principal(wx.Frame):
 
     def __set_properties(self):
         # begin wxGlade: Principal.__set_properties
-        self.SetTitle(_("Postulante Chofer"))
+        self.SetTitle(_("Postulante Cajero"))
         self.SetSize((688, 558))
         self.label_1.SetFont(wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
         self.cobExperiencia.SetMinSize((156, 40))
@@ -170,6 +181,39 @@ class Principal(wx.Frame):
         event.Skip()
 
 # end of class Principal
+class ContieneDatos(wx.PyValidator):
+    def __init__(self):
+        wx.PyValidator.__init__(self)
+
+    def Clone(self):
+        """
+        Note que todo validador debe implementar
+        # el método Clone().
+        """
+        return ContieneDatos()
+
+    def Validate(self, win):
+        textCtrl = self.GetWindow()
+        text = textCtrl.GetValue()
+        if len(text) == 0:
+            wx.MessageBox("Este campo debe contener algún texto!",
+                          "Error")
+            textCtrl.SetBackgroundColour("red")
+            textCtrl.SetFocus()
+            textCtrl.Refresh()
+            return False
+        else:
+            textCtrl.SetBackgroundColour(
+                               wx.SystemSettings_GetColour(
+                               wx.SYS_COLOUR_WINDOW))
+            textCtrl.Refresh()
+            return True
+
+    def TransferToWindow(self):
+        return True
+
+    def TransferFromWindow(self):
+        return True
 if __name__ == "__main__":
     gettext.install("app") # replace with the appropriate catalog name
 

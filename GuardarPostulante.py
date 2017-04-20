@@ -38,15 +38,15 @@ class Principal(wx.Frame):
         self.label_9 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Nombres:"))
         self.txtNombre = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
         self.label_13 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Estado:"))
-        self.txtEstado = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
+        self.cobEstado = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("Amazonas"), _("Anzoategui"), _("Apure"), _("Aragua"), _("Barinas"), _("Bolivar"), _("Carabobo"), _("Cojedes"), _("Delta Amacuro"), _("Distrito Capital"), _("Falcon"), _("Guarico"), _("Lara"), _("Merida"), _("Miranda"), _("Monagas"), _("Nueva Esparta"), _("Portuguesa"), _("Sucre"), _("Tachira"), _("Trujillo"), _("Vargas"), _("Yaracuy"), _("Zulia")], style=wx.CB_DROPDOWN)
         self.label_10 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Apellidos:"))
         self.txtApellidos = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
         self.label_14 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Municipio:"))
-        self.txtMunicipio = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
+        self.cobMunicipio = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[], style=wx.CB_DROPDOWN)
         self.label_11 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Cedula:"))
         self.txtCedula = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
         self.label_15 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Parroquia:"))
-        self.txtParroquia = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
+        self.cobParroquia = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[], style=wx.CB_DROPDOWN)
         self.label_12 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Sexo:"))
         self.CobSexo = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("M"), _("F")], style=wx.CB_DROPDOWN)
         self.label_16 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Direccion:"))
@@ -71,16 +71,15 @@ class Principal(wx.Frame):
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Limpiar"))
 
         self.__set_properties()
-        
-        
         self.__do_layout()
 
         self.Bind(wx.EVT_MENU, self.OnPrincipal, self.principal)
         self.Bind(wx.EVT_TEXT, self.OnLetras, self.txtNombre)
-        self.Bind(wx.EVT_TEXT, self.OnLetras, self.txtEstado)
+        self.Bind(wx.EVT_TEXT, self.OnEstado, self.cobEstado)
         self.Bind(wx.EVT_TEXT, self.OnLetras, self.txtApellidos)
-        self.Bind(wx.EVT_TEXT, self.OnLetras, self.txtMunicipio)
+        self.Bind(wx.EVT_TEXT, self.OnMunicipio, self.cobMunicipio)
         self.Bind(wx.EVT_TEXT, self.OnCedula, self.txtCedula)
+        self.Bind(wx.EVT_TEXT, self.OnParroquia, self.cobParroquia)
         self.Bind(wx.EVT_BUTTON, self.OnGuardar, self.button_1)
         self.Bind(wx.EVT_BUTTON, self.OnLimpiar, self.button_2)
         # end wxGlade
@@ -115,17 +114,17 @@ class Principal(wx.Frame):
         grid_sizer_4.Add(self.txtNombre, 0, wx.EXPAND, 0)
         grid_sizer_4.Add((20, 20), 0, 0, 0)
         grid_sizer_4.Add(self.label_13, 0, 0, 0)
-        grid_sizer_4.Add(self.txtEstado, 0, wx.EXPAND, 0)
+        grid_sizer_4.Add(self.cobEstado, 0, wx.EXPAND, 0)
         grid_sizer_4.Add(self.label_10, 0, 0, 0)
         grid_sizer_4.Add(self.txtApellidos, 0, wx.EXPAND, 0)
         grid_sizer_4.Add((20, 20), 0, 0, 0)
         grid_sizer_4.Add(self.label_14, 0, 0, 0)
-        grid_sizer_4.Add(self.txtMunicipio, 0, wx.EXPAND, 0)
+        grid_sizer_4.Add(self.cobMunicipio, 0, wx.EXPAND, 0)
         grid_sizer_4.Add(self.label_11, 0, 0, 0)
         grid_sizer_4.Add(self.txtCedula, 0, wx.EXPAND, 0)
         grid_sizer_4.Add((20, 20), 0, 0, 0)
         grid_sizer_4.Add(self.label_15, 0, 0, 0)
-        grid_sizer_4.Add(self.txtParroquia, 0, wx.EXPAND, 0)
+        grid_sizer_4.Add(self.cobParroquia, 0, wx.EXPAND, 0)
         grid_sizer_4.Add(self.label_12, 0, 0, 0)
         grid_sizer_4.Add(self.CobSexo, 0, wx.EXPAND, 0)
         grid_sizer_4.Add((20, 20), 0, 0, 0)
@@ -259,26 +258,26 @@ class Principal(wx.Frame):
             self.CobSexo.SetFocus()
             self.CobSexo.Refresh()
 
-        elif len(self.txtEstado.GetValue())==0:
+        elif len(self.cobEstado.GetValue())==0:
             wx.MessageBox("No puede tener campos en blanco",
                           "Error")
-            self.txtEstado.SetBackgroundColour("red")
-            self.txtEstado.SetFocus()
-            self.txtEstado.Refresh()
+            self.cobEstado.SetBackgroundColour("red")
+            self.cobEstado.SetFocus()
+            self.cobEstado.Refresh()
 
-        elif len(self.txtMunicipio.GetValue())==0:
+        elif len(self.cobMunicipio.GetValue())==0:
             wx.MessageBox("No puede tener campos en blanco",
                           "Error")
-            self.txtMunicipio.SetBackgroundColour("red")
-            self.txtMunicipio.SetFocus()
-            self.txtMunicipio.Refresh()
+            self.cobMunicipio.SetBackgroundColour("red")
+            self.cobMunicipio.SetFocus()
+            self.cobMunicipio.Refresh()
 
-        elif len(self.txtParroquia.GetValue())==0:
+        elif len(self.cobParroquia.GetValue())==0:
             wx.MessageBox("No puede tener campos en blanco",
                           "Error")
-            self.txtParroquia.SetBackgroundColour("red")
-            self.txtParroquia.SetFocus()
-            self.txtParroquia.Refresh()
+            self.cobParroquia.SetBackgroundColour("red")
+            self.cobParroquia.SetFocus()
+            self.cobParroquia.Refresh()
 
         elif len(self.txtDireccion.GetValue())==0:
             wx.MessageBox("No puede tener campos en blanco",
@@ -350,14 +349,52 @@ class Principal(wx.Frame):
         self.txtApellidos.Clear()
         self.txtCedula.Clear()
         
-        self.txtEstado.Clear()
-        self.txtMunicipio.Clear()
-        self.txtParroquia.Clear()
+        
         self.txtDireccion.Clear()
-
+        self.cobMunicipio.Clear()
+        self.cobParroquia.Clear()
         self.txtTitulo.Clear()
 
+    def OnEstado(self, event):  # wxGlade: Principal.<event_handler>
+        f.BuscarM(self)
+    def OnMunicipio(self, event):  # wxGlade: Principal.<event_handler>
+        f.BuscarP(self)
+    def OnParroquia(self, event):  # wxGlade: Principal.<event_handler>
+        pass
 # end of class Principal
+class ContieneDatos(wx.PyValidator):
+    def __init__(self):
+        wx.PyValidator.__init__(self)
+
+    def Clone(self):
+        """
+        Note que todo validador debe implementar
+        # el método Clone().
+        """
+        return ContieneDatos()
+
+    def Validate(self, win):
+        textCtrl = self.GetWindow()
+        text = textCtrl.GetValue()
+        if len(text) == 0:
+            wx.MessageBox("Este campo debe contener algún texto!",
+                          "Error")
+            textCtrl.SetBackgroundColour("red")
+            textCtrl.SetFocus()
+            textCtrl.Refresh()
+            return False
+        else:
+            textCtrl.SetBackgroundColour(
+                               wx.SystemSettings_GetColour(
+                               wx.SYS_COLOUR_WINDOW))
+            textCtrl.Refresh()
+            return True
+
+    def TransferToWindow(self):
+        return True
+
+    def TransferFromWindow(self):
+        return True
 
 if __name__ == "__main__":
     gettext.install("app") # replace with the appropriate catalog name

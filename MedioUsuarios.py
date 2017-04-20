@@ -20,8 +20,8 @@ class Principal(wx.Frame):
     def __init__(self, *args, **kwds):
         # begin wxGlade: Principal.__init__
         wx.Frame.__init__(self, *args, **kwds)
-        self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/ReporteUsuarios1.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_button_2 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/ReportePostulantes1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/ReporteUsuarios1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_2 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/ReportePostulantes1.png", wx.BITMAP_TYPE_ANY))
 
         self.__set_properties()
         self.__do_layout()
@@ -55,7 +55,7 @@ class Principal(wx.Frame):
     def OnUsuarios(self, event):  # wxGlade: Principal.<event_handler>
         FR.ReporUsuario(self)
         os.system('xdg-open "ReporteUsuarios.pdf"') #works for urls too
-
+        self.Hide()
     def OnPostulantes(self, event):  # wxGlade: Principal.<event_handler>
         Ventana=SP.Principal(self)
         Ventana.Show()

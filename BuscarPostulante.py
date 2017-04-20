@@ -34,16 +34,16 @@ class Principal(wx.Frame):
         self.label_9 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Nombres:"))
         self.txtNombre = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
         self.label_13 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Estado:"))
-        self.txtEstado = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
+        self.cobEstado = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("Amazonas"), _("Anzoategui"), _("Apure"), _("Aragua"), _("Barinas"), _("Bolivar"), _("Carabobo"), _("Cojedes"), _("Delta Amacuro"), _("Distrito Capital"), _("Falcon"), _("Guarico"), _("Lara"), _("Merida"), _("Miranda"), _("Monagas"), _("Nueva Esparta"), _("Portuguesa"), _("Sucre"), _("Tachira"), _("Trujillo"), _("Vargas"), _("Yaracuy"), _("Zulia")], style=wx.CB_DROPDOWN)
         self.label_10 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Apellidos:"))
         self.txtApellidos = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
         self.label_14 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Municipio:"))
-        self.txtMunicipio = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
+        self.cobMunicipio = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[], style=wx.CB_DROPDOWN)
         self.label_11 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Cedula:"))
         self.txtCedula = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
-        self.bitmap_button_1 = wx.BitmapButton(self.notebook_8_pane_1, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/buscar.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_1 = wx.BitmapButton(self.notebook_8_pane_1, wx.ID_ANY, wx.Bitmap("iconos/buscar.png", wx.BITMAP_TYPE_ANY))
         self.label_15 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Parroquia:"))
-        self.txtParroquia = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
+        self.cobParroquia = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[], style=wx.CB_DROPDOWN)
         self.label_12 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Sexo:"))
         self.CobSexo = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("M"), _("F")], style=wx.CB_DROPDOWN)
         self.label_16 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Direccion:"))
@@ -63,7 +63,7 @@ class Principal(wx.Frame):
         self.label_3 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _("Vigente:"))
         self.cobVigente = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
         self.label_4 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _("Cargo:"))
-        self.cobCargo = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[], style=wx.CB_DROPDOWN)
+        self.cobCargo = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[_("ADMINISTRACION"), _("ASISTENTE"), _("CAJERO"), _("CHOFER"), _("VIGILANTE"), _("GERENTE VENTAS"), _("ASISTENTE VENTAS"), _("SERVICIO AL CLIENTE"), _("RECURSOS HUMANOS")], style=wx.CB_DROPDOWN)
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Modificar"))
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Limpiar"))
 
@@ -72,9 +72,9 @@ class Principal(wx.Frame):
 
         self.Bind(wx.EVT_MENU, self.OnPrincipal, self.principal)
         self.Bind(wx.EVT_TEXT, self.OnLetras, self.txtNombre)
-        self.Bind(wx.EVT_TEXT, self.OnLetras, self.txtEstado)
+        self.Bind(wx.EVT_TEXT, self.OnEstado, self.cobEstado)
         self.Bind(wx.EVT_TEXT, self.OnLetras, self.txtApellidos)
-        self.Bind(wx.EVT_TEXT, self.OnLetras, self.txtMunicipio)
+        self.Bind(wx.EVT_TEXT, self.OnMunicipio, self.cobMunicipio)
         self.Bind(wx.EVT_TEXT, self.OnCedula, self.txtCedula)
         self.Bind(wx.EVT_BUTTON, self.OnBuscar, self.bitmap_button_1)
         self.Bind(wx.EVT_BUTTON, self.OnModificar, self.button_1)
@@ -87,11 +87,11 @@ class Principal(wx.Frame):
         self.SetSize((694, 627))
         self.label_1.SetFont(wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
         self.txtNombre.Enable(False)
-        self.txtEstado.Enable(False)
+        self.cobEstado.Enable(False)
         self.txtApellidos.Enable(False)
-        self.txtMunicipio.Enable(False)
+        self.cobMunicipio.Enable(False)
         self.bitmap_button_1.SetSize(self.bitmap_button_1.GetBestSize())
-        self.txtParroquia.Enable(False)
+        self.cobParroquia.Enable(False)
         self.CobSexo.Enable(False)
         self.CobSexo.SetSelection(-1)
         self.txtDireccion.Enable(False)
@@ -110,7 +110,7 @@ class Principal(wx.Frame):
         self.cobVigente.Enable(False)
         self.cobVigente.SetSelection(-1)
         self.cobCargo.SetMinSize((275, 36))
-        self.cobCargo.Hide()
+        self.cobCargo.Enable(False)
         # end wxGlade
 
     def __do_layout(self):
@@ -125,17 +125,17 @@ class Principal(wx.Frame):
         grid_sizer_4.Add(self.txtNombre, 0, wx.EXPAND, 0)
         grid_sizer_4.Add((20, 20), 0, 0, 0)
         grid_sizer_4.Add(self.label_13, 0, 0, 0)
-        grid_sizer_4.Add(self.txtEstado, 0, wx.EXPAND, 0)
+        grid_sizer_4.Add(self.cobEstado, 0, wx.EXPAND, 0)
         grid_sizer_4.Add(self.label_10, 0, 0, 0)
         grid_sizer_4.Add(self.txtApellidos, 0, wx.EXPAND, 0)
         grid_sizer_4.Add((20, 20), 0, 0, 0)
         grid_sizer_4.Add(self.label_14, 0, 0, 0)
-        grid_sizer_4.Add(self.txtMunicipio, 0, wx.EXPAND, 0)
+        grid_sizer_4.Add(self.cobMunicipio, 0, wx.EXPAND, 0)
         grid_sizer_4.Add(self.label_11, 0, 0, 0)
         grid_sizer_4.Add(self.txtCedula, 0, wx.EXPAND, 0)
         grid_sizer_4.Add(self.bitmap_button_1, 0, 0, 0)
         grid_sizer_4.Add(self.label_15, 0, 0, 0)
-        grid_sizer_4.Add(self.txtParroquia, 0, wx.EXPAND, 0)
+        grid_sizer_4.Add(self.cobParroquia, 0, wx.EXPAND, 0)
         grid_sizer_4.Add(self.label_12, 0, 0, 0)
         grid_sizer_4.Add(self.CobSexo, 0, wx.EXPAND, 0)
         grid_sizer_4.Add((20, 20), 0, 0, 0)
@@ -247,9 +247,8 @@ class Principal(wx.Frame):
         self.txtApellidos.Clear()
         self.txtCedula.Clear()
         
-        self.txtEstado.Clear()
-        self.txtMunicipio.Clear()
-        self.txtParroquia.Clear()
+        self.cobMunicipio.Clear()
+        self.cobParroquia.Clear()
         self.txtDireccion.Clear()
 
         self.txtTitulo.Clear()
@@ -298,26 +297,26 @@ class Principal(wx.Frame):
             self.CobSexo.SetFocus()
             self.CobSexo.Refresh()
 
-        elif len(self.txtEstado.GetValue())==0:
+        elif len(self.cobEstado.GetValue())==0:
             wx.MessageBox("No puede tener campos en blanco",
                           "Error")
-            self.txtEstado.SetBackgroundColour("red")
-            self.txtEstado.SetFocus()
-            self.txtEstado.Refresh()
+            self.cobEstado.SetBackgroundColour("red")
+            self.cobEstado.SetFocus()
+            self.cobEstado.Refresh()
 
-        elif len(self.txtMunicipio.GetValue())==0:
+        elif len(self.cobMunicipio.GetValue())==0:
             wx.MessageBox("No puede tener campos en blanco",
                           "Error")
-            self.txtMunicipio.SetBackgroundColour("red")
-            self.txtMunicipio.SetFocus()
-            self.txtMunicipio.Refresh()
+            self.cobMunicipio.SetBackgroundColour("red")
+            self.cobMunicipio.SetFocus()
+            self.cobMunicipio.Refresh()
 
-        elif len(self.txtParroquia.GetValue())==0:
+        elif len(self.cobParroquia.GetValue())==0:
             wx.MessageBox("No puede tener campos en blanco",
                           "Error")
-            self.txtParroquia.SetBackgroundColour("red")
-            self.txtParroquia.SetFocus()
-            self.txtParroquia.Refresh()
+            self.cobParroquia.SetBackgroundColour("red")
+            self.cobParroquia.SetFocus()
+            self.cobParroquia.Refresh()
 
         elif len(self.txtDireccion.GetValue())==0:
             wx.MessageBox("No puede tener campos en blanco",
@@ -381,4 +380,8 @@ class Principal(wx.Frame):
                 f.ModificarPostulante(self)
             dlg.Destroy()
             
+    def OnEstado(self, event):  # wxGlade: Principal.<event_handler>
+        f.BuscarM(self)
+    def OnMunicipio(self, event):  # wxGlade: Principal.<event_handler>
+        f.BuscarP(self)
 # end of class Principal

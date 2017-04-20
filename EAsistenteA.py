@@ -75,7 +75,7 @@ class Principal(wx.Frame):
 
     def __set_properties(self):
         # begin wxGlade: Principal.__set_properties
-        self.SetTitle(_("Postulante Chofer"))
+        self.SetTitle(_("Postulante Asistente Admninistracion"))
         self.SetSize((688, 558))
         self.label_1.SetFont(wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
         self.cobExperiencia.SetMinSize((156, 40))
