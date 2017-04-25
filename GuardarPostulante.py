@@ -54,7 +54,7 @@ class Principal(wx.Frame):
         self.notebook_9 = wx.Notebook(self, wx.ID_ANY)
         self.notebook_9_pane_1 = wx.Panel(self.notebook_9, wx.ID_ANY)
         self.label_17 = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _("Nivel de Instruccion:"))
-        self.cobEducacion = wx.ComboBox(self.notebook_9_pane_1, wx.ID_ANY, choices=[_("PRIMARIA"), _("PREGRADO"), _("POSTGRADO")], style=wx.CB_DROPDOWN)
+        self.cobEducacion = wx.ComboBox(self.notebook_9_pane_1, wx.ID_ANY, choices=[_("PRIMARIA"), _("SECUNDARIA"), _("PREGRADO"), _("POSTGRADO")], style=wx.CB_DROPDOWN)
         self.label_18 = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _("Titulo:"))
         self.txtTitulo = wx.TextCtrl(self.notebook_9_pane_1, wx.ID_ANY, "")
         self.label_19 = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _("Idioma:"))
