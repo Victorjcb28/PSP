@@ -165,8 +165,17 @@ class Principal(wx.Frame):
         self.Close()
 
     def OnGuardar(self, event):  # wxGlade: Principal.<event_handler>
-        f.GuardarChofer(self)
-    
+       if self.Validate():
+            dlg = wx.MessageDialog(None, '¿Desea Guardar?',
+                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
+                            wx.ICON_QUESTION)
+        #dlg.ShowModal()
+        
+
+        if dlg.ShowModal()==wx.ID_OK:
+            f.GuardarChofer(self)
+            self.Hide()
+        dlg.Destroy()
 
     def OnLimpiar(self, event):  # wxGlade: Principal.<event_handler>
         print "Event handler 'OnLimpiar' not implemented!"

@@ -4,6 +4,8 @@
 
 import sqlite3 as sq3
 import wx
+import hashlib
+
 import entrada as E
 import PrincipalAdmin as PA
 
@@ -36,6 +38,10 @@ import EVigilanteM as EVM
 
 from time import time
 import datetime
+from datetime import datetime, date, time, timedelta
+
+
+
 
 #Conexion base de datos
 def conexion():
@@ -47,6 +53,33 @@ def desconectar():
     cur.Close()
     con.Close()
     return
+
+
+def Edad(frm):
+    self=frm
+    dia=int(frm.cobDia.GetValue())
+    mes=int(frm.cobMes.GetValue())
+    ano=int(frm.cobAno.GetValue())
+
+    d=date.today()
+    ano1=d.year-ano
+    if d.month <= mes:
+        if d.day < dia:
+            ano1=ano1-1 
+    self.txtEdad.SetValue(str(ano1))
+
+def Ano(frm):
+    self=frm
+    d=date.today()
+    j=int(d.year)+1
+    i=int(d.year)-100
+    while j>i:
+        ano1=j-1 
+        self.cobAno.Append(str(ano1))
+        j=j-1
+        
+        
+        
 
 def Bitacora(frm):
     Usu=frm.txtUsuario.GetValue()
@@ -71,7 +104,8 @@ def Entrada(frm):
 
     Usu=frm.txtUsuario.GetValue()
     En=Usu.upper()
-    Cla=frm.txtClave.GetValue()
+    Cl=hashlib.md5(frm.txtClave.GetValue())
+    Cla=Cl.hexdigest()
     datos=(En,Cla)
 
     con,cur=conexion()
@@ -98,7 +132,7 @@ def Entrada(frm):
             rs2=cur.fetchone()
             if rs2:
 
-                Ventana=P.Principal(self)
+                Ventana=PA.Principal(self)
                 Ventana.Show()
                 self.Hide()
             
@@ -159,7 +193,8 @@ def GuardarUsuario(frm):
     Hora=datetime.datetime.now()
     Fecha = datetime.date.today()
     Op="Guardar Usuario"
-    Cla=frm.txtClave.GetValue()
+    Cl=hashlib.md5(frm.txtClave.GetValue())
+    Cla=Cl.hexdigest()
     Ti=frm.cobTipo.GetValue()
     Es=0
 
@@ -201,18 +236,11 @@ def GuardarUsuario(frm):
                     cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Nom,Hora,Op))
                     con.commit()
                 
-                    dlg = wx.MessageDialog(None, '¿Desea Agregar Otro Usuario?',
-                            'Dialogo de Mensage', wx.OK|wx.CANCEL|
-                             wx.ICON_QUESTION)
-                
-                    if dlg.ShowModal()==wx.ID_OK:
-                        pass
-                    else:
                     
-                        Ventana=PA.Principal(self)
-                        Ventana.Show()
-                        self.Hide()
-                        dlg.Destroy()
+                    
+                        
+                    self.Hide()
+                        
                 
                 self.txtNombre.Clear()
                 self.txtClave.Clear()
@@ -1494,3 +1522,12 @@ def BuscarP(frm):
 
 
 
+def ano():
+    self.cobAno.Clear()
+    i=0
+    ano=time.strftime("%Y")
+    ano1=int(ano)-101
+
+    while ano1 < int(ano):
+        ano1=ano1+1
+        print ano1

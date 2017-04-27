@@ -208,15 +208,15 @@ def PostulantesAdministratativo(self):
         hola=ol[l]
 
         while i < hola:
-            cur.execute('Select Postulante.Nombre from Postulante,Examen where Postulante.Cedula=Examen.Cedula order by Examen.Puntuacion Desc')
+            cur.execute('Select Postulante.Nombre from Postulante,Examen where Postulante.Cedula=Examen.Cedula and Examen.Cargo="ADMINISTRACION" order by Examen.Puntuacion Desc')
             rs=[r[0] for r in cur.fetchall()]
-            cur.execute('Select Postulante.Apellido from Postulante,Examen where Postulante.Cedula=Examen.Cedula order by Examen.Puntuacion Desc')
+            cur.execute('Select Postulante.Apellido from Postulante,Examen where Postulante.Cedula=Examen.Cedula and Examen.Cargo="ADMINISTRACION" order by Examen.Puntuacion Desc')
             rs1=[r[0] for r in cur.fetchall()]
-            cur.execute('Select Postulante.Cedula from Postulante,Examen where Postulante.Cedula=Examen.Cedula order by Examen.Puntuacion Desc')
+            cur.execute('Select Postulante.Cedula from Postulante,Examen where Postulante.Cedula=Examen.Cedula and Examen.Cargo="ADMINISTRACION" order by Examen.Puntuacion Desc')
             rs2=[r[0] for r in cur.fetchall()]
-            cur.execute('Select Postulante.Sexo from Postulante,Examen where Postulante.Cedula=Examen.Cedula order by Examen.Puntuacion Desc')
+            cur.execute('Select Postulante.Sexo from Postulante,Examen where Postulante.Cedula=Examen.Cedula and Examen.Cargo="ADMINISTRACION" order by Examen.Puntuacion Desc')
             rs3=[r[0] for r in cur.fetchall()]
-            cur.execute('Select Examen.Puntuacion from Postulante,Examen where Postulante.Cedula=Examen.Cedula order by Examen.Puntuacion Desc')
+            cur.execute('Select Examen.Puntuacion from Postulante,Examen where Postulante.Cedula=Examen.Cedula and Examen.Cargo="ADMINISTRACION" order by Examen.Puntuacion Desc')
             rs4=[r[0] for r in cur.fetchall()]           
             
 
