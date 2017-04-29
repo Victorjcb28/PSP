@@ -1,9 +1,11 @@
 #! /usr/bin/env python
-# -*- coding: CP1252-*-
+# -*- coding: UTF-8 -*-
 #self.db.execute(SQL_STRING, (dork.decode('utf-8'), ))
 
 import sqlite3 as sq3
 import wx
+import hashlib
+
 import entrada as E
 import PrincipalAdmin as PA
 
@@ -34,8 +36,12 @@ import ECompraVenta1M as ECV1M
 import EVigilante as EV
 import EVigilanteM as EVM
 
+
+from datetime import datetime, date, time, timedelta
 from time import time
 import datetime
+
+
 
 #Conexion base de datos
 def conexion():
@@ -47,6 +53,52 @@ def desconectar():
     cur.Close()
     con.Close()
     return
+
+
+#funciones nuevas.
+
+def Edad(frm):
+    self=frm
+    dia=int(frm.cobDia.GetValue())
+    mes=int(frm.cobMes.GetValue())
+    ano=int(frm.cobAno.GetValue())
+
+    d=date.today()
+    ano1=d.year-ano
+    if d.month <= mes:
+        if d.day < dia:
+            ano1=ano1-1 
+    self.txtEdad.SetValue(str(ano1))
+
+def Ano(frm):
+    self=frm
+    d=date.today()
+    j=int(d.year)+1
+    i=int(d.year)-100
+    while j>i:
+        ano1=j-1 
+        self.cobAno.Append(str(ano1))
+        j=j-1
+        
+
+def Administrativo(frm):
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    Op="Seleccionar Postulante"
+    Nom="ADMINISTRACION"
+    self=frm
+    con, cur=conexion()
+    cur.execute("Select min(Usuario) from Bitacora")
+    rs2=cur.fetchone()
+    if rs2:
+        N=(str(rs2[0]))
+        cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Nom,Hora,Op))
+        con.commit()
+        
+                    
+
+#fin funciones nuevas        
 
 def Bitacora(frm):
     Usu=frm.txtUsuario.GetValue()
@@ -71,7 +123,8 @@ def Entrada(frm):
 
     Usu=frm.txtUsuario.GetValue()
     En=Usu.upper()
-    Cla=frm.txtClave.GetValue()
+    Cl=hashlib.md5(frm.txtClave.GetValue())
+    Cla=Cl.hexdigest()
     datos=(En,Cla)
 
     con,cur=conexion()
@@ -98,7 +151,7 @@ def Entrada(frm):
             rs2=cur.fetchone()
             if rs2:
 
-                Ventana=P.Principal(self)
+                Ventana=PA.Principal(self)
                 Ventana.Show()
                 self.Hide()
             
@@ -159,7 +212,8 @@ def GuardarUsuario(frm):
     Hora=datetime.datetime.now()
     Fecha = datetime.date.today()
     Op="Guardar Usuario"
-    Cla=frm.txtClave.GetValue()
+    Cl=hashlib.md5(frm.txtClave.GetValue())
+    Cla=Cl.hexdigest()
     Ti=frm.cobTipo.GetValue()
     Es=0
 
@@ -201,18 +255,11 @@ def GuardarUsuario(frm):
                     cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Nom,Hora,Op))
                     con.commit()
                 
-                    dlg = wx.MessageDialog(None, '¿Desea Agregar Otro Usuario?',
-                            'Dialogo de Mensage', wx.OK|wx.CANCEL|
-                             wx.ICON_QUESTION)
-                
-                    if dlg.ShowModal()==wx.ID_OK:
-                        pass
-                    else:
                     
-                        Ventana=PA.Principal(self)
-                        Ventana.Show()
-                        self.Hide()
-                        dlg.Destroy()
+                    
+                        
+                    self.Hide()
+                        
                 
                 self.txtNombre.Clear()
                 self.txtClave.Clear()
@@ -323,22 +370,40 @@ def GuardarPostulante(frm):
     Dir=Di.upper()
     
     Ed=frm.cobEducacion.GetValue()
-    Es=frm.txtTitulo.GetValue()
+    Ti=frm.txtTitulo.GetValue()
     Id=frm.cobIdioma.GetValue()
+    AG=frm.txtAnoG.GetValue()
+    Me=frm.txtMerito.GetValue()
+    Off=frm.cobOffice.GetValue()
+    Con=frm.cobContabilidad.GetValue()
+    MI="militar"
+    PAU="auxilio"
+
+    Educacion=(Ed,Ti,Id,AG,Me,Off,Con,MI,PAU,Ce)
 
     Sa=frm.cobSalario.GetValue()
-    Vi=frm.cobVigente.GetValue()
-    Ca=frm.cobCargo.GetValue()
+    Emp=frm.txtEmpresaT.GetValue()
+    AT=frm.cobAtrabajo.GetValue()
+    Car=frm.cobCargo.GetValue()
+    Experiencia=(Sa,Emp,AT,Car,Ce)
+
+    
 
     Hora=datetime.datetime.now()
     Fecha = datetime.date.today()
     
     Op="Guardar Postulante"
     
-    datos1=(Nom,Ape,Ce,Se)
+    
     con, cur = conexion()
     dato=frm.txtCedula.GetValue()
     #datos=(Car,Sec)
+    cur.execute("Select Variable from registro order by hora desc")
+    rs3=cur.fetchone()
+    if rs3:
+        
+        Ca=(str(rs3[0]))
+
     cur.execute("select Cedula from Postulante where Cedula=:dato",{"dato": dato})
     rs=cur.fetchone()
     if rs:
@@ -346,7 +411,9 @@ def GuardarPostulante(frm):
     else:
         
                 
-        cur.execute('INSERT INTO Postulante (Nombre,Apellido,Cedula,Sexo,Direccion,Neducacion,Especialidad,Idioma,PSalarial,Vigente,Fecha) VALUES (?,?,?,?,?,?,?,?,?,?,?)',(Nom,Ape,Ce,Se,Dir,Ed,Es,Id,Sa,Vi,Hora))
+        cur.execute('INSERT INTO Postulante (Nombre,Apellido,Cedula,Sexo,Direccion,Fecha) VALUES (?,?,?,?,?,?)',(Nom,Ape,Ce,Se,Dir,Hora))
+        cur.execute('INSERT INTO Educacion (NEducacion,Titulo,Idioma,AGraduacion,Merito,Office,Contabilidad,Militar,PAuxilio,Cedula) VALUES (?,?,?,?,?,?,?,?,?,?)',Educacion)
+        cur.execute('INSERT INTO Experiencia (Vigente,EmpresaV,ATrabajo,Cargo,Cedula) VALUES (?,?,?,?,?)',Experiencia)
         cur.execute('INSERT INTO Estado (Nombre,Id) VALUES (?,?)',(Est,Ce))
         cur.execute('INSERT INTO Munic (Nombre,Id) VALUES (?,?)',(Mun,Ce))
         cur.execute('INSERT INTO Parroquia (Nombre,Id) VALUES (?,?)',(Par,Ce))
@@ -363,6 +430,9 @@ def GuardarPostulante(frm):
             N=(str(rs2[0]))
             cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Ce,Hora,Op))
             con.commit()
+
+        
+            
 
         if Ca=="ADMINISTRACION":
                 Ventana=EA.Principal(self)
@@ -766,6 +836,8 @@ def GuardarAdministrador(frm):
             pp=str(puntaje)
             cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=?,Puntuacion=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,pp,Id))
             
+            cur.execute("select * from Examen where cargo="ADMINISTRACION" order by puntuacion desc")
+            rs4=[r[0] for r in cur.fetchall()]
             
             dlg=wx.MessageDialog(self,'Datos Guardados\n'+
             'Su puntuacion fue de: '+pp+'%\n'+
@@ -1494,3 +1566,12 @@ def BuscarP(frm):
 
 
 
+def ano():
+    self.cobAno.Clear()
+    i=0
+    ano=time.strftime("%Y")
+    ano1=int(ano)-101
+
+    while ano1 < int(ano):
+        ano1=ano1+1
+        print ano1

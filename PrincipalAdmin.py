@@ -20,6 +20,7 @@ import BloquearUsuario as BQU
 import DesbloquearUsuario as DU
 
 #Postulante
+import SeleccionPostulantes as SP
 import GuardarPostulante as GP
 import BuscarPostulante as BP
 
@@ -58,7 +59,7 @@ class Principal(wx.Frame):
         self.notebook_4_pane_1 = wx.Panel(self.notebook_4, wx.ID_ANY)
         self.bitmap_button_11 = wx.BitmapButton(self.notebook_4_pane_1, wx.ID_ANY, wx.Bitmap("iconos/Informacion1.png", wx.BITMAP_TYPE_ANY))
         self.bitmap_button_12 = wx.BitmapButton(self.notebook_4_pane_1, wx.ID_ANY, wx.Bitmap("iconos/ServicioTecnico1.png", wx.BITMAP_TYPE_ANY))
-
+        
         self.__set_properties()
         self.__do_layout()
 
@@ -182,7 +183,7 @@ class Principal(wx.Frame):
         dlg.Destroy()  
 
     def OnRegistrarP(self, event):  # wxGlade: Principal.<event_handler>
-        Ventana=GP.Principal(self)
+        Ventana=SP.Principal(self)
         Ventana.Show()
     def OnBuscarP(self, event):  # wxGlade: Principal.<event_handler>
         Ventana=BP.Principal(self)

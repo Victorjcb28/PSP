@@ -37,49 +37,71 @@ class Principal(wx.Frame):
         self.notebook_8_pane_1 = wx.Panel(self.notebook_8, wx.ID_ANY)
         self.label_9 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Nombres:"))
         self.txtNombre = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
+        self.label_5 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Fecha Nacimiento:"))
+        self.cobDia = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"), _("9"), _("10"), _("11"), _("12"), _("13"), _("14"), _("15"), _("16"), _("17"), _("18"), _("19"), _("20"), _("21"), _("22"), _("23"), _("24"), _("25"), _("26"), _("27"), _("28"), _("29"), _("30"), _("31")], style=wx.CB_READONLY)
+        self.cobMes = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"), _("9"), _("10"), _("11"), _("12")], style=wx.CB_READONLY)
+        self.cobAno = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[], style=wx.CB_READONLY)
         self.label_13 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Estado:"))
-        self.cobEstado = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("Amazonas"), _("Anzoategui"), _("Apure"), _("Aragua"), _("Barinas"), _("Bolivar"), _("Carabobo"), _("Cojedes"), _("Delta Amacuro"), _("Distrito Capital"), _("Falcon"), _("Guarico"), _("Lara"), _("Merida"), _("Miranda"), _("Monagas"), _("Nueva Esparta"), _("Portuguesa"), _("Sucre"), _("Tachira"), _("Trujillo"), _("Vargas"), _("Yaracuy"), _("Zulia")], style=wx.CB_DROPDOWN)
+        self.cobEstado = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[], style=wx.CB_READONLY)
         self.label_10 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Apellidos:"))
         self.txtApellidos = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
+        self.label_6 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Edad:"))
+        self.txtEdad = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
         self.label_14 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Municipio:"))
-        self.cobMunicipio = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[], style=wx.CB_DROPDOWN)
+        self.cobMunicipio = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[], style=wx.CB_READONLY)
         self.label_11 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Cedula:"))
         self.txtCedula = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
+        self.label_7 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Correo:"))
+        self.txtCorreo = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
         self.label_15 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Parroquia:"))
-        self.cobParroquia = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[], style=wx.CB_DROPDOWN)
+        self.cobParroquia = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[], style=wx.CB_READONLY)
         self.label_12 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Sexo:"))
-        self.CobSexo = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("M"), _("F")], style=wx.CB_DROPDOWN)
+        self.CobSexo = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("M"), _("F")], style=wx.CB_READONLY)
+        self.label_8 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Telefono:"))
+        self.txtTelefono = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
         self.label_16 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Direccion:"))
         self.txtDireccion = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
         self.notebook_9 = wx.Notebook(self, wx.ID_ANY)
         self.notebook_9_pane_1 = wx.Panel(self.notebook_9, wx.ID_ANY)
         self.label_17 = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _("Nivel de Instruccion:"))
-        self.cobEducacion = wx.ComboBox(self.notebook_9_pane_1, wx.ID_ANY, choices=[_("PRIMARIA"), _("PREGRADO"), _("POSTGRADO")], style=wx.CB_DROPDOWN)
+        self.cobEducacion = wx.ComboBox(self.notebook_9_pane_1, wx.ID_ANY, choices=[_("PRIMARIA"), _("SECUNDARIA"), _("PREGRADO"), _("POSTGRADO")], style=wx.CB_READONLY)
+        self.label_20 = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _(u"A\u00f1o de Graduacion:"))
+        self.txtAnoG = wx.TextCtrl(self.notebook_9_pane_1, wx.ID_ANY, "")
+        self.label_24 = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _("Contabilidad Basica:"))
+        self.cobContabilidad = wx.ComboBox(self.notebook_9_pane_1, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_READONLY)
         self.label_18 = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _("Titulo:"))
         self.txtTitulo = wx.TextCtrl(self.notebook_9_pane_1, wx.ID_ANY, "")
+        self.label_21 = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _("Orden de Merito:"))
+        self.txtMerito = wx.TextCtrl(self.notebook_9_pane_1, wx.ID_ANY, "")
         self.label_19 = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _("Idioma:"))
-        self.cobIdioma = wx.ComboBox(self.notebook_9_pane_1, wx.ID_ANY, choices=[_("INGLES"), _("OTROS")], style=wx.CB_DROPDOWN)
+        self.cobIdioma = wx.ComboBox(self.notebook_9_pane_1, wx.ID_ANY, choices=[_("INGLES"), _("OTROS"), _(u"ESPA\u00d1OL/INGLES")], style=wx.CB_READONLY)
+        self.label_23 = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _("Maneja Paquete Office:"))
+        self.cobOffice = wx.ComboBox(self.notebook_9_pane_1, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_READONLY)
         self.notebook_10 = wx.Notebook(self, wx.ID_ANY)
         self.notebook_10_pane_1 = wx.Panel(self.notebook_10, wx.ID_ANY)
-        self.label_2 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _("Salario:"))
-        self.cobSalario = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[_("Salario Minimo"), _("Mayor a Salario Minimo")], style=wx.CB_DROPDOWN)
-        self.label_3 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _("Vigente:"))
-        self.cobVigente = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
-        self.label_4 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _("Cargo:"))
-        self.cobCargo = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[_("ADMINISTRACION"), _("ASISTENTE"), _("CAJERO"), _("CHOFER"), _("VIGILANTE"), _("GERENTE VENTAS"), _("ASISTENTE VENTAS"), _("SERVICIO AL CLIENTE"), _("RECURSOS HUMANOS")], style=wx.CB_DROPDOWN)
+        self.label_2 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _("Trabaja en la empresa:"))
+        self.cobSalario = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
+        self.label_22 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _("Cargo:"))
+        self.cobCargo = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[], style=wx.CB_READONLY)
+        self.label_3 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _("Empresa donde trabajo:"))
+        self.txtEmpresaT = wx.TextCtrl(self.notebook_10_pane_1, wx.ID_ANY, "")
+        self.label_4 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _(u"A\u00f1os de trabajo:"))
+        self.cobAtrabajo = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[], style=wx.CB_DROPDOWN)
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Guardar"))
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Limpiar"))
-
+        f.Ano(self)
         self.__set_properties()
         self.__do_layout()
 
         self.Bind(wx.EVT_MENU, self.OnPrincipal, self.principal)
         self.Bind(wx.EVT_TEXT, self.OnLetras, self.txtNombre)
+        self.Bind(wx.EVT_TEXT, self.OnEdad, self.cobAno)
         self.Bind(wx.EVT_TEXT, self.OnEstado, self.cobEstado)
         self.Bind(wx.EVT_TEXT, self.OnLetras, self.txtApellidos)
         self.Bind(wx.EVT_TEXT, self.OnMunicipio, self.cobMunicipio)
         self.Bind(wx.EVT_TEXT, self.OnCedula, self.txtCedula)
         self.Bind(wx.EVT_TEXT, self.OnParroquia, self.cobParroquia)
+        self.Bind(wx.EVT_TEXT, self.OnTEmpresa, self.cobSalario)
         self.Bind(wx.EVT_BUTTON, self.OnGuardar, self.button_1)
         self.Bind(wx.EVT_BUTTON, self.OnLimpiar, self.button_2)
         # end wxGlade
@@ -87,46 +109,87 @@ class Principal(wx.Frame):
     def __set_properties(self):
         # begin wxGlade: Principal.__set_properties
         self.SetTitle(_("Guardar Postulante"))
-        self.SetSize((694, 627))
+        self.SetSize((1100, 627))
         self.label_1.SetFont(wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
+        self.txtNombre.SetMinSize((150, 38))
+        self.cobDia.SetMinSize((60, 37))
+        self.cobDia.SetSelection(-1)
+        self.cobMes.SetMinSize((60, 32))
+        self.cobMes.SetSelection(-1)
+        self.cobAno.SetMinSize((60, 32))
+        self.cobEstado.SetMinSize((150, 38))
+        self.cobMunicipio.SetMinSize((150, 32))
+        self.txtCorreo.SetMinSize((150, 33))
+        self.cobParroquia.SetMinSize((150, 35))
         self.CobSexo.SetSelection(-1)
+        self.txtTelefono.SetMinSize((150, 33))
+        self.txtDireccion.SetMinSize((150, 35))
         self.cobEducacion.SetMinSize((200, 36))
         self.cobEducacion.SetSelection(-1)
+        self.txtAnoG.SetMinSize((200, 36))
+        self.cobContabilidad.SetMinSize((200, 36))
+        self.cobContabilidad.SetSelection(-1)
         self.txtTitulo.SetMinSize((200, 36))
+        self.txtMerito.SetMinSize((200, 36))
         self.cobIdioma.SetMinSize((200, 36))
         self.cobIdioma.SetSelection(-1)
+        self.cobOffice.SetMinSize((200, 36))
+        self.cobOffice.SetSelection(-1)
         self.cobSalario.SetMinSize((275, 36))
         self.cobSalario.SetSelection(-1)
-        self.cobVigente.SetMinSize((275, 36))
-        self.cobVigente.SetSelection(-1)
-        self.cobCargo.SetMinSize((275, 36))
+        self.label_22.Enable(False)
+        self.cobCargo.SetMinSize((235, 36))
+        self.cobCargo.Enable(False)
+        self.label_3.Enable(False)
+        self.txtEmpresaT.SetMinSize((275, 36))
+        self.txtEmpresaT.Enable(False)
+        self.label_4.Enable(False)
+        self.cobAtrabajo.SetMinSize((275, 36))
+        self.cobAtrabajo.Enable(False)
         # end wxGlade
 
     def __do_layout(self):
         # begin wxGlade: Principal.__do_layout
         grid_sizer_3 = wx.FlexGridSizer(5, 1, 0, 0)
         grid_sizer_2 = wx.GridSizer(1, 4, 0, 0)
-        grid_sizer_1 = wx.FlexGridSizer(3, 2, 0, 0)
-        grid_sizer_5 = wx.FlexGridSizer(3, 2, 0, 0)
-        grid_sizer_4 = wx.FlexGridSizer(4, 5, 0, 0)
+        grid_sizer_1 = wx.FlexGridSizer(3, 6, 0, 0)
+        grid_sizer_5 = wx.FlexGridSizer(3, 8, 0, 0)
+        grid_sizer_4 = wx.FlexGridSizer(4, 8, 0, 0)
+        grid_sizer_6 = wx.FlexGridSizer(1, 3, 0, 0)
         grid_sizer_3.Add(self.label_1, 0, wx.ALIGN_CENTER, 0)
         grid_sizer_4.Add(self.label_9, 0, 0, 0)
         grid_sizer_4.Add(self.txtNombre, 0, wx.EXPAND, 0)
+        grid_sizer_4.Add((20, 20), 0, 0, 0)
+        grid_sizer_4.Add(self.label_5, 0, 0, 0)
+        grid_sizer_6.Add(self.cobDia, 0, wx.EXPAND, 0)
+        grid_sizer_6.Add(self.cobMes, 0, wx.EXPAND, 0)
+        grid_sizer_6.Add(self.cobAno, 0, wx.EXPAND, 0)
+        grid_sizer_6.AddGrowableRow(0)
+        grid_sizer_4.Add(grid_sizer_6, 1, 0, 0)
         grid_sizer_4.Add((20, 20), 0, 0, 0)
         grid_sizer_4.Add(self.label_13, 0, 0, 0)
         grid_sizer_4.Add(self.cobEstado, 0, wx.EXPAND, 0)
         grid_sizer_4.Add(self.label_10, 0, 0, 0)
         grid_sizer_4.Add(self.txtApellidos, 0, wx.EXPAND, 0)
         grid_sizer_4.Add((20, 20), 0, 0, 0)
+        grid_sizer_4.Add(self.label_6, 0, 0, 0)
+        grid_sizer_4.Add(self.txtEdad, 0, 0, 0)
+        grid_sizer_4.Add((20, 20), 0, 0, 0)
         grid_sizer_4.Add(self.label_14, 0, 0, 0)
         grid_sizer_4.Add(self.cobMunicipio, 0, wx.EXPAND, 0)
         grid_sizer_4.Add(self.label_11, 0, 0, 0)
         grid_sizer_4.Add(self.txtCedula, 0, wx.EXPAND, 0)
         grid_sizer_4.Add((20, 20), 0, 0, 0)
+        grid_sizer_4.Add(self.label_7, 0, 0, 0)
+        grid_sizer_4.Add(self.txtCorreo, 0, wx.EXPAND, 0)
+        grid_sizer_4.Add((20, 20), 0, 0, 0)
         grid_sizer_4.Add(self.label_15, 0, 0, 0)
         grid_sizer_4.Add(self.cobParroquia, 0, wx.EXPAND, 0)
         grid_sizer_4.Add(self.label_12, 0, 0, 0)
         grid_sizer_4.Add(self.CobSexo, 0, wx.EXPAND, 0)
+        grid_sizer_4.Add((20, 20), 0, 0, 0)
+        grid_sizer_4.Add(self.label_8, 0, 0, 0)
+        grid_sizer_4.Add(self.txtTelefono, 0, wx.EXPAND, 0)
         grid_sizer_4.Add((20, 20), 0, 0, 0)
         grid_sizer_4.Add(self.label_16, 0, 0, 0)
         grid_sizer_4.Add(self.txtDireccion, 0, wx.EXPAND, 0)
@@ -141,27 +204,58 @@ class Principal(wx.Frame):
         grid_sizer_3.Add(self.notebook_8, 1, wx.EXPAND, 0)
         grid_sizer_5.Add(self.label_17, 0, 0, 0)
         grid_sizer_5.Add(self.cobEducacion, 0, 0, 0)
+        grid_sizer_5.Add((20, 20), 0, 0, 0)
+        grid_sizer_5.Add(self.label_20, 0, 0, 0)
+        grid_sizer_5.Add(self.txtAnoG, 0, 0, 0)
+        grid_sizer_5.Add((20, 20), 0, 0, 0)
+        grid_sizer_5.Add(self.label_24, 0, 0, 0)
+        grid_sizer_5.Add(self.cobContabilidad, 0, 0, 0)
         grid_sizer_5.Add(self.label_18, 0, 0, 0)
         grid_sizer_5.Add(self.txtTitulo, 0, 0, 0)
+        grid_sizer_5.Add((20, 20), 0, 0, 0)
+        grid_sizer_5.Add(self.label_21, 0, 0, 0)
+        grid_sizer_5.Add(self.txtMerito, 0, 0, 0)
+        grid_sizer_5.Add((20, 20), 0, 0, 0)
+        grid_sizer_5.Add((20, 20), 0, 0, 0)
+        grid_sizer_5.Add((20, 20), 0, 0, 0)
         grid_sizer_5.Add(self.label_19, 0, 0, 0)
         grid_sizer_5.Add(self.cobIdioma, 0, 0, 0)
+        grid_sizer_5.Add((20, 20), 0, 0, 0)
+        grid_sizer_5.Add(self.label_23, 0, 0, 0)
+        grid_sizer_5.Add(self.cobOffice, 0, 0, 0)
+        grid_sizer_5.Add((20, 20), 0, 0, 0)
+        grid_sizer_5.Add((20, 20), 0, 0, 0)
+        grid_sizer_5.Add((20, 20), 0, 0, 0)
         self.notebook_9_pane_1.SetSizer(grid_sizer_5)
         grid_sizer_5.AddGrowableCol(1)
+        grid_sizer_5.AddGrowableCol(4)
         self.notebook_9.AddPage(self.notebook_9_pane_1, _("Educacion"))
         grid_sizer_3.Add(self.notebook_9, 1, wx.EXPAND, 0)
         grid_sizer_1.Add(self.label_2, 0, 0, 0)
         grid_sizer_1.Add(self.cobSalario, 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.label_22, 0, 0, 0)
+        grid_sizer_1.Add(self.cobCargo, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add((350, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_3, 0, 0, 0)
-        grid_sizer_1.Add(self.cobVigente, 0, 0, 0)
+        grid_sizer_1.Add(self.txtEmpresaT, 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_4, 0, 0, 0)
-        grid_sizer_1.Add(self.cobCargo, 0, 0, 0)
+        grid_sizer_1.Add(self.cobAtrabajo, 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
         self.notebook_10_pane_1.SetSizer(grid_sizer_1)
         grid_sizer_1.AddGrowableCol(1)
-        self.notebook_10.AddPage(self.notebook_10_pane_1, _("Estatus"))
+        grid_sizer_1.AddGrowableCol(4)
+        self.notebook_10.AddPage(self.notebook_10_pane_1, _("Experiencia Laboral"))
         grid_sizer_3.Add(self.notebook_10, 1, wx.EXPAND, 0)
-        grid_sizer_2.Add((150, 20), 0, 0, 0)
+        grid_sizer_2.Add((300, 20), 0, 0, 0)
         grid_sizer_2.Add(self.button_1, 0, 0, 0)
-        grid_sizer_2.Add((50, 20), 0, 0, 0)
+        grid_sizer_2.Add((10, 20), 0, 0, 0)
         grid_sizer_2.Add(self.button_2, 0, 0, 0)
         grid_sizer_3.Add(grid_sizer_2, 1, 0, 0)
         self.SetSizer(grid_sizer_3)
@@ -229,117 +323,10 @@ class Principal(wx.Frame):
 
     def OnGuardar(self, event):  # wxGlade: Principal.<event_handler>
 
-        #Validamos campos en blanco
-        if len(self.txtNombre.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.txtNombre.SetBackgroundColour("red")
-            self.txtNombre.SetFocus()
-            self.txtNombre.Refresh()
-
-        elif len(self.txtApellidos.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.txtApellidos.SetBackgroundColour("red")
-            self.txtApellidos.SetFocus()
-            self.txtApellidos.Refresh()
-
-        elif len(self.txtCedula.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.txtCedula.SetBackgroundColour("red")
-            self.txtCedula.SetFocus()
-            self.txtCedula.Refresh()
-
-        elif len(self.CobSexo.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.CobSexo.SetBackgroundColour("red")
-            self.CobSexo.SetFocus()
-            self.CobSexo.Refresh()
-
-        elif len(self.cobEstado.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.cobEstado.SetBackgroundColour("red")
-            self.cobEstado.SetFocus()
-            self.cobEstado.Refresh()
-
-        elif len(self.cobMunicipio.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.cobMunicipio.SetBackgroundColour("red")
-            self.cobMunicipio.SetFocus()
-            self.cobMunicipio.Refresh()
-
-        elif len(self.cobParroquia.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.cobParroquia.SetBackgroundColour("red")
-            self.cobParroquia.SetFocus()
-            self.cobParroquia.Refresh()
-
-        elif len(self.txtDireccion.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.txtDireccion.SetBackgroundColour("red")
-            self.txtDireccion.SetFocus()
-            self.txtDireccion.Refresh()
-
-        elif len(self.cobEducacion.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.cobEducacion.SetBackgroundColour("red")
-            self.cobEducacion.SetFocus()
-            self.cobEducacion.Refresh()
-
-        elif len(self.txtTitulo.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.txtTitulo.SetBackgroundColour("red")
-            self.txtTitulo.SetFocus()
-            self.txtTitulo.Refresh()
-
-        elif len(self.cobIdioma.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.cobIdioma.SetBackgroundColour("red")
-            self.cobIdioma.SetFocus()
-            self.cobIdioma.Refresh()
-
-        elif len(self.cobSalario.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.cobSalario.SetBackgroundColour("red")
-            self.cobSalario.SetFocus()
-            self.cobSalario.Refresh()
-
-        elif len(self.cobVigente.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.cobVigente.SetBackgroundColour("red")
-            self.cobVigente.SetFocus()
-            self.cobVigente.Refresh()
-
-        elif len(self.cobCargo.GetValue())==0:
-            wx.MessageBox("No puede tener campos en blanco",
-                          "Error")
-            self.cobCargo.SetBackgroundColour("red")
-            self.cobCargo.SetFocus()
-            self.cobCargo.Refresh()
-
-
-        else:
-            dlg = wx.MessageDialog(None, '¿Desea Guardar?',
-                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
-                            wx.ICON_QUESTION)
-        #dlg.ShowModal()
-        
-
-            if dlg.ShowModal()==wx.ID_OK:
+       
             
-                f.GuardarPostulante(self)
-            dlg.Destroy()
+        f.GuardarPostulante(self)
+            
             
         
 
@@ -361,6 +348,24 @@ class Principal(wx.Frame):
         f.BuscarP(self)
     def OnParroquia(self, event):  # wxGlade: Principal.<event_handler>
         pass
+    def OnEdad(self, event):  # wxGlade: Principal.<event_handler>
+        f.Edad(self)
+    def OnTEmpresa(self, event):  # wxGlade: Principal.<event_handler>
+        frm=self
+        Campo=frm.cobSalario.GetValue()
+
+        if Campo=="SI":
+            pass
+        else:
+            
+            self.label_22.Enable(True)            
+            self.combo_box_1.Enable(True)
+            
+            self.label_3.Enable(True)            
+            self.txtEmpresaT.Enable(True)
+            
+            self.label_4.Enable(True)           
+            self.cobCargo.Enable(True)
 # end of class Principal
 class ContieneDatos(wx.PyValidator):
     def __init__(self):
