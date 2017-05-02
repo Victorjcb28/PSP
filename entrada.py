@@ -20,12 +20,13 @@ class Principal(wx.Frame):
         kwds["style"] = wx.BORDER_NONE | wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, *args, **kwds)
         self.estatusbar = self.CreateStatusBar(1)
+        self.bitmap_1 = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("iconos/Logo1.png", wx.BITMAP_TYPE_ANY))
         self.label_1 = wx.StaticText(self, wx.ID_ANY, _("Usuario:"))
         self.txtUsuario = wx.TextCtrl(self, wx.ID_ANY, "")
         self.label_1_copy = wx.StaticText(self, wx.ID_ANY, _("Clave:"))
         self.txtClave = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.TE_PASSWORD)
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Aceptar"))
-        self.button_2 = wx.Button(self, wx.ID_ANY, _("Cancelar"))
+        self.button_2 = wx.Button(self, wx.ID_ANY, _("Salir"))
 
         self.__set_properties()
         self.txtUsuario.SetValidator(ContieneDatos())#activa la validacion
@@ -56,6 +57,7 @@ class Principal(wx.Frame):
         grid_sizer_2 = wx.GridSizer(1, 2, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.bitmap_1, 0, wx.ALIGN_CENTER, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_1, 0, wx.EXPAND, 0)

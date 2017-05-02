@@ -29,6 +29,7 @@ class Principal(wx.Frame):
         self.vntPpal_BarraMenu.Append(self.archivo, _("Archivo"))
         self.SetMenuBar(self.vntPpal_BarraMenu)
         # Menu Bar end
+        
         self.label_1 = wx.StaticText(self, wx.ID_ANY, _("Postulante Administrativo"))
         self.label_4 = wx.StaticText(self, wx.ID_ANY, _(u"\u00bfPor que quiere trabajar\ncon nosotros?"))
         self.cobExperiencia = wx.ComboBox(self, wx.ID_ANY, choices=[_("ESTA ES UNA EMPRESA CON BUENA REPUTACION EN PLENO CRECIMIENTO Y PUEDO APORTAR EXPERCIENCIAS LABORALES NUEVAS"), _("ES UNA BUENA OPORTUNIDAD PARA PONER EN PRACTICA MIS CONOCIMIENTOS Y CRECER COMO PROFESIONAL DENTRO DE MI CAMPO"), _("ESTOY DESEMPLEADO Y NECESITO TRABAJO")], style=wx.CB_DROPDOWN)
@@ -52,8 +53,20 @@ class Principal(wx.Frame):
         self.cobAccidente = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Guardar"))
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Limpiar"))
-
+        
         self.__set_properties()
+        
+        self.cobExperiencia.SetValidator(ContieneDatos())#activa la validacion
+        self.cobGTrabajo.SetValidator(ContieneDatos())#activa la validacion
+        self.cobTFuera.SetValidator(ContieneDatos())#activa la validacion
+        self.cobLicencia.SetValidator(ContieneDatos())#activa la validacion
+        self.cobTransporte.SetValidator(ContieneDatos())#activa la validacion
+        self.cobMecanica.SetValidator(ContieneDatos())#activa la validacion
+        self.cobHoras.SetValidator(ContieneDatos())#activa la validacion
+        self.cobNormas.SetValidator(ContieneDatos())#activa la validacion
+        self.cobNormasS.SetValidator(ContieneDatos())#activa la validacion
+        self.cobAccidente.SetValidator(ContieneDatos())#activa la validacion
+        
         self.__do_layout()
 
         self.Bind(wx.EVT_MENU, self.OnPrincipal, self.principal)
@@ -63,7 +76,7 @@ class Principal(wx.Frame):
 
     def __set_properties(self):
         # begin wxGlade: Principal.__set_properties
-        self.SetTitle(_("Postulante Chofer"))
+        self.SetTitle(_("Postulante Administrativo"))
         self.SetSize((688, 558))
         self.label_1.SetFont(wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
         self.cobExperiencia.SetMinSize((156, 40))
@@ -159,14 +172,66 @@ class Principal(wx.Frame):
         # end wxGlade
 
     def OnPrincipal(self, event):  # wxGlade: Principal.<event_handler>
-        print "Event handler 'OnPrincipal' not implemented!"
-        event.Skip()
+        pass
 
     def OnGuardar(self, event):  # wxGlade: Principal.<event_handler>
-        f.GuardarAdministrador(self)
+        if self.Validate():
+            dlg = wx.MessageDialog(None, '¿Desea Guardar?',
+                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
+                            wx.ICON_QUESTION)
+        #dlg.ShowModal()
+        
+
+        if dlg.ShowModal()==wx.ID_OK:
+            f.GuardarAdministrador(self)
+            self.Hide()
+        dlg.Destroy()  
+            
 
     def OnLimpiar(self, event):  # wxGlade: Principal.<event_handler>
-        print "Event handler 'OnLimpiar' not implemented!"
-        event.Skip()
+        pass
 
 # end of class Principal
+class ContieneDatos(wx.PyValidator):
+    def __init__(self):
+        wx.PyValidator.__init__(self)
+
+    def Clone(self):
+        """
+        Note que todo validador debe implementar
+        # el método Clone().
+        """
+        return ContieneDatos()
+
+    def Validate(self, win):
+        textCtrl = self.GetWindow()
+        text = textCtrl.GetValue()
+        if len(text) == 0:
+            wx.MessageBox("Este campo debe contener algún texto!",
+                          "Error")
+            textCtrl.SetBackgroundColour("red")
+            textCtrl.SetFocus()
+            textCtrl.Refresh()
+            return False
+        else:
+            textCtrl.SetBackgroundColour(
+                               wx.SystemSettings_GetColour(
+                               wx.SYS_COLOUR_WINDOW))
+            textCtrl.Refresh()
+            return True
+
+    def TransferToWindow(self):
+        return True
+
+    def TransferFromWindow(self):
+        return True
+
+if __name__ == "__main__":
+    gettext.install("app") # replace with the appropriate catalog name
+
+    app = wx.App()
+    #wx.InitAllImageHandlers()
+    frame_1 = Principal(None, wx.ID_ANY, "")
+    app.SetTopWindow(frame_1)
+    frame_1.Show()
+    app.MainLoop()
