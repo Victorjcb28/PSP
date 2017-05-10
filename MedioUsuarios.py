@@ -8,6 +8,7 @@ import wx
 import os
 import FuncionesReportes as FR
 import SeleccionPostulante as SP
+import BuscarPostulante2 as BP2
 # begin wxGlade: dependencies
 import gettext
 # end wxGlade
@@ -20,14 +21,16 @@ class Principal(wx.Frame):
     def __init__(self, *args, **kwds):
         # begin wxGlade: Principal.__init__
         wx.Frame.__init__(self, *args, **kwds)
-        self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/ReporteUsuarios1.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_button_2 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/ReportePostulantes1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/ReporteUsuarios1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_2 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/ReportePostulantes1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_3 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/ReportePostulantes1.png", wx.BITMAP_TYPE_ANY))
 
         self.__set_properties()
         self.__do_layout()
 
         self.Bind(wx.EVT_BUTTON, self.OnUsuarios, self.bitmap_button_1)
         self.Bind(wx.EVT_BUTTON, self.OnPostulantes, self.bitmap_button_2)
+        self.Bind(wx.EVT_BUTTON, self.OnBIndividual, self.bitmap_button_3)
         # end wxGlade
 
     def __set_properties(self):
@@ -37,14 +40,17 @@ class Principal(wx.Frame):
         self.bitmap_button_1.SetSize(self.bitmap_button_1.GetBestSize())
         self.bitmap_button_2.SetToolTip(wx.ToolTip(_("Reporte de Postulantes")))
         self.bitmap_button_2.SetSize(self.bitmap_button_2.GetBestSize())
+        self.bitmap_button_3.SetToolTip(wx.ToolTip(_("Buscar Postulante")))
+        self.bitmap_button_3.SetSize(self.bitmap_button_3.GetBestSize())
         # end wxGlade
 
     def __do_layout(self):
         # begin wxGlade: Principal.__do_layout
         sizer_1 = wx.BoxSizer(wx.VERTICAL)
-        grid_sizer_1 = wx.GridSizer(1, 2, 0, 0)
+        grid_sizer_1 = wx.GridSizer(1, 3, 0, 0)
         grid_sizer_1.Add(self.bitmap_button_1, 0, wx.ALIGN_CENTER, 0)
         grid_sizer_1.Add(self.bitmap_button_2, 0, wx.ALIGN_CENTER, 0)
+        grid_sizer_1.Add(self.bitmap_button_3, 0, 0, 0)
         sizer_1.Add(grid_sizer_1, 1, 0, 0)
         self.SetSizer(sizer_1)
         sizer_1.Fit(self)
@@ -61,4 +67,8 @@ class Principal(wx.Frame):
         Ventana.Show()
         self.Hide()
 
+    def OnBIndividual(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=BP2.Principal(self)
+        Ventana.Show()
+        self.Hide()
 # end of class Principal

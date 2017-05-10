@@ -7,6 +7,7 @@
 import wx
 import os
 import GuardarPostulante as GP
+import GuardarPostulante2 as GP2
 import funciones as f
 # begin wxGlade: dependencies
 import gettext
@@ -109,9 +110,10 @@ class Principal(wx.Frame):
         f.Administrativo(self)
 
     def OnChofer(self, event):  # wxGlade: Principal.<event_handler>
-        FR.PostulantesChofer(self)
-        os.system('xdg-open "ReportePostulantesChofer.pdf"')
+        Ventana=GP2.Principal(self)
+        Ventana.Show()
         self.Hide()
+        f.Chofer(self)
     def OnVigilante(self, event):  # wxGlade: Principal.<event_handler>
         FR.PostulantesVigilante(self)
         os.system('xdg-open "ReportePostulantesVigilante.pdf"')

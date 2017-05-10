@@ -22,7 +22,9 @@ import DesbloquearUsuario as DU
 #Postulante
 import SeleccionPostulantes as SP
 import GuardarPostulante as GP
+import GuardarPostulante2 as GP2
 import BuscarPostulante as BP
+
 
 #Reportes
 import MedioUsuarios as MEU

@@ -4,6 +4,8 @@
 
 import sqlite3 as sq3
 import wx
+import os
+import FuncionesReportes as FR
 import hashlib
 
 import entrada as E
@@ -80,7 +82,7 @@ def Ano(frm):
         self.cobAno.Append(str(ano1))
         j=j-1
         
-
+#Funciones nuevas para levantar examen al momento de guardar Postulante !!Pedido por profesor!!
 def Administrativo(frm):
 
     Hora=datetime.datetime.now()
@@ -95,7 +97,22 @@ def Administrativo(frm):
         N=(str(rs2[0]))
         cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Nom,Hora,Op))
         con.commit()
-        
+
+def Chofer(frm):
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    Op="Seleccionar Postulante"
+    Nom="CHOFER"
+    self=frm
+    con, cur=conexion()
+    cur.execute("Select min(Usuario) from Bitacora")
+    rs2=cur.fetchone()
+    if rs2:
+        N=(str(rs2[0]))
+        cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Nom,Hora,Op))
+        con.commit()
+#Fin funciones examen-Guardar      
                     
 
 #fin funciones nuevas        
@@ -368,6 +385,13 @@ def GuardarPostulante(frm):
     Par=Pa.upper()
     Di=frm.txtDireccion.GetValue()
     Dir=Di.upper()
+    Edad=frm.txtEdad.GetValue()
+    Corr=frm.txtCorreo.GetValue()
+    Tele=frm.txtTelefono.GetValue()
+    dia=frm.cobDia.GetValue()
+    mes=frm.cobMes.GetValue()
+    anno=frm.cobAno.GetValue()
+    Fna=dia + "/"+mes+ "/"+ anno
     
     Ed=frm.cobEducacion.GetValue()
     Ti=frm.txtTitulo.GetValue()
@@ -376,10 +400,145 @@ def GuardarPostulante(frm):
     Me=frm.txtMerito.GetValue()
     Off=frm.cobOffice.GetValue()
     Con=frm.cobContabilidad.GetValue()
-    MI="militar"
-    PAU="auxilio"
+    Curso=frm.txtCurso.GetValue()
+    
 
-    Educacion=(Ed,Ti,Id,AG,Me,Off,Con,MI,PAU,Ce)
+    Educacion=(Ed,Ti,Id,AG,Me,Off,Con,Curso,Ce)
+
+    Sa=frm.cobSalario.GetValue()
+    Emp=frm.txtEmpresaT.GetValue()
+    AT=frm.cobAtrabajo.GetValue()
+    Car=frm.cobCargo.GetValue()
+    Experiencia=(Sa,Emp,AT,Car,Ce)
+
+    
+
+    Hora=datetime.datetime.now()
+    Fecha = datetime.date.today()
+    
+    Op="Guardar Postulante"
+    
+    
+    con, cur = conexion()
+    dato=frm.txtCedula.GetValue()
+    #datos=(Car,Sec)
+    cur.execute("Select Variable from registro order by hora desc")
+    rs3=cur.fetchone()
+    if rs3:
+        
+        Ca=(str(rs3[0]))
+
+    cur.execute("select Cedula from Postulante where Cedula=:dato",{"dato": dato})
+    rs=cur.fetchone()
+    if rs:
+       wx.MessageBox('Cedula Repetida', 'Caja de mensaje') 
+    else:
+        
+                
+        cur.execute('INSERT INTO Postulante (Nombre,Apellido,Cedula,Sexo,Direccion,Fecha,Edad,Telefono,Correo,FNacimiento) VALUES (?,?,?,?,?,?,?,?,?,?)',(Nom,Ape,Ce,Se,Dir,Hora,Edad,Corr,Tele,Fna))
+        cur.execute('INSERT INTO Educacion (NEducacion,Titulo,Idioma,AGraduacion,Merito,Office,Contabilidad,Curso,Cedula) VALUES (?,?,?,?,?,?,?,?,?)',Educacion)
+        cur.execute('INSERT INTO Experiencia (Vigente,EmpresaV,ATrabajo,Cargo,Cedula) VALUES (?,?,?,?,?)',Experiencia)
+        cur.execute('INSERT INTO Estado (Nombre,Id) VALUES (?,?)',(Est,Ce))
+        cur.execute('INSERT INTO Munic (Nombre,Id) VALUES (?,?)',(Mun,Ce))
+        cur.execute('INSERT INTO Parroquia (Nombre,Id) VALUES (?,?)',(Par,Ce))
+        cur.execute('INSERT INTO Examen (Cargo,Cedula) VALUES (?,?)',(Ca,Ce))
+        wx.MessageBox('Guardado Satisfactoriamente', 'Caja de mensaje')       
+        con.commit()        
+
+
+        
+        cur.execute("Select min(Usuario) from Bitacora")
+        rs2=cur.fetchone()
+        if rs2:
+        
+            N=(str(rs2[0]))
+            cur.execute("Insert into Registro (Usuario,Fecha,Variable,Hora,Operacion) Values (?,?,?,?,?)", (N,Fecha,Ce,Hora,Op))
+            con.commit()
+
+        
+            
+
+        if Ca=="ADMINISTRACION":
+                Ventana=EA.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="ASISTENTE":
+                Ventana=EAA.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="CAJERO":
+                Ventana=ECA.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="CHOFER":
+                Ventana=EC.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="VIGILANTE":
+                Ventana=EV.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="GERENTE VENTAS":
+                Ventana=ECV.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="ASISTENTE VENTAS":
+                Ventana=ECV1.Principal(self)
+                Ventana.Show()
+                self.Hide()               
+        if Ca=="SERVICIO AL CLIENTE":
+                Ventana=ESC.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        if Ca=="RECURSOS HUMANOS":
+                Ventana=ERH.Principal(self)
+                Ventana.Show()
+                self.Hide()
+        
+
+    self.txtNombre.Clear()
+    self.txtApellidos.Clear()
+    self.txtCedula.Clear()
+        
+    
+    self.cobMunicipio.Clear()
+    self.cobParroquia.Clear()
+    self.txtDireccion.Clear()
+
+    self.txtTitulo.Clear()
+   
+    self.txtNombre.SetFocus()        
+    cur.close()
+    con.close()
+    return
+
+def GuardarPostulante2(frm):
+    self=frm
+    No = frm.txtNombre.GetValue()
+    Nom=No.upper()
+    Ap= frm.txtApellidos.GetValue()
+    Ape= Ap.upper()
+    Ce= frm.txtCedula.GetValue()
+    Se=frm.CobSexo.GetValue()
+    Es=frm.cobEstado.GetValue()
+    Est= Es.upper()
+    Mu=frm.cobMunicipio.GetValue()
+    Mun=Mu.upper()
+    Pa=frm.cobParroquia.GetValue()
+    Par=Pa.upper()
+    Di=frm.txtDireccion.GetValue()
+    Dir=Di.upper()
+    
+    Ed=frm.cobEducacion.GetValue()
+    Ti=frm.txtTitulo.GetValue()
+    Id=frm.cobIdioma.GetValue()
+    AG=frm.txtAnoG.GetValue()
+    Me=frm.txtMerito.GetValue()
+    Mi=frm.cobMilitar.GetValue()
+   
+  
+
+    Educacion=(Ed,Ti,Id,AG,Me,Mi,Ce)
 
     Sa=frm.cobSalario.GetValue()
     Emp=frm.txtEmpresaT.GetValue()
@@ -412,7 +571,7 @@ def GuardarPostulante(frm):
         
                 
         cur.execute('INSERT INTO Postulante (Nombre,Apellido,Cedula,Sexo,Direccion,Fecha) VALUES (?,?,?,?,?,?)',(Nom,Ape,Ce,Se,Dir,Hora))
-        cur.execute('INSERT INTO Educacion (NEducacion,Titulo,Idioma,AGraduacion,Merito,Office,Contabilidad,Militar,PAuxilio,Cedula) VALUES (?,?,?,?,?,?,?,?,?,?)',Educacion)
+        cur.execute('INSERT INTO Educacion (NEducacion,Titulo,Idioma,AGraduacion,Merito,Militar,Cedula) VALUES (?,?,?,?,?,?,?)',Educacion)
         cur.execute('INSERT INTO Experiencia (Vigente,EmpresaV,ATrabajo,Cargo,Cedula) VALUES (?,?,?,?,?)',Experiencia)
         cur.execute('INSERT INTO Estado (Nombre,Id) VALUES (?,?)',(Est,Ce))
         cur.execute('INSERT INTO Munic (Nombre,Id) VALUES (?,?)',(Mun,Ce))
@@ -729,14 +888,18 @@ def GuardarChofer(frm):
     
     dato="CHOFER"
     con, cur = conexion()
-    
+    cur.execute("Select count(*) from Examen where Cargo=:dato",{"dato": dato})
+    rs5=cur.fetchone()
+    m=0
+    j=0
+    l=0
+    lista3=[]
+
     cur.execute("Select max(id) from Examen")
     rs2=cur.fetchone()
     if rs2:
         Id=(str(rs2[0])) 
-                
-        
-
+        lista4=[str(rs2[0])]
         cur.execute("select * from Respuestas where Cargo=:dato",{"dato": dato})
         rs3=cur.fetchone()
         if rs3:
@@ -753,10 +916,24 @@ def GuardarChofer(frm):
             pp=str(puntaje)
             cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=?,Puntuacion=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,pp,Id))
             
-            
+                 
+    
+            if rs5:
+                while l< int(rs5[0]):
+                    cur.execute("Select * from Examen where Cargo=:dato order by puntuacion desc",{"dato": dato})
+                    rs1=[r[0] for r in cur.fetchall()]
+
+                    lista3.append(str(rs1[l]))
+                    l=l+1
+            while lista4[0] != lista3[j]:
+                j=j+1
+
+            Pu=str(j+1)
+
+
             dlg=wx.MessageDialog(self,'Datos Guardados\n'+
             'Su puntuacion fue de: '+pp+'%\n'+
-            'Su Numero de Registro es:'+Id
+            'Su Posicion es:'+Pu
             , 'Atencion', wx.OK)
             dlg.ShowModal()
             dlg.Destroy()
@@ -777,7 +954,6 @@ def GuardarChofer(frm):
           
     cur.close()
     con.close()
-
 
 #Administacion
 
@@ -808,18 +984,22 @@ def GuardarAdministrador(frm):
     Hora=datetime.datetime.now()
     Fecha = datetime.date.today()
     
-    Op="Postulante Administracion"
+    Op="Postulante Administrativo"
     
     dato="ADMINISTRACION"
     con, cur = conexion()
-    
-    cur.execute("Select max(id) from Examen")
+    cur.execute("Select count(*) from Examen where Cargo=:dato",{"dato": dato})
+    rs5=cur.fetchone()
+    m=0
+    j=0
+    l=0
+    lista3=[]
+
+    cur.execute("Select max(id) from Examen where Cargo=:dato",{"dato": dato})
     rs2=cur.fetchone()
     if rs2:
         Id=(str(rs2[0])) 
-                
-        
-
+        lista4=[str(rs2[0])]
         cur.execute("select * from Respuestas where Cargo=:dato",{"dato": dato})
         rs3=cur.fetchone()
         if rs3:
@@ -836,15 +1016,41 @@ def GuardarAdministrador(frm):
             pp=str(puntaje)
             cur.execute('UPDATE Examen Set  P1=?,P2=?,P3=?,P4=?,P5=?,P6=?,P7=?,P8=?,P9=?,P10=?,Puntuacion=? WHERE Id=?',(AE,GT,TF,LI,TA,ME,HE,NE,NS,AC,pp,Id))
             
-            cur.execute("select * from Examen where cargo="ADMINISTRACION" order by puntuacion desc")
-            rs4=[r[0] for r in cur.fetchall()]
-            
-            dlg=wx.MessageDialog(self,'Datos Guardados\n'+
+                 
+    
+            if rs5:
+                while l< int(rs5[0]):
+                    cur.execute("Select * from Examen where Cargo=:dato order by puntuacion desc",{"dato": dato})
+                    rs1=[r[0] for r in cur.fetchall()]
+
+                    lista3.append(str(rs1[l]))
+                    l=l+1
+            while lista4[0] != lista3[j]:
+                j=j+1
+
+            Pu=str(j+1)
+
+            dlg = wx.MessageDialog(None, 'Desea Imprimir la Planilla\n'+
             'Su puntuacion fue de: '+pp+'%\n'+
-            'Su Numero de Registro es:'+Id
-            , 'Atencion', wx.OK)
-            dlg.ShowModal()
-            dlg.Destroy()
+            'Su Numero de Registro es:'+Id+ '\n'+
+            'Su Posicion es:'+Pu,
+                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
+                            wx.ICON_QUESTION)
+        #dlg.ShowModal()
+        
+
+            if dlg.ShowModal()==wx.ID_OK:
+                FR.ReportePostulanteIP(self)
+                os.system('xdg-open "ReportePostulanteIndividualssss.pdf"') #works for urls too
+                self.Hide()
+            dlg.Destroy()  
+
+            #dlg=wx.MessageDialog(self,'Datos Guardados\n'+
+            #'Su puntuacion fue de: '+pp+'%\n'+
+            #'Su Posicion es:'+Pu
+            #, 'Atencion', wx.OK)
+           # dlg.ShowModal()
+            #dlg.Destroy()
                     
                     
                  
