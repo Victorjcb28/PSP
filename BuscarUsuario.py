@@ -24,30 +24,36 @@ class Principal(wx.Frame):
         
         # Menu Bar
         self.frame_1_menubar = wx.MenuBar()
-        self.archivo = wx.Menu()
-        self.prinicipal = wx.MenuItem(self.archivo, wx.ID_ANY, _("Principal"), _("Principal"), wx.ITEM_NORMAL)
-        self.archivo.AppendItem(self.prinicipal)
-        self.frame_1_menubar.Append(self.archivo, _("Archivo"))
         self.SetMenuBar(self.frame_1_menubar)
         # Menu Bar end
         self.label_1 = wx.StaticText(self, wx.ID_ANY, _("Buscar Usuario"))
         self.bitmap_button_2 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/Inicio_sesion.gif", wx.BITMAP_TYPE_ANY))
         self.label_3 = wx.StaticText(self, wx.ID_ANY, _("Usuario"))
+        self.txtUsuario = wx.TextCtrl(self, wx.ID_ANY, "")
+        self.label_6 = wx.StaticText(self, wx.ID_ANY, _("Nombre"))
         self.txtNombre = wx.TextCtrl(self, wx.ID_ANY, "")
+        self.label_7 = wx.StaticText(self, wx.ID_ANY, _("Apellido"))
+        self.txtApellido = wx.TextCtrl(self, wx.ID_ANY, "")
+        self.label_8 = wx.StaticText(self, wx.ID_ANY, _("Cedula"))
+        self.txtCedula = wx.TextCtrl(self, wx.ID_ANY, "")
         self.bitmap_button_3 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/9152064-boton-de-nombre-de-usuario-y-contrasena-ademas-de-inicio-de-sesion-en-un-candado-para-acceso-seguro-.jpg", wx.BITMAP_TYPE_ANY))
         self.label_4 = wx.StaticText(self, wx.ID_ANY, _("Clave"))
-        self.txtClave = wx.TextCtrl(self, wx.ID_ANY, "")
+        self.txtClave = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.TE_PASSWORD)
         self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/nuevo.png", wx.BITMAP_TYPE_ANY))
         self.label_2 = wx.StaticText(self, wx.ID_ANY, _("Tipo"))
-        self.cobTipo = wx.ComboBox(self, wx.ID_ANY, choices=[_("ADMINISTRADOR"), _("PROFESOR"), _("ALUMNO")], style=wx.CB_DROPDOWN)
+        self.cobTipo = wx.ComboBox(self, wx.ID_ANY, choices=[_("ADMINISTRADOR"), _("SECRETARIA")], style=wx.CB_DROPDOWN)
+        self.bitmap_button_4 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/Inicio_sesion.gif", wx.BITMAP_TYPE_ANY))
+        self.label_5 = wx.StaticText(self, wx.ID_ANY, _("Estado:"))
+        self.txtEstado = wx.TextCtrl(self, wx.ID_ANY, "")
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Buscar"))
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Limpiar"))
 
         self.__set_properties()
-        self.txtNombre.SetValidator(ContieneDatos())#activa la validacion
+        
+        self.txtUsuario.SetValidator(ContieneDatos())#activa la validacion
+        
         self.__do_layout()
 
-        self.Bind(wx.EVT_MENU, self.OnSalir, self.prinicipal)
         self.Bind(wx.EVT_BUTTON, self.OnBuscar, self.button_1)
         self.Bind(wx.EVT_BUTTON, self.OnLimpiar, self.button_2)
         # end wxGlade
@@ -55,31 +61,48 @@ class Principal(wx.Frame):
     def __set_properties(self):
         # begin wxGlade: Principal.__set_properties
         self.SetTitle(_("Buscar Usuario"))
-        self.SetSize((400, 293))
+        self.SetSize((400, 399))
         self.label_1.SetFont(wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
         self.bitmap_button_2.SetSize(self.bitmap_button_2.GetBestSize())
+        self.txtNombre.Enable(False)
+        self.txtApellido.Enable(False)
+        self.txtCedula.Enable(False)
         self.bitmap_button_3.SetSize(self.bitmap_button_3.GetBestSize())
         self.txtClave.Enable(False)
         self.bitmap_button_1.SetSize(self.bitmap_button_1.GetBestSize())
         self.cobTipo.Enable(False)
+        self.txtEstado.Enable(False)
         self.cobTipo.SetSelection(-1)
+        self.bitmap_button_4.SetSize(self.bitmap_button_4.GetBestSize())
         # end wxGlade
 
     def __do_layout(self):
         # begin wxGlade: Principal.__do_layout
         sizer_2 = wx.BoxSizer(wx.VERTICAL)
-        grid_sizer_1 = wx.FlexGridSizer(5, 3, 0, 0)
+        grid_sizer_1 = wx.FlexGridSizer(9, 3, 0, 0)
         grid_sizer_2 = wx.GridSizer(1, 2, 0, 0)
         sizer_2.Add(self.label_1, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 20)
         grid_sizer_1.Add(self.bitmap_button_2, 0, 0, 0)
         grid_sizer_1.Add(self.label_3, 0, 0, 0)
+        grid_sizer_1.Add(self.txtUsuario, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.label_6, 0, 0, 0)
         grid_sizer_1.Add(self.txtNombre, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.label_7, 0, 0, 0)
+        grid_sizer_1.Add(self.txtApellido, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.label_8, 0, 0, 0)
+        grid_sizer_1.Add(self.txtCedula, 0, wx.EXPAND, 0)
         grid_sizer_1.Add(self.bitmap_button_3, 0, 0, 0)
         grid_sizer_1.Add(self.label_4, 0, 0, 0)
         grid_sizer_1.Add(self.txtClave, 0, wx.EXPAND, 0)
         grid_sizer_1.Add(self.bitmap_button_1, 0, 0, 0)
         grid_sizer_1.Add(self.label_2, 0, 0, 0)
         grid_sizer_1.Add(self.cobTipo, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add(self.bitmap_button_4, 0, 0, 0)
+        grid_sizer_1.Add(self.label_5, 0, 0, 0)
+        grid_sizer_1.Add(self.txtEstado, 0, wx.EXPAND, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
@@ -89,7 +112,7 @@ class Principal(wx.Frame):
         grid_sizer_2.Add(self.button_2, 0, wx.ALIGN_CENTER_HORIZONTAL, 0)
         grid_sizer_1.Add(grid_sizer_2, 1, wx.EXPAND, 0)
         grid_sizer_1.AddGrowableCol(2)
-        sizer_2.Add(grid_sizer_1, 1, wx.EXPAND, 0)
+        sizer_2.Add(grid_sizer_1, 1, 0, 0)
         self.SetSizer(sizer_2)
         self.Layout()
         self.Centre()
@@ -108,12 +131,26 @@ class Principal(wx.Frame):
         dlg.Destroy()  
     def OnBuscar(self, event):  # wxGlade: Principal.<event_handler>
         if self.Validate():
-            f.BuscarU(self)
+            f.BuscarU1(self)
 
     def OnLimpiar(self, event):  # wxGlade: Principal.<event_handler>
-        self.txtNombre.Clear()
-        self.txtClave.Clear()
-        self.cobTipo.Clear()
+        dlg = wx.MessageDialog(None, '¿Desea Limpiar?',
+                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
+                            wx.ICON_QUESTION)
+        #dlg.ShowModal()
+        
+
+        if dlg.ShowModal()==wx.ID_OK:
+            
+            self.txtNombre.Clear()
+            self.txtApellido.Clear()
+            self.txtCedula.Clear()
+            self.txtUsuario.Clear()
+            self.txtEstado.Clear()
+            self.txtClave.Clear()
+            self.cobTipo.Clear()
+        dlg.Destroy() 
+
 
 # end of class Principal
 class ContieneDatos(wx.PyValidator):

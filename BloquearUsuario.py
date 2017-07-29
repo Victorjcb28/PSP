@@ -25,9 +25,9 @@ class Principal(wx.Frame):
         # Menu Bar
         self.frame_1_menubar = wx.MenuBar()
         self.archivo = wx.Menu()
-        self.prinicipal = wx.MenuItem(self.archivo, wx.ID_ANY, _("Principal"), _("Principal"), wx.ITEM_NORMAL)
+        self.prinicipal = wx.MenuItem(self.archivo, wx.ID_ANY, _(" "), _(" "), wx.ITEM_NORMAL)
         self.archivo.AppendItem(self.prinicipal)
-        self.frame_1_menubar.Append(self.archivo, _("Archivo"))
+        self.frame_1_menubar.Append(self.archivo, _(" "))
         self.SetMenuBar(self.frame_1_menubar)
         # Menu Bar end
         self.label_1 = wx.StaticText(self, wx.ID_ANY, _("Bloquear Usuario"))
@@ -37,7 +37,7 @@ class Principal(wx.Frame):
         self.bitmap_button_4 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/buscar.png", wx.BITMAP_TYPE_ANY))
         self.bitmap_2 = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("iconos/9152064-boton-de-nombre-de-usuario-y-contrasena-ademas-de-inicio-de-sesion-en-un-candado-para-acceso-seguro-.jpg", wx.BITMAP_TYPE_ANY))
         self.label_4 = wx.StaticText(self, wx.ID_ANY, _("Clave"))
-        self.txtClave = wx.TextCtrl(self, wx.ID_ANY, "")
+        self.txtClave = wx.TextCtrl(self, wx.ID_ANY, "",style=wx.TE_PASSWORD)
         self.bitmap_3 = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("iconos/nuevo.png", wx.BITMAP_TYPE_ANY))
         self.label_2 = wx.StaticText(self, wx.ID_ANY, _("Tipo"))
         self.cobTipo = wx.ComboBox(self, wx.ID_ANY, choices=[_("ADMINISTRADOR"), _("SECRETARIA")], style=wx.CB_DROPDOWN)
@@ -114,14 +114,24 @@ class Principal(wx.Frame):
 
     def OnBuscar(self, event):  # wxGlade: Principal.<event_handler>
         if self.Validate():
-            f.BuscarU(self)
+            f.BuscarU2(self)
 
     def OnBloquear(self, event):  # wxGlade: Principal.<event_handler>
          if self.Validate():
-            f.Bloquear(self)
-            self.txtNombre.Clear()
-            self.txtClave.Clear()
-            self.cobTipo.Clear()
+            dlg = wx.MessageDialog(None, '¿Desea Bloquear?',
+                           'Diálogo de Mensage', wx.OK|wx.CANCEL|
+                            wx.ICON_QUESTION)
+        #dlg.ShowModal()
+        
+
+            if dlg.ShowModal()==wx.ID_OK:
+            
+                f.Bloquear(self)
+                self.txtNombre.Clear()
+                self.txtClave.Clear()
+                self.cobTipo.Clear()
+            dlg.Destroy() 
+            
 
     def OnLimpiar(self, event):  # wxGlade: Principal.<event_handler>
         self.txtNombre.Clear()

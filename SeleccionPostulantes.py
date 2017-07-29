@@ -9,6 +9,7 @@ import os
 import GuardarPostulante as GP
 import GuardarPostulante2 as GP2
 import funciones as f
+
 # begin wxGlade: dependencies
 import gettext
 # end wxGlade
@@ -115,31 +116,38 @@ class Principal(wx.Frame):
         self.Hide()
         f.Chofer(self)
     def OnVigilante(self, event):  # wxGlade: Principal.<event_handler>
-        FR.PostulantesVigilante(self)
-        os.system('xdg-open "ReportePostulantesVigilante.pdf"')
+        Ventana=GP2.Principal(self)
+        Ventana.Show()
         self.Hide()
+        f.Vigilante(self)
     def OnGVentas(self, event):  # wxGlade: Principal.<event_handler>
         Ventana=GP.Principal(self)
         Ventana.Show()
         self.Hide()
+        f.GerenteVentas(self)
     def OnAVentas(self, event):  # wxGlade: Principal.<event_handler>
         Ventana=GP.Principal(self)
         Ventana.Show()
         self.Hide()
+        f.AsistenteVentas(self)
     def OnAsistenteA(self, event):  # wxGlade: Principal.<event_handler>
         Ventana=GP.Principal(self)
         Ventana.Show()
-        self.Hide() #works for urls too
+        self.Hide()
+        f.Asistente(self) #works for urls too
     def OnCajero(self, event):  # wxGlade: Principal.<event_handler>
         Ventana=GP.Principal(self)
         Ventana.Show()
         self.Hide()
+        f.Cajero(self)
     def OnAtencionC(self, event):  # wxGlade: Principal.<event_handler>
         Ventana=GP.Principal(self)
         Ventana.Show()
         self.Hide()
+        f.ServicioCliente(self)
     def OnRecursos(self, event):  # wxGlade: Principal.<event_handler>
         Ventana=GP.Principal(self)
         Ventana.Show()
         self.Hide() 
+        f.RecursosHumanos(self)
 # end of class Principal

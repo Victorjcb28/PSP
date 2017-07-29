@@ -7,11 +7,16 @@
 import wx
 import funciones as f
 import PrincipalAdmin as PA
+import sqlite3 as sq3
 #Examenes
 import EChofer as EC
 import EAdministracion as EA
+from datetime import datetime, date, time, timedelta
+from time import time
+import datetime
 # begin wxGlade: dependencies
 import gettext
+import re
 # end wxGlade
 
 # begin wxGlade: extracode
@@ -25,21 +30,22 @@ class Principal(wx.Frame):
         wx.Frame.__init__(self, *args, **kwds)
         
         # Menu Bar
+        self.estatusbar = self.CreateStatusBar(1)
         self.vntPpal_BarraMenu = wx.MenuBar()
         self.archivo = wx.Menu()
-        self.principal = wx.MenuItem(self.archivo, wx.ID_ANY, _("Principal"), _("Principal"), wx.ITEM_NORMAL)
+        self.principal = wx.MenuItem(self.archivo, wx.ID_ANY, _(" "), _(" "), wx.ITEM_NORMAL)
         self.archivo.AppendItem(self.principal)
-        self.vntPpal_BarraMenu.Append(self.archivo, _("Archivo"))
+        self.vntPpal_BarraMenu.Append(self.archivo, _(" "))
         self.SetMenuBar(self.vntPpal_BarraMenu)
         # Menu Bar end
-        self.label_1 = wx.StaticText(self, wx.ID_ANY, _("Guardar Postulantes"))
+        self.label_1 = wx.StaticText(self, wx.ID_ANY, _("Guardar Postulantes "))
         self.notebook_8 = wx.Notebook(self, wx.ID_ANY)
         self.notebook_8_pane_1 = wx.Panel(self.notebook_8, wx.ID_ANY)
         self.label_9 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Nombres:"))
         self.txtNombre = wx.TextCtrl(self.notebook_8_pane_1, wx.ID_ANY, "")
         self.label_5 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Fecha Nacimiento:"))
-        self.cobDia = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"), _("9"), _("10"), _("11"), _("12"), _("13"), _("14"), _("15"), _("16"), _("17"), _("18"), _("19"), _("20"), _("21"), _("22"), _("23"), _("24"), _("25"), _("26"), _("27"), _("28"), _("29"), _("30"), _("31")], style=wx.CB_READONLY)
-        self.cobMes = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("1"), _("2"), _("3"), _("4"), _("5"), _("6"), _("7"), _("8"), _("9"), _("10"), _("11"), _("12")], style=wx.CB_READONLY)
+        self.cobDia = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("01"), _("02"), _("03"), _("04"), _("05"), _("06"), _("07"), _("08"), _("09"), _("10"), _("11"), _("12"), _("13"), _("14"), _("15"), _("16"), _("17"), _("18"), _("19"), _("20"), _("21"), _("22"), _("23"), _("24"), _("25"), _("26"), _("27"), _("28"), _("29"), _("30"), _("31")], style=wx.CB_READONLY)
+        self.cobMes = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("01"), _("02"), _("03"), _("04"), _("05"), _("06"), _("07"), _("08"), _("09"), _("10"), _("11"), _("12")], style=wx.CB_READONLY)
         self.cobAno = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[], style=wx.CB_READONLY)
         self.label_13 = wx.StaticText(self.notebook_8_pane_1, wx.ID_ANY, _("Estado:"))
         self.cobEstado = wx.ComboBox(self.notebook_8_pane_1, wx.ID_ANY, choices=[_("Amazonas"), _("Anzoategui"), _("Apure"), _("Aragua"), _("Barinas"), _("Bolivar"), _("Carabobo"), _("Cojedes"), _("Delta Amacuro"), _("Distrito Capital"), _("Falcon"), _("Guarico"), _("Lara"), _("Merida"), _("Miranda"), _("Monagas"), _("Nueva Esparta"), _("Portuguesa"), _("Sucre"), _("Tachira"), _("Trujillo"), _("Vargas"), _("Yaracuy"), _("Zulia")], style=wx.CB_READONLY)
@@ -76,19 +82,19 @@ class Principal(wx.Frame):
         self.label_24_copy = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _("Ultimo Curso Realizado:"))
         self.txtCurso = wx.TextCtrl(self.notebook_9_pane_1, wx.ID_ANY, "")
         self.label_19 = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _("Idioma:"))
-        self.cobIdioma = wx.ComboBox(self.notebook_9_pane_1, wx.ID_ANY, choices=[_("INGLES"), _("OTROS"), _(u"ESPA\u00d1OL/INGLES")], style=wx.CB_READONLY)
+        self.cobIdioma = wx.ComboBox(self.notebook_9_pane_1, wx.ID_ANY, choices=[_("INGLES"), _("OTROS"), _(u"CASTELLANO/INGLES"),_(u"CASTELLANO")], style=wx.CB_READONLY)
         self.label_23 = wx.StaticText(self.notebook_9_pane_1, wx.ID_ANY, _("Maneja Paquete Office:"))
         self.cobOffice = wx.ComboBox(self.notebook_9_pane_1, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_READONLY)
         self.notebook_10 = wx.Notebook(self, wx.ID_ANY)
         self.notebook_10_pane_1 = wx.Panel(self.notebook_10, wx.ID_ANY)
         self.label_2 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _("Trabaja en la empresa:"))
-        self.cobSalario = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
+        self.cobSalario = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_READONLY)
         self.label_22 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _("Cargo:"))
-        self.cobCargo = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[], style=wx.CB_READONLY)
+        self.cobCargo = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[_("ADMINISTRACION"), _("ASISTENTE"), _("CAJERO"), _("CHOFER"), _("VIGILANTE"), _("GERENTE VENTAS"), _("ASISTENTE VENTAS"), _("SERVICIO AL CLIENTE"), _("RECURSOS HUMANOS")], style=wx.CB_READONLY)
         self.label_3 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _("Empresa donde trabajo:"))
         self.txtEmpresaT = wx.TextCtrl(self.notebook_10_pane_1, wx.ID_ANY, "")
         self.label_4 = wx.StaticText(self.notebook_10_pane_1, wx.ID_ANY, _(u"A\u00f1os de trabajo:"))
-        self.cobAtrabajo = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[], style=wx.CB_DROPDOWN)
+        self.cobAtrabajo = wx.ComboBox(self.notebook_10_pane_1, wx.ID_ANY, choices=[_("0-2"), _("2-4"), _("4-6"), _("6+")], style=wx.CB_READONLY)
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Guardar"))
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Limpiar"))
         f.Ano(self)
@@ -103,6 +109,10 @@ class Principal(wx.Frame):
         self.Bind(wx.EVT_TEXT, self.OnMunicipio, self.cobMunicipio)
         self.Bind(wx.EVT_TEXT, self.OnCedula, self.txtCedula)
         self.Bind(wx.EVT_TEXT, self.OnParroquia, self.cobParroquia)
+        self.Bind(wx.EVT_TEXT, self.OnNumeros, self.txtTelefono)
+        self.Bind(wx.EVT_TEXT_ENTER, self.OnNumeros, self.txtTelefono)
+        self.Bind(wx.EVT_TEXT, self.OnNumeros, self.txtMerito)
+        self.Bind(wx.EVT_TEXT, self.OnNumeros, self.txtAnoG)
         self.Bind(wx.EVT_TEXT, self.OnTEmpresa, self.cobSalario)
         self.Bind(wx.EVT_BUTTON, self.OnGuardar, self.button_1)
         self.Bind(wx.EVT_BUTTON, self.OnLimpiar, self.button_2)
@@ -149,13 +159,20 @@ class Principal(wx.Frame):
         self.label_4.Enable(False)
         self.cobAtrabajo.SetMinSize((275, 36))
         self.cobAtrabajo.Enable(False)
+        self.cobAtrabajo.SetSelection(-1)
+        self.txtEdad.Enable(False)
+
+         # statusbar fields
+        estatusbar_fields = [_("Todos los campos son obigatorios")]
+        for i in range(len(estatusbar_fields)):
+            self.estatusbar.SetStatusText(estatusbar_fields[i], i)
         # end wxGlade
 
     def __do_layout(self):
         # begin wxGlade: Principal.__do_layout
         grid_sizer_3 = wx.FlexGridSizer(5, 1, 0, 0)
         grid_sizer_2 = wx.GridSizer(1, 4, 0, 0)
-        grid_sizer_1 = wx.FlexGridSizer(3, 6, 0, 0)
+        grid_sizer_1 = wx.FlexGridSizer(3, 8, 0, 0)
         grid_sizer_5 = wx.FlexGridSizer(3, 8, 0, 0)
         grid_sizer_4 = wx.FlexGridSizer(4, 8, 0, 0)
         grid_sizer_6 = wx.FlexGridSizer(1, 3, 0, 0)
@@ -227,8 +244,6 @@ class Principal(wx.Frame):
         grid_sizer_5.Add(self.label_23, 0, 0, 0)
         grid_sizer_5.Add(self.cobOffice, 0, 0, 0)
         grid_sizer_5.Add((20, 20), 0, 0, 0)
-        grid_sizer_5.Add((20, 20), 0, 0, 0)
-        grid_sizer_5.Add((20, 20), 0, 0, 0)
         self.notebook_9_pane_1.SetSizer(grid_sizer_5)
         grid_sizer_5.AddGrowableCol(1)
         grid_sizer_5.AddGrowableCol(4)
@@ -239,15 +254,20 @@ class Principal(wx.Frame):
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_22, 0, 0, 0)
         grid_sizer_1.Add(self.cobCargo, 0, wx.EXPAND, 0)
-        grid_sizer_1.Add((350, 20), 0, 0, 0)
+        grid_sizer_1.Add((300, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_3, 0, 0, 0)
         grid_sizer_1.Add(self.txtEmpresaT, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_4, 0, 0, 0)
         grid_sizer_1.Add(self.cobAtrabajo, 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
@@ -302,48 +322,346 @@ class Principal(wx.Frame):
                 self.txtApellidos.Clear()
             else:
                 pass
+    
+    def OnNumeros(self,event):
+        frm=self
+        Campo=frm.txtTelefono.GetValue()
+        Campo2=frm.txtAnoG.GetValue()
+        Campo3=frm.txtMerito.GetValue()
+        if len(self.txtTelefono.GetValue())>0:
+            self.txtTelefono.SetBackgroundColour("white")
+        if len(self.txtMerito.GetValue())>0:
+            self.txtMerito.SetBackgroundColour("white")
+        if len(Campo)==4:
+            primero=Campo[0]+Campo[1]+Campo[2]+Campo[3]
+            self.txtTelefono.SetValue(primero+"/")
+            self.txtTelefono.SetFocus()
+        
+            
+        for i in Campo:
+            if chr(33)==i or chr(34)==i or chr(35)==i or chr(36)==i or chr(37)==i or chr(38)==i or chr(39)==i or chr(40)==i or chr(41)==i or chr(42)==i or chr(43)==i or chr(44)==i or chr(45)==i or chr(46)==i or chr(47)==i or chr(48)==i or chr(49)==i or chr(50)==i or chr(51)==i or chr(52)==i or chr(53)==i or chr(54)==i or chr(55)==i or chr(56)==i or chr(57)==i or chr(58)==i or chr(59)==i or chr(60)==i or chr(61)==i or chr(62)==i or chr(63)==i:
+                pass
+            else:
 
+                dlg=wx.MessageDialog(self,'Debe Ingresar Solo Numeros', 'Atencion', wx.OK)
+                dlg.ShowModal()
+                dlg.Destroy()
+                self.txtTelefono.Clear()  
+
+        for i in Campo3:
+            if chr(33)==i or chr(34)==i or chr(35)==i or chr(36)==i or chr(37)==i or chr(38)==i or chr(39)==i or chr(40)==i or chr(41)==i or chr(42)==i or chr(43)==i or chr(44)==i or chr(45)==i or chr(46)==i or chr(47)==i or chr(48)==i or chr(49)==i or chr(50)==i or chr(51)==i or chr(52)==i or chr(53)==i or chr(54)==i or chr(55)==i or chr(56)==i or chr(57)==i or chr(58)==i or chr(59)==i or chr(60)==i or chr(61)==i or chr(62)==i or chr(63)==i:
+                pass
+            else:
+
+                dlg=wx.MessageDialog(self,'Debe Ingresar Solo Numeros', 'Atencion', wx.OK)
+                dlg.ShowModal()
+                dlg.Destroy()
+                self.txtMerito.Clear()  
+            
+        for i in Campo2:
+            if chr(33)==i or chr(34)==i or chr(35)==i or chr(36)==i or chr(37)==i or chr(38)==i or chr(39)==i or chr(40)==i or chr(41)==i or chr(42)==i or chr(43)==i or chr(44)==i or chr(45)==i or chr(46)==i or chr(47)==i or chr(48)==i or chr(49)==i or chr(50)==i or chr(51)==i or chr(52)==i or chr(53)==i or chr(54)==i or chr(55)==i or chr(56)==i or chr(57)==i or chr(58)==i or chr(59)==i or chr(60)==i or chr(61)==i or chr(62)==i or chr(63)==i:
+                pass
+            else:
+
+                dlg=wx.MessageDialog(self,'Debe Ingresar Solo Numeros', 'Atencion', wx.OK)
+                dlg.ShowModal()
+                dlg.Destroy()
+                self.txtAnoG.Clear()
+              
+    
     def OnCedula(self, event):  # wxGlade: Principal.<event_handler>
         frm=self
         Campo=frm.txtCedula.GetValue()
-        if len(Campo)> 8 :
-            dlg=wx.MessageDialog(self,'La Cedula no debe ser mayor a 8 caracteres', 'Atencion', wx.OK)
-            dlg.ShowModal()
-            dlg.Destroy()
-            self.txtCedula.Clear()
-        else:
-            if Campo.isdigit() :
-                pass
+        
+        if len(self.txtCedula.GetValue())>0:
+            self.txtCedula.SetBackgroundColour("white")
+        
+        if len(Campo)<2 and len(Campo)>0:
+            if Campo=="E" or Campo=="V" :
+                self.txtCedula.SetValue(Campo+"-")
             else:
-                if len(Campo)==0:
-                    pass
-                else:
-                    dlg=wx.MessageDialog(self,'No puede Tener Letras', 'Atencion', wx.OK)
-                    dlg.ShowModal()
-                    dlg.Destroy()
-                    self.txtCedula.Clear()
+                dlg=wx.MessageDialog(self,'Debe Ingresar la cedula en el sig. formato V-/E- 0000000', 'Atencion', wx.OK)
+                dlg.ShowModal()
+                dlg.Destroy()
+                self.txtCedula.Clear()
+        else:
+            if len(Campo)> 10 :
+                dlg=wx.MessageDialog(self,'La Cedula no debe ser mayor a 8 caracteres', 'Atencion', wx.OK)
+                dlg.ShowModal()
+                dlg.Destroy()
+                self.txtCedula.Clear()
+            else:
+                for i in Campo:
+                    if chr(69)==i  or chr(86)==i or chr(33)==i or chr(34)==i or chr(35)==i or chr(36)==i or chr(37)==i or chr(38)==i or chr(39)==i or chr(40)==i or chr(41)==i or chr(42)==i or chr(43)==i or chr(44)==i or chr(45)==i or chr(46)==i or chr(47)==i or chr(48)==i or chr(49)==i or chr(50)==i or chr(51)==i or chr(52)==i or chr(53)==i or chr(54)==i or chr(55)==i or chr(56)==i or chr(57)==i or chr(58)==i or chr(59)==i or chr(60)==i or chr(61)==i or chr(62)==i or chr(63)==i:
+                        pass
+                    else:
 
-
-    def OnGuardar(self, event):  # wxGlade: Principal.<event_handler>
-
+                        dlg=wx.MessageDialog(self,'Debe Ingresar Solo Numeros', 'Atencion', wx.OK)
+                        dlg.ShowModal()
+                        dlg.Destroy()
+                        self.txtCedula.Clear()
+              
+            
        
+    def OnGuardar(self, event):  # wxGlade: Principal.<event_handler>
+            #Validamos campos en blanco
+        frm=self
+        d=date.today()
+        ano=int(frm.txtAnoG.GetValue())
+        dato=int(d.year)
+        con=sq3.connect('Sisep.s3db')
+        con.text_factory=str #pa quitar la U
+        cur = con.cursor()
+        frm=self
+        Ce=frm.txtCedula.GetValue()
+        cur.execute("Select * from Postulante where Cedula=:Ce",{"Ce": Ce})
+        rs1=cur.fetchone()
+        if rs1:
+            dlg = wx.MessageDialog(None, 'Cedula Registrada, ¿Desea Modificar los datos?',
+                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
+                            wx.ICON_QUESTION)
+        #dlg.ShowModal()
+        
+
+            if dlg.ShowModal()==wx.ID_OK:
+                f.ModificarPostulante1(self)
+                self.Hide()
+            dlg.Destroy()
+        else:
+            if len(self.txtTelefono.GetValue())<12:
+                wx.MessageBox("No debe ser menor a 11 digitos y en formato 0000/0000000",
+                              "Error")
+                self.txtTelefono.SetBackgroundColour("red")
+                self.txtTelefono.SetFocus()
+                self.txtTelefono.Refresh()
+
+            elif len(self.txtTelefono.GetValue())>12:
+                wx.MessageBox("No debe ser mayor a 11 digitos y en formato 0000/0000000",
+                              "Error")
+                self.txtTelefono.SetBackgroundColour("red")
+                self.txtTelefono.SetFocus()
+                self.txtTelefono.Refresh()
+                
+            elif ano>dato:
+                wx.MessageBox("El año de graduacion no puede ser mayor al actual",
+                              "Error")
+                self.txtAnoG.SetBackgroundColour("red")
+                self.txtAnoG.SetFocus()
+                self.txtAnoG.Clear()
+
+            elif self.txtMerito.GetValue()==str(0):
+                wx.MessageBox("El merito no puede ser cero",
+                              "Error")
+                self.txtMerito.SetBackgroundColour("red")
+                self.txtMerito.SetFocus()
+                self.txtMerito.Clear()
             
-        f.GuardarPostulante(self)
+              
             
+            elif len(self.txtNombre.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.txtNombre.SetBackgroundColour("red")
+                self.txtNombre.SetFocus()
+                self.txtNombre.Refresh()
+
+            elif len(self.txtApellidos.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.txtApellidos.SetBackgroundColour("red")
+                self.txtApellidos.SetFocus()
+                self.txtApellidos.Refresh()
+
+            elif len(self.txtCedula.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.txtCedula.SetBackgroundColour("red")
+                self.txtCedula.SetFocus()
+                self.txtCedula.Refresh()
+
+            elif len(self.CobSexo.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.CobSexo.SetBackgroundColour("red")
+                self.CobSexo.SetFocus()
+                self.CobSexo.Refresh()
+
+            elif len(self.cobEstado.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.cobEstado.SetBackgroundColour("red")
+                self.cobEstado.SetFocus()
+                self.cobEstado.Refresh()
+
+            elif len(self.cobMunicipio.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.cobMunicipio.SetBackgroundColour("red")
+                self.cobMunicipio.SetFocus()
+                self.cobMunicipio.Refresh()
+
+            elif len(self.cobParroquia.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.cobParroquia.SetBackgroundColour("red")
+                self.cobParroquia.SetFocus()
+                self.cobParroquia.Refresh()
+
+            elif len(self.txtDireccion.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.txtDireccion.SetBackgroundColour("red")
+                self.txtDireccion.SetFocus()
+                self.txtDireccion.Refresh()
+
+            elif len(self.txtEdad.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.txtEdad.SetBackgroundColour("red")
+                self.txtEdad.SetFocus()
+                self.txtEdad.Refresh()
+
+            elif len(self.txtCorreo.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.txtCorreo.SetBackgroundColour("red")
+                self.txtCorreo.SetFocus()
+                self.txtCorreo.Refresh()
+
+            elif len(self.txtTelefono.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.txtTelefono.SetBackgroundColour("red")
+                self.txtTelefono.SetFocus()
+                self.txtTelefono.Refresh()
+
+            elif len(self.cobDia.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.cobDia.SetBackgroundColour("red")
+                self.cobDia.SetFocus()
+                self.cobDia.Refresh()
+
+            elif len(self.cobMes.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.cobMes.SetBackgroundColour("red")
+                self.cobMes.SetFocus()
+                self.cobMes.Refresh()
+
+            elif len(self.cobAno.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.cobAno.SetBackgroundColour("red")
+                self.cobAno.SetFocus()
+                self.cobAno.Refresh()
+
+            elif len(self.cobEducacion.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.cobEducacion.SetBackgroundColour("red")
+                self.cobEducacion.SetFocus()
+                self.cobEducacion.Refresh()
+
+            elif len(self.txtTitulo.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.txtTitulo.SetBackgroundColour("red")
+                self.txtTitulo.SetFocus()
+                self.txtTitulo.Refresh()
+
+            elif len(self.cobIdioma.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.cobIdioma.SetBackgroundColour("red")
+                self.cobIdioma.SetFocus()
+                self.cobIdioma.Refresh()
+
+            elif len(self.txtAnoG.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.txtAnoG.SetBackgroundColour("red")
+                self.txtAnoG.SetFocus()
+                self.txtAnoG.Refresh()
+
+            elif len(self.txtMerito.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.txtMerito.SetBackgroundColour("red")
+                self.txtMerito.SetFocus()
+                self.txtMerito.Refresh()
+
+            elif len(self.cobOffice.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.cobOffice.SetBackgroundColour("red")
+                self.cobOffice.SetFocus()
+                self.cobOffice.Refresh()
+
+            elif len(self.cobContabilidad.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.cobContabilidad.SetBackgroundColour("red")
+                self.cobContabilidad.SetFocus()
+                self.cobContabilidad.Refresh()
+
+            elif len(self.txtCurso.GetValue())==0:
+                wx.MessageBox("No puede tener campos en blanco",
+                              "Error")
+                self.txtCurso.SetBackgroundColour("red")
+                self.txtCurso.SetFocus()
+                self.txtCurso.Refresh()
+                 
+            elif len(self.txtCorreo.GetValue())>0:
+                Correo=self.txtCorreo.GetValue()
+                if re.match('^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,15}$',Correo.lower()):
+                    dlg = wx.MessageDialog(None, '¿Desea Guardar?',
+                               'Dialogo de Mensage', wx.OK|wx.CANCEL|
+                                wx.ICON_QUESTION)
+            #dlg.ShowModal()
+            
+
+                    if dlg.ShowModal()==wx.ID_OK:
+                
+                        f.GuardarPostulante(self)
+                        self.Hide()
+                    dlg.Destroy()
+                else:
+                    wx.MessageBox("Correo incorrecto, debe estar en formato aaaa@aaaa.com",
+                              "Error")
+                    #self.txtCorreo.SetBackgroundColour("red")
+                    self.txtCorreo.SetFocus()
+                    self.txtCorreo.Refresh()
             
         
 
 
     def OnLimpiar(self, event):  # wxGlade: Principal.<event_handler>
-        self.txtNombre.Clear()
-        self.txtApellidos.Clear()
-        self.txtCedula.Clear()
+        dlg = wx.MessageDialog(None, '¿Desea Limpiar?',
+                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
+                            wx.ICON_QUESTION)
+        #dlg.ShowModal()
         
+
+        if dlg.ShowModal()==wx.ID_OK:
+            
+            self.txtNombre.Clear()
+            self.txtApellidos.Clear()
+            self.txtCedula.Clear()
+            self.txtEdad.Clear()
+            self.txtCorreo.Clear()
+            self.txtTelefono.Clear()
+            self.txtAnoG.Clear()
+            self.txtMerito.Clear()
+            self.txtCurso.Clear()
+            
+            
+            self.txtDireccion.Clear()
+            self.cobMunicipio.Clear()
+            self.cobParroquia.Clear()
+            self.txtTitulo.Clear()
+        dlg.Destroy()
         
-        self.txtDireccion.Clear()
-        self.cobMunicipio.Clear()
-        self.cobParroquia.Clear()
-        self.txtTitulo.Clear()
 
     def OnEstado(self, event):  # wxGlade: Principal.<event_handler>
         f.BuscarM(self)
@@ -361,14 +679,32 @@ class Principal(wx.Frame):
             pass
         else:
             
-            self.label_22.Enable(True)            
-            self.combo_box_1.Enable(True)
+            self.label_22.Enable(True)
+            self.cobCargo.Enable(True)
             
-            self.label_3.Enable(True)            
+            self.label_3.Enable(True)
             self.txtEmpresaT.Enable(True)
             
-            self.label_4.Enable(True)           
-            self.cobCargo.Enable(True)
+            self.label_4.Enable(True)
+            self.cobAtrabajo.Enable(True)
+
+         
+
+        if Campo=="NO":
+            pass
+        else:
+            
+            self.label_22.Enable(False)
+            
+            self.cobCargo.Enable(False)
+            self.label_3.Enable(False)
+            
+            self.txtEmpresaT.Enable(False)
+            self.label_4.Enable(False)
+            
+            self.cobAtrabajo.Enable(False)
+
+            
 # end of class Principal
 class ContieneDatos(wx.PyValidator):
     def __init__(self):

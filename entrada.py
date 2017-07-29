@@ -20,13 +20,13 @@ class Principal(wx.Frame):
         kwds["style"] = wx.BORDER_NONE | wx.DEFAULT_FRAME_STYLE
         wx.Frame.__init__(self, *args, **kwds)
         self.estatusbar = self.CreateStatusBar(1)
-        self.bitmap_1 = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("iconos/Logo1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_1 = wx.StaticBitmap(self, wx.ID_ANY, wx.Bitmap("iconos/Logonuevo.jpg", wx.BITMAP_TYPE_ANY))
         self.label_1 = wx.StaticText(self, wx.ID_ANY, _("Usuario:"))
         self.txtUsuario = wx.TextCtrl(self, wx.ID_ANY, "")
         self.label_1_copy = wx.StaticText(self, wx.ID_ANY, _("Clave:"))
         self.txtClave = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.TE_PASSWORD)
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Aceptar"))
-        self.button_2 = wx.Button(self, wx.ID_ANY, _("Salir"))
+        self.button_2 = wx.Button(self, wx.ID_ANY, _("Cancelar"))
 
         self.__set_properties()
         self.txtUsuario.SetValidator(ContieneDatos())#activa la validacion
@@ -34,6 +34,8 @@ class Principal(wx.Frame):
         self.__do_layout()
 
         self.Bind(wx.EVT_TEXT, self.OnTexto, self.txtUsuario)
+        
+        self.Bind(wx.EVT_TEXT_ENTER, self.OnEnter, self.txtClave)
         self.Bind(wx.EVT_TEXT, self.OnClave, self.txtClave)
         self.Bind(wx.EVT_BUTTON, self.OnEntrar, self.button_1)
         self.Bind(wx.EVT_BUTTON, self.OnLimpiar, self.button_2)
@@ -57,7 +59,7 @@ class Principal(wx.Frame):
         grid_sizer_2 = wx.GridSizer(1, 2, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
-        grid_sizer_1.Add(self.bitmap_1, 0, wx.ALIGN_CENTER, 0)
+        grid_sizer_1.Add(self.bitmap_1, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_1, 0, wx.EXPAND, 0)
@@ -94,12 +96,7 @@ class Principal(wx.Frame):
             dlg.ShowModal()
             dlg.Destroy()
         else:
-            if Campo.isalnum():
-                pass
-            else:
-                dlg=wx.MessageDialog(self,'No puede tener caracteres especiales', 'Atencion', wx.OK)
-                dlg.ShowModal()
-                dlg.Destroy()
+           pass
 
     def OnClave(self, event):  # wxGlade: Principal.<event_handler>
         frm=self
@@ -111,6 +108,8 @@ class Principal(wx.Frame):
         else:
             
             pass
+                
+            
 
     def OnEntrar(self, event):  # wxGlade: Principal.<event_handler>
         if self.Validate():
@@ -127,8 +126,18 @@ class Principal(wx.Frame):
         #self.Close()
 
     def OnLimpiar(self, event):  # wxGlade: Principal.<event_handler>
-       self.Close()
+       self.Destroy()
 
+    def OnEnter(self, event):  # wxGlade: Principal.<event_handler>
+        frm=self
+        Campo=frm.txtClave.GetValue()
+        for i in Campo:
+            if chr(13)==i:
+                dlg=wx.MessageDialog(self,'Debe Ingresar Solo Letras', 'Atencion', wx.OK)
+                dlg.ShowModal()
+                dlg.Destroy()
+            else: 
+                pass
 # end of class Principal
 class ContieneDatos(wx.PyValidator):
     def __init__(self):
@@ -161,6 +170,7 @@ class ContieneDatos(wx.PyValidator):
     def TransferToWindow(self):
         return True
 
+
     def TransferFromWindow(self):
         return True
 
@@ -169,7 +179,7 @@ if __name__ == "__main__":
 
     app = wx.App()
     #wx.InitAllImageHandlers()
-    frame_1 = Principal(None, wx.ID_ANY, "")
-    app.SetTopWindow(frame_1)
-    frame_1.Show()
+    frame_2 = Principal(None, wx.ID_ANY, "")
+    app.SetTopWindow(frame_2)
+    frame_2.Show()
     app.MainLoop()

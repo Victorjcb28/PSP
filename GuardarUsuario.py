@@ -7,6 +7,7 @@
 import wx
 import funciones as f
 import PrincipalAdmin as PA
+import sqlite3 as sq3
 
 # begin wxGlade: dependencies
 import gettext
@@ -24,30 +25,45 @@ class Principal(wx.Frame):
         
         # Menu Bar
         self.frame_1_menubar = wx.MenuBar()
-        self.archivo = wx.Menu()
-        self.prinicipal = wx.MenuItem(self.archivo, wx.ID_ANY, _("Principal"), _("Principal"), wx.ITEM_NORMAL)
-        self.archivo.AppendItem(self.prinicipal)
-        self.frame_1_menubar.Append(self.archivo, _("Archivo"))
         self.SetMenuBar(self.frame_1_menubar)
         # Menu Bar end
         self.label_1 = wx.StaticText(self, wx.ID_ANY, _("Guardar Usuario"))
         self.bitmap_button_2 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/Inicio_sesion.gif", wx.BITMAP_TYPE_ANY))
-        self.label_3 = wx.StaticText(self, wx.ID_ANY, _("Usuario"))
+        self.label_3 = wx.StaticText(self, wx.ID_ANY, _("Nombre"))
         self.txtNombre = wx.TextCtrl(self, wx.ID_ANY, "")
+        self.label_6 = wx.StaticText(self, wx.ID_ANY, _("Apellido"))
+        self.txtApellido = wx.TextCtrl(self, wx.ID_ANY, "")
+        self.label_7 = wx.StaticText(self, wx.ID_ANY, _("Cedula"))
+        self.txtCedula = wx.TextCtrl(self, wx.ID_ANY, "")
+        self.label_8 = wx.StaticText(self, wx.ID_ANY, _("Usuario"))
+        self.txtUsuario = wx.TextCtrl(self, wx.ID_ANY, "")
         self.bitmap_button_3 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/9152064-boton-de-nombre-de-usuario-y-contrasena-ademas-de-inicio-de-sesion-en-un-candado-para-acceso-seguro-.jpg", wx.BITMAP_TYPE_ANY))
         self.label_4 = wx.StaticText(self, wx.ID_ANY, _("Clave"))
-        self.txtClave = wx.TextCtrl(self, wx.ID_ANY, "")
+        self.txtClave = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.TE_PASSWORD)
+        self.bitmap_button_4 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/9152064-boton-de-nombre-de-usuario-y-contrasena-ademas-de-inicio-de-sesion-en-un-candado-para-acceso-seguro-.jpg", wx.BITMAP_TYPE_ANY))
+        self.label_5 = wx.StaticText(self, wx.ID_ANY, _("Repita:"))
+        self.txtClave2 = wx.TextCtrl(self, wx.ID_ANY, "", style=wx.TE_PASSWORD)
         self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/nuevo.png", wx.BITMAP_TYPE_ANY))
         self.label_2 = wx.StaticText(self, wx.ID_ANY, _("Tipo"))
-        self.cobTipo = wx.ComboBox(self, wx.ID_ANY, choices=[_("ADMINISTRADOR"), _("SECRETARIA")], style=wx.CB_DROPDOWN)
+        self.cobTipo = wx.ComboBox(self, wx.ID_ANY, choices=[_("ADMINISTRADOR"), _("SECRETARIA")], style=wx.CB_READONLY)
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Guardar"))
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Limpiar"))
 
         self.__set_properties()
+        self.txtNombre.SetValidator(ContieneDatos())#activa la validacion
+        self.txtApellido.SetValidator(ContieneDatos())#activa la validacion
+        self.txtCedula.SetValidator(ContieneDatos())#activa la validacion
+        self.txtUsuario.SetValidator(ContieneDatos())#activa la validacion
+        self.txtClave.SetValidator(ContieneDatos())#activa la validacion
+        self.txtClave2.SetValidator(ContieneDatos())#activa la validacion
+        self.cobTipo.SetValidator(ContieneDatos())#activa la validacion
+        
+
         self.__do_layout()
 
-        self.Bind(wx.EVT_MENU, self.OnSalir, self.prinicipal)
-        self.Bind(wx.EVT_TEXT, self.OnTexto, self.txtNombre)
+        self.Bind(wx.EVT_TEXT, self.OnLetras, self.txtNombre)
+        self.Bind(wx.EVT_TEXT, self.OnLetras, self.txtApellido)
+        self.Bind(wx.EVT_TEXT, self.OnCedula, self.txtCedula)
         self.Bind(wx.EVT_TEXT, self.OnClave, self.txtClave)
         self.Bind(wx.EVT_BUTTON, self.OnGuardar, self.button_1)
         self.Bind(wx.EVT_BUTTON, self.OnLimpiar, self.button_2)
@@ -56,10 +72,12 @@ class Principal(wx.Frame):
     def __set_properties(self):
         # begin wxGlade: Principal.__set_properties
         self.SetTitle(_("Guardar Usuario"))
-        self.SetSize((400, 288))
+        self.SetSize((405, 403))
         self.label_1.SetFont(wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
         self.bitmap_button_2.SetSize(self.bitmap_button_2.GetBestSize())
         self.bitmap_button_3.SetSize(self.bitmap_button_3.GetBestSize())
+        self.bitmap_button_4.SetSize(self.bitmap_button_4.GetBestSize())
+        self.txtClave2.SetMinSize((322, 32))
         self.bitmap_button_1.SetSize(self.bitmap_button_1.GetBestSize())
         self.cobTipo.SetSelection(-1)
         # end wxGlade
@@ -67,15 +85,27 @@ class Principal(wx.Frame):
     def __do_layout(self):
         # begin wxGlade: Principal.__do_layout
         sizer_2 = wx.BoxSizer(wx.VERTICAL)
-        grid_sizer_1 = wx.FlexGridSizer(5, 3, 0, 0)
+        grid_sizer_1 = wx.FlexGridSizer(9, 3, 0, 0)
         grid_sizer_2 = wx.GridSizer(1, 2, 0, 0)
         sizer_2.Add(self.label_1, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 20)
         grid_sizer_1.Add(self.bitmap_button_2, 0, 0, 0)
         grid_sizer_1.Add(self.label_3, 0, 0, 0)
         grid_sizer_1.Add(self.txtNombre, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.label_6, 0, 0, 0)
+        grid_sizer_1.Add(self.txtApellido, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.label_7, 0, 0, 0)
+        grid_sizer_1.Add(self.txtCedula, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.label_8, 0, 0, 0)
+        grid_sizer_1.Add(self.txtUsuario, 0, wx.EXPAND, 0)
         grid_sizer_1.Add(self.bitmap_button_3, 0, 0, 0)
         grid_sizer_1.Add(self.label_4, 0, 0, 0)
         grid_sizer_1.Add(self.txtClave, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add(self.bitmap_button_4, 0, 0, 0)
+        grid_sizer_1.Add(self.label_5, 0, 0, 0)
+        grid_sizer_1.Add(self.txtClave2, 0, 0, 0)
         grid_sizer_1.Add(self.bitmap_button_1, 0, 0, 0)
         grid_sizer_1.Add(self.label_2, 0, 0, 0)
         grid_sizer_1.Add(self.cobTipo, 0, wx.EXPAND, 0)
@@ -88,7 +118,7 @@ class Principal(wx.Frame):
         grid_sizer_2.Add(self.button_2, 0, wx.ALIGN_CENTER_HORIZONTAL, 0)
         grid_sizer_1.Add(grid_sizer_2, 1, wx.EXPAND, 0)
         grid_sizer_1.AddGrowableCol(2)
-        sizer_2.Add(grid_sizer_1, 1, wx.EXPAND, 0)
+        sizer_2.Add(grid_sizer_1, 1, 0, 0)
         self.SetSizer(sizer_2)
         self.Layout()
         self.Centre()
@@ -108,18 +138,14 @@ class Principal(wx.Frame):
 
     def OnTexto(self, event):  # wxGlade: Principal.<event_handler>
         frm=self
-        Campo=frm.txtNombre.GetValue()
+        Campo=frm.txtUsuario.GetValue()
         if len(Campo)> 30:
             dlg=wx.MessageDialog(self,'No puede ser mayor a 30 caracteres', 'Atencion', wx.OK)
             dlg.ShowModal()
             dlg.Destroy()
         else:
-            if Campo.isalnum():
-                pass
-            else:
-                dlg=wx.MessageDialog(self,'No puede tener caracteres especiales', 'Atencion', wx.OK)
-                dlg.ShowModal()
-                dlg.Destroy()
+            
+            pass
     def OnClave(self, event):  # wxGlade: Principal.<event_handler>
         frm=self
         Campo=frm.txtClave.GetValue()
@@ -133,13 +159,140 @@ class Principal(wx.Frame):
 
     def OnGuardar(self, event):  # wxGlade: Principal.<event_handler>
         if self.Validate():
-            f.conexion()
-            f.GuardarUsuario(self)
+            con=sq3.connect('Sisep.s3db')
+            con.text_factory=str #pa quitar la U
+            cur = con.cursor()
+            
+            frm=self
+            clave=frm.txtClave.GetValue()
+            clave2=frm.txtClave2.GetValue()
+            Usuario=frm.txtUsuario.GetValue()
+            Usu=Usuario.upper()
+            Cedula=frm.txtCedula.GetValue()
+            
+            cur.execute("Select cedula from Usuarios where Cedula=:Cedula",{"Cedula":Cedula})
+            rs1=cur.fetchone()
+            if rs1:
+                dlg=wx.MessageDialog(self,'Cedula Registrada', 'Atencion', wx.OK)
+                dlg.ShowModal()
+                dlg.Destroy()
+                self.txtCedula.Clear()
+
+            else:
+                cur.execute("Select Usuario from Usuarios where Usuario=:Usu",{"Usu":Usu})
+                rs2=cur.fetchone()
+                if rs2:
+                    dlg=wx.MessageDialog(self,'Nombre de usuario ya esta tomado, por favor use otro', 'Atencion', wx.OK)
+                    dlg.ShowModal()
+                    dlg.Destroy()
+                    self.txtUsuario.Clear()
+                else:
+
+                    if len(clave)< 8:
+                        dlg=wx.MessageDialog(self,'La clave debe ser mayor a 8 caracteres', 'Atencion', wx.OK)
+                        dlg.ShowModal()
+                        dlg.Destroy()
+                        self.txtClave.Clear()
+                        self.txtClave2.Clear()
+                        self.txtClave.SetFocus()
+                    else:#isdigit solo numeros isalpha solo letras.... comparacion alfanumerica
+                        if clave.isdigit()or clave.isalpha() : #isdigit puros numeros, isalpha puras letras
+                            dlg=wx.MessageDialog(self,'La Clave Debe Contener Datos Alfanumericos', 'Atencion', wx.OK)
+                            dlg.ShowModal()
+                            dlg.Destroy()
+                            self.txtClave.Clear()
+                            self.txtClave2.Clear()
+                            self.txtClave.SetFocus()
+                        else:
+                            if clave==clave2:
+                                dlg = wx.MessageDialog(None, '¿Desea Guardar?',
+                                           'Diálogo de Mensage', wx.OK|wx.CANCEL|
+                                            wx.ICON_QUESTION)
+                        #dlg.ShowModal()
+                        
+
+                                if dlg.ShowModal()==wx.ID_OK:
+                                    f.conexion()
+                                    f.GuardarUsuario(self)
+                                dlg.Destroy()                 
+                            else:
+                                dlg=wx.MessageDialog(self,'La clave no concuerda', 'Atencion', wx.OK)
+                                dlg.ShowModal()
+                                dlg.Destroy()
+                                self.txtClave2.Clear()
+                                self.txtClave.Clear()
 
     def OnLimpiar(self, event):  # wxGlade: Principal.<event_handler>
-        self.txtNombre.Clear()
-        self.txtClave.Clear()
+        dlg = wx.MessageDialog(None, '¿Desea Limpiar?',
+                           'Dialogo de Mensage', wx.OK|wx.CANCEL|
+                            wx.ICON_QUESTION)
+        #dlg.ShowModal()
+        
 
+        if dlg.ShowModal()==wx.ID_OK:
+            
+            self.txtNombre.Clear()
+            self.txtApellido.Clear()
+            self.txtCedula.Clear()
+            self.txtUsuario.Clear()
+            
+            self.txtClave.Clear()
+            self.txtClave2.Clear()
+        dlg.Destroy()  
+
+
+
+    def OnLetras(self, event):  # wxGlade: Principal.<event_handler>
+        frm=self
+        Campo=frm.txtNombre.GetValue()
+        Campo2=frm.txtApellido.GetValue()
+        for i in Campo:
+            if chr(33)==i or chr(34)==i or chr(35)==i or chr(36)==i or chr(37)==i or chr(38)==i or chr(39)==i or chr(40)==i or chr(41)==i or chr(42)==i or chr(43)==i or chr(44)==i or chr(45)==i or chr(46)==i or chr(47)==i or chr(48)==i or chr(49)==i or chr(50)==i or chr(51)==i or chr(52)==i or chr(53)==i or chr(54)==i or chr(55)==i or chr(56)==i or chr(57)==i or chr(58)==i or chr(59)==i or chr(60)==i or chr(61)==i or chr(62)==i or chr(63)==i:
+                dlg=wx.MessageDialog(self,'Debe Ingresar Solo Letras', 'Atencion', wx.OK)
+                dlg.ShowModal()
+                dlg.Destroy()
+                self.txtNombre.Clear()
+            else:
+                pass
+        for i in Campo2:
+            if chr(33)==i or chr(34)==i or chr(35)==i or chr(36)==i or chr(37)==i or chr(38)==i or chr(39)==i or chr(40)==i or chr(41)==i or chr(42)==i or chr(43)==i or chr(44)==i or chr(45)==i or chr(46)==i or chr(47)==i or chr(48)==i or chr(49)==i or chr(50)==i or chr(51)==i or chr(52)==i or chr(53)==i or chr(54)==i or chr(55)==i or chr(56)==i or chr(57)==i or chr(58)==i or chr(59)==i or chr(60)==i or chr(61)==i or chr(62)==i or chr(63)==i:
+                dlg=wx.MessageDialog(self,'Debe Ingresar Solo Letras', 'Atencion', wx.OK)
+                dlg.ShowModal()
+                dlg.Destroy()
+                self.txtApellido.Clear()
+            else:
+                pass
+    def OnCedula(self, event):  # wxGlade: Principal.<event_handler>
+        frm=self
+        Campo=frm.txtCedula.GetValue()
+        
+        if len(self.txtCedula.GetValue())>0:
+            self.txtCedula.SetBackgroundColour("white")
+        
+        if len(Campo)<2 and len(Campo)>0:
+            if Campo=="E" or Campo=="V":
+                self.txtCedula.SetValue(Campo+"-")
+            else:
+                dlg=wx.MessageDialog(self,'Debe Ingresar la cedula en el sig. formato V-/E- 0000000', 'Atencion', wx.OK)
+                dlg.ShowModal()
+                dlg.Destroy()
+                self.txtCedula.Clear()
+        else:
+            if len(Campo)> 10 :
+                dlg=wx.MessageDialog(self,'La Cedula no debe ser mayor a 8 caracteres', 'Atencion', wx.OK)
+                dlg.ShowModal()
+                dlg.Destroy()
+                self.txtCedula.Clear()
+            else:
+                for i in Campo:
+                    if chr(69)==i or  chr(86)==i or  chr(33)==i or chr(34)==i or chr(35)==i or chr(36)==i or chr(37)==i or chr(38)==i or chr(39)==i or chr(40)==i or chr(41)==i or chr(42)==i or chr(43)==i or chr(44)==i or chr(45)==i or chr(46)==i or chr(47)==i or chr(48)==i or chr(49)==i or chr(50)==i or chr(51)==i or chr(52)==i or chr(53)==i or chr(54)==i or chr(55)==i or chr(56)==i or chr(57)==i or chr(58)==i or chr(59)==i or chr(60)==i or chr(61)==i or chr(62)==i or chr(63)==i:
+                        pass
+                    else:
+
+                        dlg=wx.MessageDialog(self,'Debe Ingresar Solo Numeros', 'Atencion', wx.OK)
+                        dlg.ShowModal()
+                        dlg.Destroy()
+                        self.txtCedula.Clear()
 # end of class Principal
 class ContieneDatos(wx.PyValidator):
     def __init__(self):

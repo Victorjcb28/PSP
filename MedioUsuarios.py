@@ -8,7 +8,7 @@ import wx
 import os
 import FuncionesReportes as FR
 import SeleccionPostulante as SP
-import BuscarPostulante2 as BP2
+import BuscarPostulanteRI as BP2
 # begin wxGlade: dependencies
 import gettext
 # end wxGlade
@@ -21,9 +21,9 @@ class Principal(wx.Frame):
     def __init__(self, *args, **kwds):
         # begin wxGlade: Principal.__init__
         wx.Frame.__init__(self, *args, **kwds)
-        self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/ReporteUsuarios1.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_button_2 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/ReportePostulantes1.png", wx.BITMAP_TYPE_ANY))
-        self.bitmap_button_3 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("/home/victorjcb28/Psp-master/iconos/ReportePostulantes1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/ReporteUsuarios1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_2 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/ReportePostulantes1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_3 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/ReportePostulantes1.png", wx.BITMAP_TYPE_ANY))
 
         self.__set_properties()
         self.__do_layout()

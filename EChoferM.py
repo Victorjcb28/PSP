@@ -30,41 +30,30 @@ class Principal(wx.Frame):
         self.SetMenuBar(self.vntPpal_BarraMenu)
         # Menu Bar end
         self.label_1 = wx.StaticText(self, wx.ID_ANY, _("Postulante Chofer"))
-        self.label_4 = wx.StaticText(self, wx.ID_ANY, _(u"A\u00f1os de \nExperiencia:"))
-        self.cobExperiencia = wx.ComboBox(self, wx.ID_ANY, choices=[_("0 > 3"), _("4 > 7"), _("7 > 10"), _(u"Mas de 11 a\u00f1os")], style=wx.CB_DROPDOWN)
-        self.label_9 = wx.StaticText(self, wx.ID_ANY, _("Posee conocimientos\nde mecanica basica:"))
-        self.cobMecanica = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
-        self.label_6 = wx.StaticText(self, wx.ID_ANY, _("Se integra\nfacilmente a\ngrupos de trabajo:"))
-        self.cobGTrabajo = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
-        self.label_5 = wx.StaticText(self, wx.ID_ANY, _("Esta dispuesto a\ntrabajar horas extras:"))
-        self.cobHoras = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
-        self.label_2 = wx.StaticText(self, wx.ID_ANY, _("Tendria incoveniente \nen trabajar fuera \nde la ciudad:"))
-        self.cobTFuera = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
-        self.label_9_copy_copy = wx.StaticText(self, wx.ID_ANY, _("Aceptaria las normas\nimpuestas por a empresa:"))
-        self.cobNormas = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
-        self.label_11_copy_1 = wx.StaticText(self, wx.ID_ANY, _("Que tipo de \nlicencia posee:"))
-        self.cobLicencia = wx.ComboBox(self, wx.ID_ANY, choices=[_("1"), _("2"), _("3"), _("4"), _("5")], style=wx.CB_DROPDOWN)
-        self.label_13_copy = wx.StaticText(self, wx.ID_ANY, _("Esta dispuesto a aceptar\nlas normas de sus superiores:"))
-        self.cobNormasS = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
-        self.label_3 = wx.StaticText(self, wx.ID_ANY, _("Que tipo de transporte\nha manejado:"))
-        self.cobTransporte = wx.ComboBox(self, wx.ID_ANY, choices=[_("LIVIANO"), _("PESADO")], style=wx.CB_DROPDOWN)
-        self.label_7 = wx.StaticText(self, wx.ID_ANY, _("Ha tenido accidentes\nde transito:"))
-        self.cobAccidente = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_DROPDOWN)
+        self.label_4 = wx.StaticText(self, wx.ID_ANY, _(u"\u00bfTiene experiencia en esta area?"))
+        self.cobExperiencia = wx.ComboBox(self, wx.ID_ANY, choices=[_("NO, PERO SOY UNA PERSONA QUE APRENDE RAPIDO Y MOTIVADA"), _("NO, PRO TENGO LOS CONOCIMIENTOS NECESARIOS PARA EL CARGO"), _("SI")], style=wx.CB_READONLY)
+        self.label_9 = wx.StaticText(self, wx.ID_ANY, _(u"\u00bfQue tipo de transporte maneja?"))
+        self.cobMecanica = wx.ComboBox(self, wx.ID_ANY, choices=[_("LIVIANOS"), _("PESADOS"), _("AMBOS")], style=wx.CB_READONLY)
+        self.label_6 = wx.StaticText(self, wx.ID_ANY, _(u"\u00bfCuantos a\u00f1os de experiencia?"))
+        self.cobGTrabajo = wx.ComboBox(self, wx.ID_ANY, choices=[_("0-2"), _("4-6"), _("6+")], style=wx.CB_READONLY)
+        self.label_5 = wx.StaticText(self, wx.ID_ANY, _(u"\u00bfQue sientes en un atasco de trafico?"))
+        self.cobHoras = wx.ComboBox(self, wx.ID_ANY, choices=[_("FRUSTACION"), _("IRA"), _("ABURRIMIENTO")], style=wx.CB_READONLY)
+        self.label_2 = wx.StaticText(self, wx.ID_ANY, _(u"\u00bfQue tipo de licencia posee?"))
+        self.cobTFuera = wx.ComboBox(self, wx.ID_ANY, choices=[_("2"), _("3"), _("4"), _("5")], style=wx.CB_READONLY)
+        self.label_9_copy_copy = wx.StaticText(self, wx.ID_ANY, _(u"\u00bfTiene problemas de vision?"))
+        self.cobNormas = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_READONLY)
+        self.label_11_copy_1 = wx.StaticText(self, wx.ID_ANY, _(u"\u00bfPadece alguna enfermedad o discapacidad?"))
+        self.cobLicencia = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_READONLY)
+        self.label_13_copy = wx.StaticText(self, wx.ID_ANY, _(u"\u00bfHa sufrido algun accidente de transito?"))
+        self.cobNormasS = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_READONLY)
+        self.label_3 = wx.StaticText(self, wx.ID_ANY, _(u"\u00bfToma algun medicamento para dormir?"))
+        self.cobTransporte = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO")], style=wx.CB_READONLY)
+        self.label_7 = wx.StaticText(self, wx.ID_ANY, _(u"\u00bfTrabajaria fuera de la ciudad?"))
+        self.cobAccidente = wx.ComboBox(self, wx.ID_ANY, choices=[_("SI"), _("NO"), _("SOLO SI ES OCASIONALMENTE")], style=wx.CB_READONLY)
         self.button_1 = wx.Button(self, wx.ID_ANY, _("Guardar"))
         self.button_2 = wx.Button(self, wx.ID_ANY, _("Limpiar"))
-
+        f.CargarDatos(self)
         self.__set_properties()
-        
-        self.cobExperiencia.SetValidator(ContieneDatos())#activa la validacion
-        self.cobGTrabajo.SetValidator(ContieneDatos())#activa la validacion
-        self.cobTFuera.SetValidator(ContieneDatos())#activa la validacion
-        self.cobLicencia.SetValidator(ContieneDatos())#activa la validacion
-        self.cobTransporte.SetValidator(ContieneDatos())#activa la validacion
-        self.cobMecanica.SetValidator(ContieneDatos())#activa la validacion
-        self.cobHoras.SetValidator(ContieneDatos())#activa la validacion
-        self.cobNormas.SetValidator(ContieneDatos())#activa la validacion
-        self.cobNormasS.SetValidator(ContieneDatos())#activa la validacion
-        self.cobAccidente.SetValidator(ContieneDatos())#activa la validacion
         self.__do_layout()
 
         self.Bind(wx.EVT_MENU, self.OnPrincipal, self.principal)
@@ -75,19 +64,27 @@ class Principal(wx.Frame):
     def __set_properties(self):
         # begin wxGlade: Principal.__set_properties
         self.SetTitle(_("Postulante Chofer"))
-        self.SetSize((688, 558))
+        self.SetSize((1250, 558))
         self.label_1.SetFont(wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD, 0, ""))
-        self.cobExperiencia.SetMinSize((156, 40))
+        self.cobExperiencia.SetMinSize((250, 32))
         self.cobExperiencia.SetSelection(-1)
-        self.cobMecanica.SetMinSize((156, 40))
+        self.cobMecanica.SetMinSize((250, 32))
         self.cobMecanica.SetSelection(-1)
+        self.cobGTrabajo.SetMinSize((250, 32))
         self.cobGTrabajo.SetSelection(-1)
+        self.cobHoras.SetMinSize((250, 32))
         self.cobHoras.SetSelection(-1)
+        self.cobTFuera.SetMinSize((250, 32))
         self.cobTFuera.SetSelection(-1)
+        self.cobNormas.SetMinSize((250, 32))
         self.cobNormas.SetSelection(-1)
+        self.cobLicencia.SetMinSize((250, 32))
         self.cobLicencia.SetSelection(-1)
+        self.cobNormasS.SetMinSize((250, 32))
         self.cobNormasS.SetSelection(-1)
+        self.cobTransporte.SetMinSize((250, 32))
         self.cobTransporte.SetSelection(-1)
+        self.cobAccidente.SetMinSize((250, 32))
         self.cobAccidente.SetSelection(-1)
         # end wxGlade
 
@@ -103,50 +100,50 @@ class Principal(wx.Frame):
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_4, 0, 0, 0)
-        grid_sizer_1.Add(self.cobExperiencia, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add(self.cobExperiencia, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_9, 0, wx.EXPAND, 0)
-        grid_sizer_1.Add(self.cobMecanica, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add(self.cobMecanica, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_6, 0, 0, 0)
-        grid_sizer_1.Add(self.cobGTrabajo, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add(self.cobGTrabajo, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_5, 0, 0, 0)
-        grid_sizer_1.Add(self.cobHoras, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add(self.cobHoras, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_2, 0, 0, 0)
-        grid_sizer_1.Add(self.cobTFuera, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add(self.cobTFuera, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_9_copy_copy, 0, wx.EXPAND, 0)
-        grid_sizer_1.Add(self.cobNormas, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add(self.cobNormas, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_11_copy_1, 0, 0, 0)
-        grid_sizer_1.Add(self.cobLicencia, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add(self.cobLicencia, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_13_copy, 0, 0, 0)
-        grid_sizer_1.Add(self.cobNormasS, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add(self.cobNormasS, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_3, 0, 0, 0)
-        grid_sizer_1.Add(self.cobTransporte, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add(self.cobTransporte, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.label_7, 0, 0, 0)
-        grid_sizer_1.Add(self.cobAccidente, 0, wx.EXPAND, 0)
+        grid_sizer_1.Add(self.cobAccidente, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.button_1, 0, wx.ALIGN_CENTER_HORIZONTAL, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
@@ -165,7 +162,7 @@ class Principal(wx.Frame):
         self.Close()
 
     def OnGuardar(self, event):  # wxGlade: Principal.<event_handler>
-       if self.Validate():
+        if self.Validate():
             dlg = wx.MessageDialog(None, '¿Desea Guardar?',
                            'Dialogo de Mensage', wx.OK|wx.CANCEL|
                             wx.ICON_QUESTION)
@@ -173,9 +170,11 @@ class Principal(wx.Frame):
         
 
         if dlg.ShowModal()==wx.ID_OK:
-            f.GuardarChofer(self)
+            f.ModificarChofer(self)
             self.Hide()
         dlg.Destroy()
+        
+    
 
     def OnLimpiar(self, event):  # wxGlade: Principal.<event_handler>
         print "Event handler 'OnLimpiar' not implemented!"

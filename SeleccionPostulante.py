@@ -7,6 +7,12 @@
 import wx
 import os
 import FuncionesReportes as FR
+import SeleccionPostulantesAprobados as SPA
+import SeleccionPostulantesReprobados as SPR
+import SeleccionPostulantesSeleccionados as SPS
+import ReporteGraficos as RG
+import RangoFecha as RF
+import funciones as f
 # begin wxGlade: dependencies
 import gettext
 # end wxGlade
@@ -24,10 +30,17 @@ class Principal(wx.Frame):
         self.bitmap_button_4 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/GerenteVentas1.png", wx.BITMAP_TYPE_ANY))
         self.bitmap_button_5 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/cash_register_2561.png", wx.BITMAP_TYPE_ANY))
         self.bitmap_button_9 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/AtencionCliente1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_11 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/Aprobado1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_13 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/Reprobado1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_15 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/Seleccion2.png", wx.BITMAP_TYPE_ANY))
         self.bitmap_button_2 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/Vigilante1.png", wx.BITMAP_TYPE_ANY))
         self.bitmap_button_7 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/Vendedor1.png", wx.BITMAP_TYPE_ANY))
         self.bitmap_button_8 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/Asistente1.png", wx.BITMAP_TYPE_ANY))
         self.bitmap_button_6 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/RecursosHumanos1.jpg", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_10 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/iconocalendario1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_12 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/grafico1.jpg", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_14 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/Trabajadores1.png", wx.BITMAP_TYPE_ANY))
+        self.bitmap_button_16 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("iconos/bitacora1.png", wx.BITMAP_TYPE_ANY))
 
         self.__set_properties()
         self.__do_layout()
@@ -37,10 +50,17 @@ class Principal(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnAVentas, self.bitmap_button_4)
         self.Bind(wx.EVT_BUTTON, self.OnCajero, self.bitmap_button_5)
         self.Bind(wx.EVT_BUTTON, self.OnAtencionC, self.bitmap_button_9)
+        self.Bind(wx.EVT_BUTTON, self.OnAprobado, self.bitmap_button_11)
+        self.Bind(wx.EVT_BUTTON, self.OnReprobado, self.bitmap_button_13)
+        self.Bind(wx.EVT_BUTTON, self.OnSeleccionados, self.bitmap_button_15)
         self.Bind(wx.EVT_BUTTON, self.OnVigilante, self.bitmap_button_2)
         self.Bind(wx.EVT_BUTTON, self.OnGVentas, self.bitmap_button_7)
         self.Bind(wx.EVT_BUTTON, self.OnAsistenteA, self.bitmap_button_8)
         self.Bind(wx.EVT_BUTTON, self.OnRecursos, self.bitmap_button_6)
+        self.Bind(wx.EVT_BUTTON, self.OnFecha, self.bitmap_button_10)
+        self.Bind(wx.EVT_BUTTON, self.OnGrafico, self.bitmap_button_12)
+        self.Bind(wx.EVT_BUTTON, self.OnTrabajadores, self.bitmap_button_14)
+        self.Bind(wx.EVT_BUTTON, self.OnBitacora, self.bitmap_button_16)
         # end wxGlade
 
     def __set_properties(self):
@@ -56,6 +76,11 @@ class Principal(wx.Frame):
         self.bitmap_button_5.SetSize(self.bitmap_button_5.GetBestSize())
         self.bitmap_button_9.SetToolTip(wx.ToolTip(_("Atencion al Cliente")))
         self.bitmap_button_9.SetSize(self.bitmap_button_9.GetBestSize())
+        self.bitmap_button_11.SetSize(self.bitmap_button_11.GetBestSize())
+        self.bitmap_button_13.SetToolTip(wx.ToolTip(_("Reprobado")))
+        self.bitmap_button_13.SetSize(self.bitmap_button_13.GetBestSize())
+        self.bitmap_button_15.SetToolTip(wx.ToolTip(_("Postulantes Seleccionados")))
+        self.bitmap_button_15.SetSize(self.bitmap_button_15.GetBestSize())
         self.bitmap_button_2.SetToolTip(wx.ToolTip(_("Vigilante")))
         self.bitmap_button_2.SetSize(self.bitmap_button_2.GetBestSize())
         self.bitmap_button_7.SetToolTip(wx.ToolTip(_("Gerente de Ventas")))
@@ -64,11 +89,19 @@ class Principal(wx.Frame):
         self.bitmap_button_8.SetSize(self.bitmap_button_8.GetBestSize())
         self.bitmap_button_6.SetToolTip(wx.ToolTip(_("Recursos Humanos")))
         self.bitmap_button_6.SetSize(self.bitmap_button_6.GetBestSize())
+        self.bitmap_button_10.SetToolTip(wx.ToolTip(_("Reporte por Fecha")))
+        self.bitmap_button_10.SetSize(self.bitmap_button_10.GetBestSize())
+        self.bitmap_button_12.SetToolTip(wx.ToolTip(_("Graficos")))
+        self.bitmap_button_12.SetSize(self.bitmap_button_12.GetBestSize())
+        self.bitmap_button_14.SetToolTip(wx.ToolTip(_("Trabajadores Activos")))
+        self.bitmap_button_14.SetSize(self.bitmap_button_14.GetBestSize())
+        self.bitmap_button_16.SetToolTip(wx.ToolTip(_("Bitacora de Usuarios")))
+        self.bitmap_button_16.SetSize(self.bitmap_button_16.GetBestSize())
         # end wxGlade
 
     def __do_layout(self):
         # begin wxGlade: Principal.__do_layout
-        grid_sizer_1 = wx.FlexGridSizer(3, 9, 0, 0)
+        grid_sizer_1 = wx.FlexGridSizer(3, 15, 0, 0)
         grid_sizer_1.Add(self.bitmap_button_1, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.bitmap_button_3, 0, 0, 0)
@@ -78,6 +111,18 @@ class Principal(wx.Frame):
         grid_sizer_1.Add(self.bitmap_button_5, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.bitmap_button_9, 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.bitmap_button_11, 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.bitmap_button_13, 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.bitmap_button_15, 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
@@ -95,6 +140,13 @@ class Principal(wx.Frame):
         grid_sizer_1.Add((20, 20), 0, 0, 0)
         grid_sizer_1.Add(self.bitmap_button_6, 0, 0, 0)
         grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.bitmap_button_10, 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.bitmap_button_12, 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.bitmap_button_14, 0, 0, 0)
+        grid_sizer_1.Add((20, 20), 0, 0, 0)
+        grid_sizer_1.Add(self.bitmap_button_16, 0, 0, 0)
         self.SetSizer(grid_sizer_1)
         grid_sizer_1.Fit(self)
         self.Layout()
@@ -138,4 +190,32 @@ class Principal(wx.Frame):
         FR.PostulantesRecursos(self)
         os.system('xdg-open "ReportePostulantesRecursos.pdf"')
         self.Hide() 
+    def OnFecha(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=RF.Principal(self)
+        Ventana.Show()
+        self.Hide()
+    def OnAprobado(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=SPA.Principal(self)
+        Ventana.Show()
+        self.Hide()
+    def OnGrafico(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=RG.Principal(self)
+        Ventana.Show()
+        self.Hide()
+    def OnReprobado(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=SPR.Principal(self)
+        Ventana.Show()
+        self.Hide()
+    def OnTrabajadores(self, event):  # wxGlade: Principal.<event_handler>
+        FR.PostulantesInternos(self)
+        os.system('xdg-open "ReportePostulantesInternos.pdf"')
+        self.Hide()
+    def OnSeleccionados(self, event):  # wxGlade: Principal.<event_handler>
+        Ventana=SPS.Principal(self)
+        Ventana.Show()
+        self.Hide()
+    def OnBitacora(self, event):  # wxGlade: Principal.<event_handler>
+        FR.ReporBitacora(self)
+        os.system('xdg-open "ReporteBitacora.pdf"')
+        self.Hide()
 # end of class Principal
